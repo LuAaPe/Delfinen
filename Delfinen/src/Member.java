@@ -14,8 +14,8 @@ public class Member {
     private boolean isCompetitive;
     private boolean hasPaid;
     private double yearlyFee;
-    private String ageGroup = getAgeGroup();
-    private int age = calculateAge();
+    private String ageGroup;
+    private int age;
 
 
     public Member(String firstName, String surName, LocalDate birthDate) {
@@ -27,8 +27,9 @@ public class Member {
         this.isActive = true;
         this.isCompetitive = false;
         this.hasPaid = false;
-        setYearlyFee();
-
+        //setYearlyFee();
+        ageGroup = getAgeGroup();
+        age = calculateAge();
     }
 
     public String getSurName() {
@@ -75,9 +76,8 @@ public class Member {
         return yearlyFee;
     }
 
-    private int calculateAge() {
+    public int calculateAge() {
         LocalDate currentDate = LocalDate.now();
-        assert birthDate != null;
         Period period = Period.between(birthDate, currentDate);
         return period.getYears();
     }
@@ -86,10 +86,10 @@ public class Member {
         return getAge() < 18 ? "Junior" : "Senior";
     }
 
-    private void setYearlyFee() {
+    public void setYearlyFee() {
         if (!isActive) {
             this.yearlyFee = 500;
-        } else if (age >= 60) {
+        } else if (getAge() >= 60) {
             this.yearlyFee = 1600 * 0.75;
         } else if (ageGroup == "Senior") {
             this.yearlyFee = 1600;
@@ -103,6 +103,6 @@ public class Member {
         String status = getIsActive() ? "Aktiv" : "Passiv";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = birthDate.format(formatter);
-        return formattedDate+" "+getFullName()+", Alder: "+getAge()+", Hold: "+getAgeGroup()+"\nStatus: "+status+", Kontingent: "+getYearlyFee();
+        return formattedDate+" "+getFullName()+", Alder: "+getAge()+", Hold: "+getAgeGroup()+"\nStatus: "+status;//+", Kontingent: "+getYearlyFee();
     }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class MemberRegistry {
+public class Database {
     ArrayList<Member> members = new ArrayList<>();
 
     public void addMember(Member member){
