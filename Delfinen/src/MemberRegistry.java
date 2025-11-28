@@ -1,0 +1,21 @@
+import java.util.ArrayList;
+
+public class MemberRegistry {
+    ArrayList<Member> members = new ArrayList<>();
+
+    public void addMember(Member member){
+        members.add(member);
+    }
+
+
+
+    @Override
+    public String toString(){
+        String s ="";
+        for (Member m : members){
+            s += m + "\n";
+        }
+        return s;
+    }
+
+}
