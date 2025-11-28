@@ -1,23 +1,108 @@
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 public class Member {
-    String name;
-    LocalDate birthDate;
+    private String firstName;
+    private String surName;
+    private String fullName;
+    private final LocalDate birthDate;
+    private final int memberID;
+    private static int nextID = 1;
+    private final LocalDate joinDate = LocalDate.now();
+    private boolean isActive;
+    private boolean isCompetitive;
+    private boolean hasPaid;
+    private double yearlyFee;
+    private String ageGroup = getAgeGroup();
+    private int age = calculateAge();
 
-    public Member(String name, LocalDate birthDate){
-        this.name = name;
+
+    public Member(String firstName, String surName, LocalDate birthDate) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.fullName = firstName + " " + surName;
         this.birthDate = birthDate;
+        this.memberID = nextID++;
+        this.isActive = true;
+        this.isCompetitive = false;
+        this.hasPaid = false;
+        setYearlyFee();
+
     }
 
-    public String getName() {
-        return name;
+    public String getSurName() {
+        return surName;
     }
 
-    public LocalDate getBirthDate(){
+    public void setSurName(String surName) {
+        this.surName = surName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public int getMemberID() {
+        return memberID;
+    }
+
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
+    public boolean getIsActive(){
+        return isActive;
+    }
+
+    public double getYearlyFee(){
+        return yearlyFee;
+    }
+
+    private int calculateAge() {
+        LocalDate currentDate = LocalDate.now();
+        assert birthDate != null;
+        Period period = Period.between(birthDate, currentDate);
+        return period.getYears();
+    }
+
+    public String getAgeGroup() {
+        return getAge() < 18 ? "Junior" : "Senior";
+    }
+
+    private void setYearlyFee() {
+        if (!isActive) {
+            this.yearlyFee = 500;
+        } else if (age >= 60) {
+            this.yearlyFee = 1600 * 0.75;
+        } else if (ageGroup == "Senior") {
+            this.yearlyFee = 1600;
+        } else {
+            this.yearlyFee = 1000;
+        }
+    }
+
+    @Override
     public String toString(){
-        return getName()+" "+getBirthDate();
+        String status = getIsActive() ? "Aktiv" : "Passiv";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = birthDate.format(formatter);
+        return formattedDate+" "+getFullName()+", Alder: "+getAge()+", Hold: "+getAgeGroup()+"\nStatus: "+status+", Kontingent: "+getYearlyFee();
     }
 }
