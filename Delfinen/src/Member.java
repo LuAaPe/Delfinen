@@ -8,8 +8,8 @@ public class Member {
     private String fullName;
     private final LocalDate birthDate;
     private final int memberID;
-    private static int nextID = 1;
-    private final LocalDate joinDate = LocalDate.now();
+    private static int nextID = 1; // til senere: kan den ikke starte med 1, når vi får filer og medlemmer som allerede eksisterer med medlemsnummer
+    private final LocalDate joinDate = LocalDate.now(); // evt noget med at alle betaler fast kontingnent i januar eller sådan
     private boolean isActive;
     private boolean isCompetitive;
     private boolean hasPaid;
@@ -23,13 +23,13 @@ public class Member {
         this.surName = surName;
         this.fullName = firstName + " " + surName;
         this.birthDate = birthDate;
-        this.memberID = nextID++;
+        this.memberID = nextID++; //
         this.isActive = true;
         this.isCompetitive = false;
         this.hasPaid = false;
-        //setYearlyFee();
         ageGroup = getAgeGroup();
         age = calculateAge();
+        setYearlyFee();
     }
 
     public String getSurName() {
@@ -83,7 +83,7 @@ public class Member {
     }
 
     public String getAgeGroup() {
-        return getAge() < 18 ? "Junior" : "Senior";
+        return getAge() < 18 ? "Junior" : "Senior"; //risikerer stavefejl, lav evt om til boolean isJunior, eller enum
     }
 
     public void setYearlyFee() {
@@ -91,7 +91,7 @@ public class Member {
             this.yearlyFee = 500;
         } else if (getAge() >= 60) {
             this.yearlyFee = 1600 * 0.75;
-        } else if (ageGroup == "Senior") {
+        } else if (getAgeGroup() == "Senior") {
             this.yearlyFee = 1600;
         } else {
             this.yearlyFee = 1000;
@@ -103,6 +103,6 @@ public class Member {
         String status = getIsActive() ? "Aktiv" : "Passiv";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = birthDate.format(formatter);
-        return formattedDate+" "+getFullName()+", Alder: "+getAge()+", Hold: "+getAgeGroup()+"\nStatus: "+status;//+", Kontingent: "+getYearlyFee();
+        return formattedDate+" "+getFullName()+", Alder: "+getAge()+", Hold: "+getAgeGroup()+"\nStatus: "+status+", Kontingent: "+getYearlyFee()+"\n";
     }
 }
