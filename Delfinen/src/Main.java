@@ -1,3 +1,5 @@
+import UI.Menu;
+
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -21,30 +23,9 @@ public class Main {
         Member member01 = new Member("Lars","Bentesen",LocalDate.of(1985,03,03));
 
         System.out.println(member01);
-
-        /*
-        while (true) {
-            System.out.println("  |~~~~~~~~~~~~~");
-            System.out.println("  | KlubSystem:");
-            System.out.println("  | < 1 > Vis Medlemmer");
-            System.out.println("  | < 2 > Luk Program");
-            System.out.println("  |~~~~~~~~~~~~~");
-            System.out.print("  | Vælg Handling: ");
-
-            int number = input.nextInt();
-            input.nextLine();
-            switch (number) {
-                case 1:
-                    System.out.println(memberRegistry);
-                    break;
-                case 2:
-                    input.close();
-                    System.exit(0);
-                    break;
-                default:
-                    break;
-            }
-        }*/
+        Menu menu = new Menu();
+        menu.printDolphinArt();
+        menu.startMenu();
     }
 
 

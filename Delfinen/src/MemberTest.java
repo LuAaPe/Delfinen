@@ -7,11 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberTest {
 
     @org.junit.jupiter.api.Test
-    void calculateAge() {
+    void calculateAgeForSeniorActive() {
         Member member01 = new Member("Lars","Bentesen", LocalDate.of(1985,03,03));
         int expected = 40;
         assertEquals(expected, member01.getAge());
     }
+
+    //void calculateAgeForSeniorPassive etc...
 
     @org.junit.jupiter.api.Test
     void setYearlyFee() {

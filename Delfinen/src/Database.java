@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Database {
     ArrayList<Member> members = new ArrayList<>();
 
+    public Database(){}
     public void addMember(Member member){
         members.add(member);
     }
