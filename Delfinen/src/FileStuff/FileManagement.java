@@ -1,7 +1,6 @@
 package FileStuff;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class FileManagement {
@@ -22,7 +21,14 @@ public class FileManagement {
         // %s,%s,%s
         String memberString = String.format("%s,%s,%s", "get name", "get last name", "get birthdate");
         try{
-            Pr
+            PrintWriter writer = new PrintWriter(new FileWriter("test.csv"));
+
+        }
+        catch (FileNotFoundException e){
+            System.out.println("Filen blev ikke fundet.");
+        } catch (IOException e) {
+            System.out.println("Der upstod en fejl under skrivning til filen.");
+            e.printStackTrace();
         }
 
     }
