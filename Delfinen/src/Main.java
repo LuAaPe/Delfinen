@@ -26,7 +26,7 @@ public class Main {
         Menu menu = new Menu();
         menu.printDolphinArt();
         menu.startMenu();
-
+        System.out.println("Git TEST 123");
     }
 
 
