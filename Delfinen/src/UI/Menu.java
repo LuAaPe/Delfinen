@@ -1,5 +1,6 @@
 package UI;
 
+import java.lang.reflect.Member;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Locale;
@@ -166,7 +167,10 @@ public class Menu {
         else {
             hasPaid = false;
         }
+
         //Opret et nyt Member objekt her med de data som samlets ind
+        // Test:
+        Member member =
     }
 
     public void enterBirthDate(){
