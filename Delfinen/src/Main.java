@@ -7,7 +7,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         Database memberRegistry = new Database();
-        System.out.println("HEJ TEST");
 
         memberRegistry.addMember(new Member("Freddy", "surname", LocalDate.of(1999,01,22)));
 

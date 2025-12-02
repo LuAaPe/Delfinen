@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in); // TODO: kan denne bruges replace de steder hvor en ny scanner oprettes i metoder her nedunder???
+
     public Menu(){}
 
     public void startMenu(){
@@ -170,7 +171,7 @@ public class Menu {
 
         //Opret et nyt Member objekt her med de data som samlets ind
         // Test:
-        Member member =
+
     }
 
     public void enterBirthDate(){
