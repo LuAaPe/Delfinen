@@ -1,3 +1,5 @@
+import domain.Member;
+
 import java.util.ArrayList;
 
 public class Database {

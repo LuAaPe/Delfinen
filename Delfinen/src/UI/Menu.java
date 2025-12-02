@@ -1,9 +1,9 @@
 package UI;
 
-import java.lang.reflect.Member;
+import util.InvalidBirthYearException;
+
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Menu {
@@ -131,7 +131,7 @@ public class Menu {
             }
         }
     }
-    //Metode som samler input data ind fra brugeren og kan oprette ett Member objekt
+    //Metode som samler input data ind fra brugeren og kan oprette ett domain.Member objekt
     private void createMember(){
         boolean isActive;
         boolean isCompetitiveSwimmer;
@@ -169,7 +169,7 @@ public class Menu {
             hasPaid = false;
         }
 
-        //Opret et nyt Member objekt her med de data som samlets ind
+        //Opret et nyt domain.Member objekt her med de data som samlets ind
         // Test:
 
     }

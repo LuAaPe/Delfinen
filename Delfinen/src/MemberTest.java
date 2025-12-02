@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Test;
+import domain.Member;
 
 import java.time.LocalDate;
 

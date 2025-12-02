@@ -16,7 +16,7 @@ public class FileManagement {
         }
     }
 
-    public static void writeToCsv(String testString){ // TODO: lav senere om til at tage en ArrayList<Member> i stedet for String
+    public static void writeToCsv(String testString){ // TODO: lav senere om til at tage en ArrayList<domain.Member> i stedet for String
         // eksempel format: Daniella,Norgren,1990-10-19, . . ., . . .
         // %s,%s,%s
         String memberString = String.format("%s,%s,%s", "get name", "get last name", "get birthdate");

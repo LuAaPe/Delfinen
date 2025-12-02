@@ -1,4 +1,5 @@
 import UI.Menu;
+import domain.Member;
 
 import java.time.LocalDate;
 import java.util.Scanner;
