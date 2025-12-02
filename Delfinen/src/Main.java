@@ -27,6 +27,7 @@ public class Main {
         menu.printDolphinArt();
         menu.startMenu();
         System.out.println("Git TEST 123");
+        System.out.println("HEJ HALLÅ FRA DANI");
     }
 
 
