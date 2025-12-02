@@ -6,12 +6,8 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Menu {
+    Scanner input = new Scanner(System.in); // TODO: kan denne bruges replace de steder hvor en ny scanner oprettes i metoder her nedunder???
     public Menu(){}
-
-
-
-
-
 
     public void startMenu(){
         while (true){
@@ -132,6 +128,45 @@ public class Menu {
                 System.out.println(e);
             }
         }
+    }
+    //Metode som samler input data ind fra brugeren og kan oprette ett Member objekt
+    private void createMember(){
+        boolean isActive;
+        boolean isCompetitiveSwimmer;
+        // Evt senere at det kan be brugeren at indtaste det fulde navn i et trin, som vi splitter op i fornavn og efternavn
+        System.out.println("Indtast fornavn\n : ");
+        String firstName = input.nextLine();
+        System.out.println("Indtast efternavn\n : ");
+        String lastName = input.nextLine();
+        enterBirthDate(); // brug dette til noget
+        System.out.println("Aktivere medlemskab? j/n\n : ");
+        String activePassiveStatus = input.nextLine();
+        if(activePassiveStatus.equals("j")){
+            isActive = true;
+        }
+        else {
+            isActive = false;
+        }
+
+        System.out.println("Konkurrencesvømmer? j/n\n : ");
+        String isCompetitiveReply = input.nextLine();
+        if(isCompetitiveReply.equals("j")){
+            isCompetitiveSwimmer = true;
+        }
+        else{
+            isCompetitiveSwimmer = false;
+        }
+
+        System.out.println("Har medlem betalt? j/n\n : ");
+        boolean hasPaid;
+        String hasPaidReply = input.nextLine();
+        if(hasPaidReply.equals("j")){
+            hasPaid = true;
+        }
+        else {
+            hasPaid = false;
+        }
+        //Opret et nyt Member objekt her med de data som samlets ind
     }
 
     public void enterBirthDate(){
