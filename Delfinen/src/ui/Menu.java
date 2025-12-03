@@ -1,5 +1,6 @@
 package ui;
 
+import controller.MemberController;
 import util.InvalidBirthYearException;
 
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in); // TODO: kan denne bruges replace de steder hvor en ny scanner oprettes i metoder her nedunder???
-
+    MemberController memberController = new MemberController();
     public Menu(){}
 
     public void startMenu(){
@@ -101,7 +102,7 @@ public class Menu {
                         break;
                     case 2:
                         // opret medlem
-                        enterBirthDate();
+                        createMember();
                         break;
                     case 3:
                         // Redigere medlem f.eks
@@ -139,8 +140,8 @@ public class Menu {
         System.out.println("Indtast fornavn\n : ");
         String firstName = input.nextLine();
         System.out.println("Indtast efternavn\n : ");
-        String lastName = input.nextLine();
-        enterBirthDate(); // brug dette til noget
+        String surName = input.nextLine();
+        LocalDate birthDate = enterBirthDate(); // brug dette til noget
         System.out.println("Aktivere medlemskab? j/n\n : ");
         String activePassiveStatus = input.nextLine();
         if(activePassiveStatus.equals("j")){
@@ -171,18 +172,19 @@ public class Menu {
 
         //Opret et nyt domain.Member objekt her med de data som samlets ind
         // Test:
+        memberController.addNewMember(firstName, surName, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
 
     }
 
-    public void enterBirthDate(){
+    public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
         Scanner reader = new Scanner(System.in);
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
-
+        LocalDate birthDate = LocalDate.now(); // TODO FIX
         while (again){
             try {
                 String date = reader.nextLine();
-                LocalDate birthDate = convertStringDateToLocalDate(date);// prøver på at lave et LocalDate objekt fra den input String
+                birthDate = convertStringDateToLocalDate(date);// prøver på at lave et LocalDate objekt fra den input String
                 int age = calculateAge(birthDate); // finder lige ud af alderen....
                 if (age < 6 || age > 100) {
                     throw new InvalidBirthYearException("Alder skal være minimum 6 og maks 100.");
@@ -192,6 +194,8 @@ public class Menu {
                 System.out.println("Tastefejl. Venligst prøv igen (ÅÅÅÅ-MM-DD): ");
             }
         }
+        // TODO null fejlhåndtering
+        return LocalDate.now(); // TODO her en major error
     }
 
     public LocalDate convertStringDateToLocalDate(String date){
