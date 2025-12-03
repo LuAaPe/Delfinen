@@ -5,106 +5,114 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class Member {
+    // classes representing the real world
     private String firstName;
     private String surName;
     private String fullName;
     private final LocalDate birthDate;
-    private final int memberID;
-    private static int nextID = 1; // til senere: kan den ikke starte med 1, når vi får filer og medlemmer som allerede eksisterer med medlemsnummer
-    private final LocalDate joinDate = LocalDate.now(); // evt noget med at alle betaler fast kontingnent i januar eller sådan
-    private boolean isActive;
-    private boolean isCompetitive;
-    private boolean hasPaid;
-    private double yearlyFee;
-    private String ageGroup;
     private int age;
+    private boolean isActive;
+    private boolean isJunior; //instead of String ageGroup
+    private boolean isPaid;
+    private boolean isCompetitive;
+    private double yearlyFee;
+    private final int memberID;
+    private static int nextID = 1;
+    //private final LocalDate joinDate = LocalDate.now();
 
 
-    public Member(String firstName, String surName, LocalDate birthDate) {
+    public Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         this.firstName = firstName;
         this.surName = surName;
         this.fullName = firstName + " " + surName;
         this.birthDate = birthDate;
-        this.memberID = nextID++; //
-        this.isActive = true;
-        this.isCompetitive = false;
-        this.hasPaid = false;
-        ageGroup = getAgeGroup();
-        age = calculateAge();
+        this.memberID = nextID++;
+        this.isActive = isActive;
+        this.isCompetitive = isCompetitive;
+        this.isPaid = isPaid;
+
+        this.age = calculateAge();
+        setAgeGroup();
         setYearlyFee();
+
     }
 
-    public String getSurName() {
-        return surName;
+    public String getFirstName(){
+        return this.firstName;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public String getSurName(){
+        return this.surName;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName(){
+        return this.fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public LocalDate getBirthDate(){
+        return this.birthDate;
     }
 
     public int getAge(){
-        return age;
-    }
-
-    public int getMemberID() {
-        return memberID;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
+        return this.age;
     }
 
     public boolean getIsActive(){
-        return isActive;
+        return this.isActive;
     }
 
-    public double getYearlyFee(){
-        return yearlyFee;
+    public boolean getIsJunior(){
+        return isJunior;
     }
 
-    public int calculateAge() {
+    public boolean getIsCompetitive(){
+        return this.isCompetitive;
+    }
+
+    public boolean getIsPaid(){
+        return this.isPaid;
+    }
+
+    //TODO: check if this actually changes yearlyFee correctly if used
+    public void setIsActive(boolean isActive){
+        this.isActive = isActive;
+        setYearlyFee();
+    }
+
+    public void setIsCompetitive(boolean isCompetitive){
+        this.isCompetitive = isCompetitive;
+    }
+
+    public void setIsPaid(boolean isPaid){
+        this.isPaid = isPaid;
+    }
+
+    public int calculateAge(){
         LocalDate currentDate = LocalDate.now();
-        Period period = Period.between(birthDate, currentDate);
+        Period period = Period.between(getBirthDate(), currentDate);
         return period.getYears();
     }
 
-    public String getAgeGroup() {
-        return getAge() < 18 ? "Junior" : "Senior"; //risikerer stavefejl, lav evt om til boolean isJunior, eller enum
+    public void setAgeGroup(){
+        if(age >= 18){
+            isJunior = false;
+        }
+        else {
+            isJunior = true;
+        }
     }
 
-    public void setYearlyFee() {
-        if (!isActive) {
+    public void setYearlyFee(){
+        if (!getIsActive()){
             this.yearlyFee = 500;
         } else if (getAge() >= 60) {
-            this.yearlyFee = 1600 * 0.75;
-        } else if (getAgeGroup() == "Senior") {
+            this.yearlyFee = (1600*0.75);
+        } else if (!getIsJunior()) {
             this.yearlyFee = 1600;
         } else {
             this.yearlyFee = 1000;
         }
     }
 
-    @Override
-    public String toString(){
-        String status = getIsActive() ? "Aktiv" : "Passiv";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String formattedDate = birthDate.format(formatter);
-        return formattedDate+" "+getFullName()+", Alder: "+getAge()+", Hold: "+getAgeGroup()+"\nStatus: "+status+", Kontingent: "+getYearlyFee()+"\n";
-    }
 }
+
