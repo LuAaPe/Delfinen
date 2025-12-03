@@ -1,4 +1,5 @@
 package domain;
 
-public class Discipline {
+public enum Discipline {
+    BUTTERFLY, CRAWL, BACKSTROKE, BREASTSTROKE
 }
