@@ -29,4 +29,8 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Member> getAllMembers(){
+        return memberList;
+    }
 }

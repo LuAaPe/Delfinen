@@ -1,6 +1,7 @@
 package ui;
 
 import controller.MemberController;
+import domain.Member;
 import util.InvalidBirthYearException;
 
 import java.time.LocalDate;
@@ -38,7 +39,7 @@ public class Menu {
 
             try{
                 System.out.print(": ");
-                int choice = input.nextInt();
+                int choice = readInt(); // Metode som sørger for at bruferen taster en int ind
                 input.nextLine(); // clear buffer
                 switch (choice){
                     case 1:
@@ -92,14 +93,14 @@ public class Menu {
                     """);
 
             try {
-                Scanner inputFormand = new Scanner(System.in);
                 System.out.print(": ");
-                int formandChoice = input.nextInt();
+                int formandChoice = readInt();
                 input.nextLine(); // clear buffer
                 switch (formandChoice){
                     case 1:
-                        // se medlemsliste
-                        //System.out.println(memberRegistry);
+                        for(Member m : memberController.getAllMembers()){
+                            System.out.println(m);
+                        }
                         break;
                     case 2:
                         // opret medlem
@@ -174,6 +175,19 @@ public class Menu {
         // Test:
         memberController.addNewMember(firstName, surName, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
 
+    }
+
+    // Metode som sørjer for at brugeren indtaster en int
+    private int readInt(){
+        while (true){
+            try {
+                int value = Integer.parseInt(input.nextLine());
+                return value;
+            }
+            catch (NumberFormatException e){
+                System.out.println("Ugyltigt tal, prøv igen.");
+            }
+        }
     }
 
     public LocalDate enterBirthDate(){

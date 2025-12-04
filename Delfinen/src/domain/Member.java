@@ -16,8 +16,8 @@ public class Member {
     private boolean isPaid;
     private boolean isCompetitive;
     private double yearlyFee;
-    private final int memberID;
-    private static int nextID = 1;
+    //private final int memberID;
+    //private static int nextID = 1;
     //private final LocalDate joinDate = LocalDate.now();
 
 
@@ -26,7 +26,7 @@ public class Member {
         this.surName = surName;
         this.fullName = firstName + " " + surName;
         this.birthDate = birthDate;
-        this.memberID = nextID++;
+        //this.memberID = nextID++;
         this.isActive = isActive;
         this.isCompetitive = isCompetitive;
         this.isPaid = isPaid;
@@ -112,6 +112,11 @@ public class Member {
         } else {
             this.yearlyFee = 1000;
         }
+    }
+
+    @Override
+    public String toString(){
+        return fullName + " (" + birthDate + ") " + "- Aktiv: " + isActive + ", Konkurrencesvømmer: " + isCompetitive;
     }
 
 }

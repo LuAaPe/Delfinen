@@ -1,6 +1,9 @@
 package controller;
 
+import domain.Member;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class MemberController {
     //TODO er denne klasse ikke lidt skrald?
@@ -13,5 +16,9 @@ public class MemberController {
     //Regular member constructor: Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
     public void addNewMember(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         database.addNewMember(firstName,surName,birthDate,isCompetitive,isActive,isPaid);
+    }
+
+    public ArrayList<Member> getAllMembers(){
+        return database.getAllMembers();
     }
 }
