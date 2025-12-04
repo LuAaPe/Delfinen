@@ -17,41 +17,48 @@ public class MemberFileHandler {
     private String fileName;
 
     public MemberFileHandler(String fileName){
+        //Navnet på filen vi vil oprette til at gemme medlemmer i
         this.fileName = fileName;
     }
 
-    // Method that takes the file we store members in, and loads them into an ArrayList<Member>
+    // Metode som giver os en liste af alle members som indtil videre er gemt i filen med membera
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
         try {
+            // Åbner filen vi har members i
             File file = new File(fileName);
             Scanner scanner = new Scanner(file);
+            // så længe som det er noget tekst (hasNextLine) så looper denne while-loop:
             while (scanner.hasNextLine()){
+                //Henter indholdet i linjen (dvs: fornavn, efternavn, 1979-03-13. . . . etc)
                 String line = scanner.nextLine();
-                // add a  if line.isEmpty() continue here?
+                // splitter indholdet, og lægger det i en liste
                 String[] memberData = line.split(",");
-
-                if(memberData.length == 6){ //regular member
+                // listen skulle gerne være 6 stk elementer lang (vi ændrer dette senere)
+                if(memberData.length == 6){
                     // Regular member constructor: Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
                     String firstName = memberData[0];
                     String surName = memberData[1];
                     String dateOfBirthString = memberData[2];
+
                     LocalDate birthDate = convertStringDateToLocalDate(dateOfBirthString);
                     Boolean isCompetitive = Boolean.parseBoolean(memberData[3]);
                     Boolean isActive = Boolean.parseBoolean(memberData[4]);
                     Boolean isPaid = Boolean.parseBoolean(memberData[5]);
 
-                    //TODO: create member from above data
+                    // Opretter så et Member objekt
                     Member member = new Member(firstName, surName, birthDate, isCompetitive, isActive, isPaid);
-                    //TODO: add member into this method's output array
+                    // Tilføjer den samme member i ArrayListen
                     loadedMembers.add(member);
+
                 }
 
             }
 
         }
         catch (FileNotFoundException e){
-            System.out.println("Filen blev ikke fundet");
+            System.out.println("Filen blev ikke fundet, opretter en ny fil.");
+            return new ArrayList<>();
         }
         catch (IOException e){
             System.out.println("Der opstod en fejl.");

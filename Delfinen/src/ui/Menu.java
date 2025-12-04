@@ -37,9 +37,9 @@ public class Menu {
                     """);
 
             try{
-                Scanner input = new Scanner(System.in);
                 System.out.print(": ");
                 int choice = input.nextInt();
+                input.nextLine(); // clear buffer
                 switch (choice){
                     case 1:
                         //Formand
@@ -94,7 +94,8 @@ public class Menu {
             try {
                 Scanner inputFormand = new Scanner(System.in);
                 System.out.print(": ");
-                int formandChoice = inputFormand.nextInt();
+                int formandChoice = input.nextInt();
+                input.nextLine(); // clear buffer
                 switch (formandChoice){
                     case 1:
                         // se medlemsliste
@@ -116,11 +117,10 @@ public class Menu {
                         break;
                     case 6:
                         //Tilbage
-                        startMenu();
-                        break;
+                        return;
                     case 7:
                         // exit
-                        inputFormand.close();
+                        input.close();
                         System.exit(0);
                         break;
                     default:
@@ -178,12 +178,11 @@ public class Menu {
 
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
-        Scanner reader = new Scanner(System.in);
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
         LocalDate birthDate = LocalDate.now(); // TODO FIX
         while (again){
             try {
-                String date = reader.nextLine();
+                String date = input.nextLine();
                 birthDate = convertStringDateToLocalDate(date);// prøver på at lave et LocalDate objekt fra den input String
                 int age = calculateAge(birthDate); // finder lige ud af alderen....
                 if (age < 6 || age > 100) {
@@ -195,7 +194,7 @@ public class Menu {
             }
         }
         // TODO null fejlhåndtering
-        return LocalDate.now(); // TODO her en major error
+        return birthDate;
     }
 
     public LocalDate convertStringDateToLocalDate(String date){
