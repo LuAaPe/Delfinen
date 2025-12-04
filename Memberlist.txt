@@ -7,3 +7,4 @@ k,k,2025-12-03,false,true,false
 helena,stjern,2002-01-26,false,true,false
 Uffe,Garm,1988-05-06,false,true,true
 test,test,1999-04-04,false,true,false
+lise,hendrix,1998-02-11,true,true,true
