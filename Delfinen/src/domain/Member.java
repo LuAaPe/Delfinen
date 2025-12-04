@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class Member {
+    private final String phoneNr;
     // classes representing the real world
     private String firstName;
     private String surName;
@@ -22,10 +23,11 @@ public class Member {
     //private final LocalDate joinDate = LocalDate.now();
 
 
-    public Member(String firstName, String surName, String PhoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
+    public Member(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         this.firstName = firstName;
         this.surName = surName;
         this.fullName = firstName + " " + surName;
+        this.phoneNr = phoneNr;
         this.birthDate = birthDate;
         //this.memberID = nextID++;
         this.isActive = isActive;
@@ -78,12 +80,9 @@ public class Member {
         return this.yearlyFee;
     }
 
+
     public String getPhoneNr(){
         return this.PhoneNr;
-    }
-
-    public double getYearlyFee(){
-        return this.yearlyFee;
     }
 
     //TODO: check if this actually changes yearlyFee correctly if used
