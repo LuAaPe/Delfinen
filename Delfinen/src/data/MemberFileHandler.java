@@ -12,8 +12,6 @@ public class MemberFileHandler {
     // loading/saving
     // Responsibilities:
     // save all members to file, load all members from file,
-    // start with simple csv file like name;age;active;competitive;disciplines;fee;debt
-    // TODO: save all members to one text file and load again on startup
     private String fileName;
 
     public MemberFileHandler(String fileName){
@@ -21,7 +19,7 @@ public class MemberFileHandler {
         this.fileName = fileName;
     }
 
-    // Metode som giver os en liste af alle members som indtil videre er gemt i filen med membera
+    // Metode som giver os en liste af alle members som indtil videre er gemt i filen med members
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
         try {

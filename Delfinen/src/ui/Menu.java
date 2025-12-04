@@ -9,7 +9,7 @@ import java.time.Period;
 import java.util.Scanner;
 
 public class Menu {
-    Scanner input = new Scanner(System.in); // TODO: kan denne bruges replace de steder hvor en ny scanner oprettes i metoder her nedunder???
+    Scanner input = new Scanner(System.in);
     MemberController memberController = new MemberController();
     public Menu(){}
 
@@ -195,7 +195,7 @@ public class Menu {
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
-        LocalDate birthDate = LocalDate.now(); // TODO FIX
+        LocalDate birthDate = LocalDate.now();
         while (again){
             try {
                 String date = input.nextLine();
@@ -213,7 +213,7 @@ public class Menu {
                 System.out.println("Tastefejl. Venligst prøv igen (ÅÅÅÅ-MM-DD): ");
             }
         }
-        // TODO null fejlhåndtering
+        // TODO null fejlhåndtering?
         return birthDate;
     }
 
