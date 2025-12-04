@@ -71,7 +71,11 @@ public class Menu {
     public void loop1(){
         while(true){
             System.out.println("   FORMAND:");
-            System.out.println("1. Se Medlemsliste");
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║1. SE MEDLEMMER║
+                    ╚═══════════════╝
+                    """);
             System.out.println("""
                     ╔═══════════════╗
                     ║2. OPRET MEDLEM║
