@@ -30,21 +30,17 @@ public class Database {
         }
     }
 
+
+    public ArrayList<Member> getAllMembers(){
+        return memberList;
+    }
+
     public void updateYearlyFee() {
         for (Member member : memberList) {
             member.setYearlyFee();
         }
     }
 
-    public ArrayList<Member> getAllMembers(){
-        return memberList;
-    }
-
-
-
-    //TODO Overvej hvor disse Metoder skal ligge???
-
-    //Retunere den forventede indkomst for Året
     public double getTotalExpectedFees(){
         double sum = 0;
         for (Member m : memberList){
@@ -72,8 +68,14 @@ public class Database {
         return null;
     }
 
-    public void setMemberPaid(String phoneNr){
-        findByPhoneNr(phoneNr).setIsPaid(true);
+    public boolean setMemberPaid(String phoneNr){
+        Member m = findByPhoneNr(phoneNr);
+        if (m != null) {
+            m.setIsPaid(true);
+            memberFileHandler.saveListOfMembersToFile(memberList);
+            return true;
+        }
+        return false;
     }
 
 }

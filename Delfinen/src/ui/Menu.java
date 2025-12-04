@@ -47,7 +47,7 @@ public class Menu {
                         loop1();
                         break;
                     case 2:
-                        // Kasserer
+                        treasurerMenu();
                         break;
                     case 3:
                         //Træner
@@ -178,6 +178,50 @@ public class Menu {
         // Test:
         memberController.addNewMember(firstName, surName, phoneNr, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
 
+    }
+
+    private void treasurerMenu(){
+        boolean run = true;
+        while(run){
+            System.out.println("""
+                    --KASSERER--
+                    1. Vis samlet forventet kontingent
+                    2. Vis medlemmer i restance
+                    3. Registrer betaling
+                    0. Tilbage
+                    """);
+            int choice = readInt();
+
+            switch (choice){
+                case 1 -> showTotalFees();
+                case 2 -> showMembersInDebt();
+                case 3 -> registerPayment();
+                case 0 -> run = false;
+                default -> System.out.println("Ugyldigt Valg");
+            }
+        }
+    }
+    private void showTotalFees(){
+        memberController.updateYearlyFee();
+        double total = memberController.getTotalExpectedFees();
+        System.out.println("Samlet forventet kontingent: " + total + " kr.");
+    }
+    private void showMembersInDebt(){
+        for (Member m : memberController.getMembersInDebt()){
+            System.out.println(m);
+        }
+    }
+    private void registerPayment(){
+        System.out.print("Indtast telefon nr. på medlemmet: ");
+        String phoneNr = input.nextLine().trim();
+
+        boolean success = memberController.setMemberPaid(phoneNr);
+
+        if (success) {
+            System.out.println("Betaling registreret på: " + memberController.findByPhoneNr(phoneNr));
+        } else {
+            System.out.println("Ingen medlem med det telefonnummer blev fundet.");
+        }
     }
 
     // Metode som sørjer for at brugeren indtaster en int

@@ -22,5 +22,24 @@ public class MemberController {
         return database.getAllMembers();
     }
 
+    public void updateYearlyFee() {
+        database.updateYearlyFee();
+    }
+
+    public double getTotalExpectedFees() {
+        return database.getTotalExpectedFees();
+    }
+
+    public ArrayList<Member> getMembersInDebt() {
+        return database.getMembersInDebt();
+    }
+
+    public Member findByPhoneNr(String phoneNr) {
+        return database.findByPhoneNr(phoneNr);
+    }
+
+    public boolean setMemberPaid(String phoneNr) {
+        return database.setMemberPaid(phoneNr);
+    }
 
 }
