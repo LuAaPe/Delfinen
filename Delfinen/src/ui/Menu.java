@@ -135,6 +135,75 @@ public class Menu {
             }
         }
     }
+
+    // Kasserer loop, switch med alle muligheder til kasserer
+    public void loop2(){
+        while(true){
+            System.out.println("   KASSERER:");
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║1. SE MEDLEMMER║
+                    ╚═══════════════╝
+                    """);
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║2. OPRET MEDLEM║
+                    ╚═══════════════╝
+                    """);
+            System.out.println("3. Redigere Medlem");
+            System.out.println("4. Slet Medlem");
+            System.out.println("5. Find medlem");
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║6. TILBAGE     ║
+                    ╚═══════════════╝
+                    """);
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║7. AFSLUT      ║
+                    ╚═══════════════╝
+                    """);
+
+            try {
+                System.out.print(": ");
+                int formandChoice = readInt();
+                switch (formandChoice){
+                    case 1:
+                        for(Member m : memberController.getAllMembers()){
+                            System.out.println(m);
+                        }
+                        break;
+                    case 2:
+                        // opret medlem
+                        createMember();
+                        break;
+                    case 3:
+                        // Redigere medlem f.eks
+                        break;
+                    case 4:
+                        // f.eks slet medlem
+                        // f.eks memberList.deleteMember();
+                        break;
+                    case 5:
+                        // Vis kontingenter f.eks
+                        break;
+                    case 6:
+                        //Tilbage
+                        return;
+                    case 7:
+                        // exit
+                        input.close();
+                        System.exit(0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+        }
+    }
     //Metode som samler input data ind fra brugeren og kan oprette ett domain.Member objekt
     private void createMember(){
         boolean isActive;
@@ -193,6 +262,7 @@ public class Menu {
         }
     }
 
+    // Metode som ber brugeren at indtaste fødselsdato
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");

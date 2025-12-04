@@ -32,20 +32,21 @@ public class MemberFileHandler {
                 String line = scanner.nextLine();
                 // splitter indholdet, og lægger det i en liste
                 String[] memberData = line.split(",");
-                // listen skulle gerne være 6 stk elementer lang (vi ændrer dette senere)
-                if(memberData.length == 6){
-                    // Regular member constructor: Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
+                // listen skulle gerne være 7 stk elementer lang
+                if(memberData.length == 7){
+                    // Member(String firstName, String surName, String PhoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
                     String firstName = memberData[0];
                     String surName = memberData[1];
-                    String dateOfBirthString = memberData[2];
+                    String phoneNumber = memberData[2];
+                    String dateOfBirthString = memberData[3];
 
                     LocalDate birthDate = convertStringDateToLocalDate(dateOfBirthString);
-                    Boolean isCompetitive = Boolean.parseBoolean(memberData[3]);
-                    Boolean isActive = Boolean.parseBoolean(memberData[4]);
-                    Boolean isPaid = Boolean.parseBoolean(memberData[5]);
+                    Boolean isCompetitive = Boolean.parseBoolean(memberData[4]);
+                    Boolean isActive = Boolean.parseBoolean(memberData[5]);
+                    Boolean isPaid = Boolean.parseBoolean(memberData[6]);
 
                     // Opretter så et Member objekt
-                    Member member = new Member(firstName, surName, birthDate, isCompetitive, isActive, isPaid);
+                    Member member = new Member(firstName, surName, phoneNumber, birthDate, isCompetitive, isActive, isPaid);
                     // Tilføjer den samme member i ArrayListen
                     loadedMembers.add(member);
 
@@ -71,9 +72,10 @@ public class MemberFileHandler {
         try {
             PrintWriter writer = new PrintWriter(new FileWriter(fileName));
             for (Member member : members){
-                String memberString = String.format("%s,%s,%s,%b,%b,%b",
+                String memberString = String.format("%s,%s,%s,%s,%b,%b,%b",
                         member.getFirstName(),
                         member.getSurName(),
+                        member.getPhoneNr(),
                         member.getBirthDate(),
                         member.getIsCompetitive(),
                         member.getIsActive(),

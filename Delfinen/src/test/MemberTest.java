@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class MemberTest {
-
     @Test
     void passiveMemberpays500(){
-        Member member = new Member("Test","Member", LocalDate.now(),
+        String phoneNumber = "33665544";
+        Member member = new Member("Test","Member", phoneNumber, LocalDate.now(),
                 false,
                 false,
                 false);
@@ -21,7 +21,8 @@ public class MemberTest {
 
     @Test
     void juniorActivePays1000(){
-        Member member = new Member("Test", "Member",
+        String phoneNumber = "33665544";
+        Member member = new Member("Test", "Member", phoneNumber,
                 LocalDate.of(2015,10,10),
                 false,
                 true,
@@ -32,7 +33,8 @@ public class MemberTest {
 
     @Test
     void seniorActive1600(){
-        Member member = new Member("Test", "Member",
+        String phoneNumber = "33665544";
+        Member member = new Member("Test", "Member", phoneNumber,
                 LocalDate.of(2000,10,10),
                 false,
                 true,
@@ -43,7 +45,8 @@ public class MemberTest {
 
     @Test
     void senior60PlusGetsDiscount(){
-        Member member = new Member("Test", "Member",
+        String phoneNumber = "33665544";
+        Member member = new Member("Test", "Member", phoneNumber,
                 LocalDate.of(1965,10,10),
                 false,
                 true,
@@ -54,7 +57,8 @@ public class MemberTest {
 
     @Test
     void memberAge18IsSenior(){
-        Member member = new Member("Test", "Member",
+        String phoneNumber = "33665544";
+        Member member = new Member("Test", "Member", phoneNumber,
                 LocalDate.now().minusYears(18),
                 false,
                 true,
@@ -65,7 +69,8 @@ public class MemberTest {
 
     @Test
     void settingMemberFromPassiveToActiveRecalculatesFee(){
-        Member member = new Member("Test", "Member",
+        String phoneNumber = "33665544";
+        Member member = new Member("Test", "Member", phoneNumber,
                 LocalDate.now().minusYears(18),
                 false,
                 false,
