@@ -73,6 +73,10 @@ public class Member {
         return this.isPaid;
     }
 
+    public double getYearlyFee(){
+        return this.yearlyFee;
+    }
+
     //TODO: check if this actually changes yearlyFee correctly if used
     // metode man kan bruge for at aktivere et medlemskap, som gerne skulle på nyt beregne yearlyFee
     public void setIsActive(boolean isActive){

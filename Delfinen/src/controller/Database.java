@@ -34,7 +34,6 @@ public class Database {
         for (Member member : memberList) {
             member.setYearlyFee();
         }
-
     }
 
     public ArrayList<Member> getAllMembers(){

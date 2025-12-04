@@ -40,7 +40,7 @@ public class Menu {
 
             try{
                 System.out.print(": ");
-                int choice = readInt(); // Metode som sørger for at bruferen taster en int ind
+                int choice = readInt(); // Metode som sørger for at brugeren taster en int ind
                 switch (choice){
                     case 1:
                         //Formand
