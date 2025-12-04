@@ -14,12 +14,13 @@ public class MemberController {
     Database database = new Database(); // MemberController klassen har et Database objekt, som kun kan addnewMember
 
     //Regular member constructor: Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
-    public void addNewMember(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
-        database.addNewMember(firstName,surName,birthDate,isCompetitive,isActive,isPaid);
+    public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
+        database.addNewMember(firstName,surName, phoneNr, birthDate,isCompetitive,isActive,isPaid);
     }
 
-    // metode som henter ArrayList med alle members
     public ArrayList<Member> getAllMembers(){
         return database.getAllMembers();
     }
+
+
 }

@@ -13,7 +13,6 @@ public class Menu {
     MemberController memberController = new MemberController();
     public Menu(){}
 
-    // metode som er vores grafiske startmenu
     public void startMenu(){
         while (true){
             System.out.println("   NAVIGATIONS-MENU:");
@@ -69,7 +68,6 @@ public class Menu {
         }
     }
 
-    // Formand loop, switch med alle muligheder til formanden
     public void loop1(){
         while(true){
             System.out.println("   FORMAND:");
@@ -146,6 +144,7 @@ public class Menu {
         String firstName = input.nextLine();
         System.out.println("Indtast efternavn\n : ");
         String surName = input.nextLine();
+        String phoneNr = enterPhoneNr();
         LocalDate birthDate = enterBirthDate();
         System.out.println("Aktivere medlemskab? j/n\n : ");
         String activePassiveStatus = input.nextLine();
@@ -175,9 +174,10 @@ public class Menu {
             hasPaid = false;
         }
 
-        // Opretter medlem
-        memberController.addNewMember(firstName, surName, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
-        System.out.println("\nMedlem oprettet!");
+        //Opret et nyt domain.Member objekt her med de data som samlets ind
+        // Test:
+        memberController.addNewMember(firstName, surName, phoneNr, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
+
     }
 
     // Metode som sørjer for at brugeren indtaster en int
@@ -193,7 +193,6 @@ public class Menu {
         }
     }
 
-    //Metode som ber brugeren at taste et fødselsdato ind og laver det om til et LocalDate objekt
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
@@ -219,7 +218,40 @@ public class Menu {
         return birthDate;
     }
 
-    // metode som får et String, og prøver at lave det om til et LocalDate objekt
+    public String enterPhoneNr() {
+        while (true) {
+            System.out.print("Indtast telefon Nr: ");
+            String phoneNr = input.nextLine().trim();
+
+            if ((phoneNr.length() != 8) && (phoneNr.length() != 11)) {
+                System.out.println("Fejl: Indtast et telefon nr på 8 cifre eller 11 cifre");
+                System.out.println(" 8 cifre: 12345678");
+                System.out.println("11 cifre: +45 12345678");
+                continue;
+            }
+
+            if (phoneNr.matches("\\+?\\d+")){
+                System.out.println("Fejl Telfon nr. må kun indeholde tal og evt. + foran");
+                continue;
+            }
+
+            boolean duplicatePhoneNr = false;
+
+            for (Member m : memberController.getAllMembers()) {
+                if (m.getPhoneNr().equals(phoneNr)) {
+                    duplicatePhoneNr = true;
+                    break;
+                }
+            }
+            if (duplicatePhoneNr){
+                System.out.println("Telefon Nr. er allerede registeret på en eksisterende kunde");
+                continue;
+            }
+            return phoneNr;
+        }
+    }
+
+
     public LocalDate convertStringDateToLocalDate(String date){
         int birthYear = Integer.parseInt(date.split("-")[0]);
         int birthMonth = Integer.parseInt(date.split("-")[1]);
@@ -227,7 +259,6 @@ public class Menu {
         return LocalDate.of(birthYear, birthMonth, birthDay);
     }
 
-    //metode som får et LocalDate objekt og regner ud hvor gammel en person med den fødselsdato ville være
     public int calculateAge(LocalDate date){
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(date, currentDate);
@@ -235,7 +266,7 @@ public class Menu {
     }
 
 
-    // metode som printer et ASCII billede af en delfin
+
     public void printDolphinArt(){
         System.out.println("""
                     /*

@@ -9,6 +9,7 @@ public class Member {
     private String firstName;
     private String surName;
     private String fullName;
+    private String PhoneNr;
     private final LocalDate birthDate;
     private int age;
     private boolean isActive;
@@ -21,7 +22,7 @@ public class Member {
     //private final LocalDate joinDate = LocalDate.now();
 
 
-    public Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
+    public Member(String firstName, String surName, String PhoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         this.firstName = firstName;
         this.surName = surName;
         this.fullName = firstName + " " + surName;
@@ -73,8 +74,15 @@ public class Member {
         return this.isPaid;
     }
 
+    public double getYearlyFee(){
+        return this.yearlyFee;
+    }
+
+    public String getPhoneNr(){
+        return this.PhoneNr;
+    }
+
     //TODO: check if this actually changes yearlyFee correctly if used
-    // metode man kan bruge for at aktivere et medlemskap, som gerne skulle på nyt beregne yearlyFee
     public void setIsActive(boolean isActive){
         this.isActive = isActive;
         setYearlyFee();
@@ -88,14 +96,12 @@ public class Member {
         this.isPaid = isPaid;
     }
 
-    // metode som beregner alder på den aktuelle medlem
     public int calculateAge(){
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(getBirthDate(), currentDate);
         return period.getYears();
     }
 
-    // metode som beregner om medlems aldersgruppe udfra hvor gamle de er
     public void setAgeGroup(){
         if(age >= 18){
             isJunior = false;
@@ -105,7 +111,6 @@ public class Member {
         }
     }
 
-    // Metode som beregner en medlems yearlyFee udfra alder og isActive felter
     public void setYearlyFee(){
         if (!getIsActive()){
             this.yearlyFee = 500;
