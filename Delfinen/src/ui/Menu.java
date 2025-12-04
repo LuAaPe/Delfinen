@@ -140,7 +140,7 @@ public class Menu {
         String firstName = input.nextLine();
         System.out.println("Indtast efternavn\n : ");
         String surName = input.nextLine();
-        LocalDate birthDate = enterBirthDate(); // brug dette til noget
+        LocalDate birthDate = enterBirthDate();
         System.out.println("Aktivere medlemskab? j/n\n : ");
         String activePassiveStatus = input.nextLine();
         if(activePassiveStatus.equals("j")){
@@ -198,10 +198,14 @@ public class Menu {
                 birthDate = convertStringDateToLocalDate(date);// prøver på at lave et LocalDate objekt fra den input String
                 int age = calculateAge(birthDate); // finder lige ud af alderen....
                 if (age < 6 || age > 100) {
-                    throw new InvalidBirthYearException("Alder skal være minimum 6 og maks 100.");
+                    throw new InvalidBirthYearException("Alder skal være minimum 6 og maks 100.\nVenligst prøv igen (ÅÅÅÅ-MM-DD): ");
                 }
                 again = false;
-            } catch (Exception j) {
+            }
+            catch (InvalidBirthYearException e){
+                System.out.println(e.getMessage());
+            }
+            catch (Exception j) {
                 System.out.println("Tastefejl. Venligst prøv igen (ÅÅÅÅ-MM-DD): ");
             }
         }
