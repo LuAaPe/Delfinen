@@ -30,6 +30,13 @@ public class Database {
         }
     }
 
+    public void updateYearlyFee() {
+        for (Member member : memberList) {
+            member.setYearlyFee();
+        }
+
+    }
+
     public ArrayList<Member> getAllMembers(){
         return memberList;
     }
