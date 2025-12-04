@@ -40,7 +40,6 @@ public class Menu {
             try{
                 System.out.print(": ");
                 int choice = readInt(); // Metode som sørger for at bruferen taster en int ind
-                input.nextLine(); // clear buffer
                 switch (choice){
                     case 1:
                         //Formand
@@ -95,7 +94,6 @@ public class Menu {
             try {
                 System.out.print(": ");
                 int formandChoice = readInt();
-                input.nextLine(); // clear buffer
                 switch (formandChoice){
                     case 1:
                         for(Member m : memberController.getAllMembers()){
