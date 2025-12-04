@@ -82,6 +82,10 @@ public class Member {
         return this.PhoneNr;
     }
 
+    public double getYearlyFee(){
+        return this.yearlyFee;
+    }
+
     //TODO: check if this actually changes yearlyFee correctly if used
     public void setIsActive(boolean isActive){
         this.isActive = isActive;
