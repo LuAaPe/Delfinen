@@ -13,6 +13,7 @@ public class Menu {
     MemberController memberController = new MemberController();
     public Menu(){}
 
+    // metode som er vores grafiske startmenu
     public void startMenu(){
         while (true){
             System.out.println("   NAVIGATIONS-MENU:");
@@ -68,6 +69,7 @@ public class Menu {
         }
     }
 
+    // Formand loop, switch med alle muligheder til formanden
     public void loop1(){
         while(true){
             System.out.println("   FORMAND:");
@@ -173,10 +175,9 @@ public class Menu {
             hasPaid = false;
         }
 
-        //Opret et nyt domain.Member objekt her med de data som samlets ind
-        // Test:
+        // Opretter medlem
         memberController.addNewMember(firstName, surName, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
-
+        System.out.println("\nMedlem oprettet!");
     }
 
     // Metode som sørjer for at brugeren indtaster en int
@@ -192,6 +193,7 @@ public class Menu {
         }
     }
 
+    //Metode som ber brugeren at taste et fødselsdato ind og laver det om til et LocalDate objekt
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
@@ -217,6 +219,7 @@ public class Menu {
         return birthDate;
     }
 
+    // metode som får et String, og prøver at lave det om til et LocalDate objekt
     public LocalDate convertStringDateToLocalDate(String date){
         int birthYear = Integer.parseInt(date.split("-")[0]);
         int birthMonth = Integer.parseInt(date.split("-")[1]);
@@ -224,6 +227,7 @@ public class Menu {
         return LocalDate.of(birthYear, birthMonth, birthDay);
     }
 
+    //metode som får et LocalDate objekt og regner ud hvor gammel en person med den fødselsdato ville være
     public int calculateAge(LocalDate date){
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(date, currentDate);
@@ -231,7 +235,7 @@ public class Menu {
     }
 
 
-
+    // metode som printer et ASCII billede af en delfin
     public void printDolphinArt(){
         System.out.println("""
                     /*

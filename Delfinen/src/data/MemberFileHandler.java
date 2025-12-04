@@ -66,6 +66,7 @@ public class MemberFileHandler {
         return loadedMembers;
     }
 
+    // Metode som får en ArrayList med aktuelle members og skriver dem ind i en fil
     public void saveListOfMembersToFile(ArrayList<Member> members){
         try {
             PrintWriter writer = new PrintWriter(new FileWriter(fileName));
@@ -94,30 +95,8 @@ public class MemberFileHandler {
         }
     }
 
-    public void writeToFile(Member member){
-        String pathname = ""; // ?
-        // member constructor: Member(String firstName, String surName, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
-        String memberString = String.format("%s,%s,%s,%b,%b,%b",
-                member.getFirstName(),
-                member.getSurName(),
-                member.getBirthDate(),
-                member.getIsCompetitive(),
-                member.getIsActive(),
-                member.getIsPaid());
-        try {
-            PrintWriter writer = new PrintWriter(new FileWriter("TuesDayTest.txt"));
-            writer.println(memberString);
-            writer.close();
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Filen blev ikke fundet");
-        }
-        catch (IOException e){
-            System.out.println("Der upstod en fejl under skrivning til filen");
-            e.printStackTrace();
-        }
-    }
-
+    // metode som får et String og laver det om til et LocalDate
+    //TODO: skal den her bruges? er den ikke også lavet et andet sted i programmet??? tjek op
     private LocalDate convertStringDateToLocalDate(String date){
         int birthYear = Integer.parseInt(date.split("-")[0]);
         int birthMonth = Integer.parseInt(date.split("-")[1]);

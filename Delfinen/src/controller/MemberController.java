@@ -18,6 +18,7 @@ public class MemberController {
         database.addNewMember(firstName,surName,birthDate,isCompetitive,isActive,isPaid);
     }
 
+    // metode som henter ArrayList med alle members
     public ArrayList<Member> getAllMembers(){
         return database.getAllMembers();
     }

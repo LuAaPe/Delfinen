@@ -8,3 +8,4 @@ helena,stjern,2002-01-26,false,true,false
 Uffe,Garm,1988-05-06,false,true,true
 test,test,1999-04-04,false,true,false
 lise,hendrix,1998-02-11,true,true,true
+tester,rester,1989-01-01,true,true,true
