@@ -1,6 +1,8 @@
 package ui;
 
+import controller.Database;
 import controller.MemberController;
+import controller.ResultController;
 import domain.Member;
 import util.InvalidBirthYearException;
 
@@ -10,8 +12,14 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in);
-    MemberController memberController = new MemberController();
-    public Menu(){}
+    private Database database = new Database();
+    MemberController memberController = new MemberController(database);
+    ResultController resultController = new ResultController(database);
+
+    public Menu(){
+        resultController.loadResults();
+        //TODO SKAL vi loadallmembers ogrå - skal laves lidt om på den metode
+    }
 
     public void startMenu(){
         while (true){

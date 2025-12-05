@@ -82,7 +82,7 @@ public class ResultFileHandler {
                 for (Result result : competitiveSwimmer.getTrainingResults()){
                     writer.println(member.getPhoneNr()+
                             ",TRÆNING," +
-                            result.getDiscipline()+
+                            result.getDiscipline()+","+
                             result.getTime()+ ","+
                             result.getDate());
                 }

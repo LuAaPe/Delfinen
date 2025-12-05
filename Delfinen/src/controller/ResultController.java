@@ -12,7 +12,11 @@ public class ResultController {
     // TODO: getTop5(discipline, junior/senior)
 
     private ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
-    private Database database = new Database();
+    private Database database;
+
+    public ResultController(Database database){
+        this.database = database;
+    }
 
     public void saveResults(){
         fileHandler.saveAllResults(database.getAllMembers());

@@ -22,6 +22,7 @@ public class MemberFileHandler {
     // Metode som giver os en liste af alle members som indtil videre er gemt i filen med members
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
+        // TODO TILFØJ LISTE <CompetitiveSwimmer> :))
         try {
             // Åbner filen vi har members i
             File file = new File(fileName);

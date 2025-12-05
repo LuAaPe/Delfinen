@@ -15,7 +15,7 @@ public class Member {
     private boolean isActive;
     private boolean isJunior; //instead of String ageGroup
     private boolean isPaid;
-    private boolean isCompetitive;
+    private boolean isCompetitive; // TODO SKAL DETTE BRUGES? KAN DET FJERNES?
     private double yearlyFee;
     //private final int memberID;
     //private static int nextID = 1;
@@ -25,7 +25,7 @@ public class Member {
     public Member(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         this.firstName = firstName;
         this.surName = surName;
-        this.fullName = firstName + " " + surName;
+        this.fullName = firstName + " " + surName; // TODO metode, noget :))
         this.phoneNr = phoneNr;
         this.birthDate = birthDate;
         //this.memberID = nextID++;
@@ -87,7 +87,7 @@ public class Member {
     //TODO: check if this actually changes yearlyFee correctly if used
     public void setIsActive(boolean isActive){
         this.isActive = isActive;
-        setYearlyFee();
+        setYearlyFee(); // TODO KAN DENNE FJERNES ????
     }
 
     public void setIsCompetitive(boolean isCompetitive){
