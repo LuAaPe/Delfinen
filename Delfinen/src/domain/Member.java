@@ -10,7 +10,6 @@ public class Member {
     private String firstName;
     private String surName;
     private String fullName;
-    private String PhoneNr;
     private final LocalDate birthDate;
     private int age;
     private boolean isActive;
@@ -82,7 +81,7 @@ public class Member {
 
 
     public String getPhoneNr(){
-        return this.PhoneNr;
+        return this.phoneNr;
     }
 
     //TODO: check if this actually changes yearlyFee correctly if used

@@ -344,7 +344,7 @@ public class Menu {
                 continue;
             }
 
-            if (phoneNr.matches("\\+?\\d+")){
+            if (!phoneNr.matches("\\+?\\d+")){
                 System.out.println("Fejl Telfon nr. må kun indeholde tal og evt. + foran");
                 continue;
             }
