@@ -14,7 +14,7 @@ public class ResultController {
     // TODO: addTrainingResult(member, discipline, time, date)
     // TODO: addCompetitionResult(member, discipline, date, eventName, placement)
     // TODO: getTop5(discipline, junior/senior)
-
+    /*
     private final ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
     private final Database database;
 
@@ -54,5 +54,5 @@ public class ResultController {
 
     public void loadResults(){
         fileHandler.loadAllResults(database.getAllMembers());
-    }
+    } */
 }

@@ -55,9 +55,11 @@ public class MemberFileHandler {
                     }
                     else {
                         member = new Member(firstName, surName, phoneNumber, birthDate, isCompetitive, isActive, isPaid);
+                        loadedMembers.add(member);
                     }
                     // Tilføjer den samme member i ArrayListen
-                    loadedMembers.add(member); // TODO lav om så den er void og loader to arraylists, en for Member og en for CompetitiveSwimmer
+                     // TODO lav om så den er void og loader to arraylists, en for Member og en for CompetitiveSwimmer
+
 
                 }
 

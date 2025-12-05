@@ -12,9 +12,11 @@ public class MemberController {
     // Responsibilities:
     // create new member, get all members, calculate total fees, find members in debt
     Database database;
+
     public MemberController(Database database){
         this.database = database;
     }
+
 
     // MemberController klassen har et Database objekt, som kun kan addnewMember
 

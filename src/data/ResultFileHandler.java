@@ -12,8 +12,9 @@ public class ResultFileHandler {
     // loading/saving
     // Responsibilities:
     // save results per swimmer or colletively
-
+    /*
     // TODO load each swimmers results, load them back on program start
+
     private final String fileName;
 
     public ResultFileHandler(String fileName){
@@ -122,5 +123,5 @@ public class ResultFileHandler {
         }
         return null;
     }
-
+*/
 }

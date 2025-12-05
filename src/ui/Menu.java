@@ -12,12 +12,13 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in);
-    private Database database = new Database();
-    MemberController memberController = new MemberController(database);
-    ResultController resultController = new ResultController(database);
+    private final Database database = new Database();
+    private final MemberController memberController = new MemberController(database);
+    //ResultController resultController = new ResultController(database);
+
 
     public Menu(){
-        resultController.loadResults();
+        //resultController.loadResults();
         //TODO SKAL vi loadallmembers også - skal laves lidt om på den metode
     }
 
