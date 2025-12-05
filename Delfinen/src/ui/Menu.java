@@ -18,7 +18,7 @@ public class Menu {
 
     public Menu(){
         resultController.loadResults();
-        //TODO SKAL vi loadallmembers ogrå - skal laves lidt om på den metode
+        //TODO SKAL vi loadallmembers også - skal laves lidt om på den metode
     }
 
     public void startMenu(){

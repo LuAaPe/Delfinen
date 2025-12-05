@@ -1,5 +1,6 @@
 package data;
 
+import domain.CompetitiveSwimmer;
 import domain.Member;
 
 import java.io.*;
@@ -19,6 +20,7 @@ public class MemberFileHandler {
         this.fileName = fileName;
     }
 
+    // TODO lav om så den er void og loader to arraylists, en for Member og en for CompetitiveSwimmer
     // Metode som giver os en liste af alle members som indtil videre er gemt i filen med members
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
@@ -47,9 +49,15 @@ public class MemberFileHandler {
                     Boolean isPaid = Boolean.parseBoolean(memberData[6]);
 
                     // Opretter så et Member objekt
-                    Member member = new Member(firstName, surName, phoneNumber, birthDate, isCompetitive, isActive, isPaid);
+                    Member member;
+                    if(isCompetitive){
+                        member = new CompetitiveSwimmer(firstName, surName, phoneNumber, birthDate, true, isActive, isPaid);
+                    }
+                    else {
+                        member = new Member(firstName, surName, phoneNumber, birthDate, isCompetitive, isActive, isPaid);
+                    }
                     // Tilføjer den samme member i ArrayListen
-                    loadedMembers.add(member);
+                    loadedMembers.add(member); // TODO lav om så den er void og loader to arraylists, en for Member og en for CompetitiveSwimmer
 
                 }
 

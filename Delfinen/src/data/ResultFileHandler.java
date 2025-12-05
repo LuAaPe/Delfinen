@@ -23,6 +23,9 @@ public class ResultFileHandler {
     // Henter alle resultater
     public void loadAllResults(ArrayList<Member> members){
         File file = new File(fileName);
+        if(!file.exists()){
+            return;
+        }
 
         try {
             Scanner scanner = new Scanner(file);
@@ -31,7 +34,7 @@ public class ResultFileHandler {
                 String line = scanner.nextLine();
                 String[] lineData = line.split(",");
 
-                if (lineData.length < 6 ){
+                if (lineData.length < 5 ){
                     continue; //TODO tjek om det ikke også kan skrives sådan her i loadedMembers i MemberFileHandler
                 }
 
@@ -52,7 +55,7 @@ public class ResultFileHandler {
                     competitiveSwimmer.addTrainingResult(result);
                 }
 
-                if(type.equals("STÆVNE")){
+                if(type.equals("STÆVNE") && lineData.length == 7){
                     String eventName = lineData[5];
                     int placement = Integer.parseInt(lineData[6]);
                     CompetitionResult competitionResult = new CompetitionResult(discipline,time, date,eventName, placement);
