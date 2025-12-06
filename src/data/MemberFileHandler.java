@@ -20,11 +20,9 @@ public class MemberFileHandler {
         this.fileName = fileName;
     }
 
-    // TODO lav om så den er void og loader to arraylists, en for Member og en for CompetitiveSwimmer
     // Metode som giver os en liste af alle members som indtil videre er gemt i filen med members
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
-        // TODO TILFØJ LISTE <CompetitiveSwimmer> :))
         try {
             // Åbner filen vi har members i
             File file = new File(fileName);
@@ -55,12 +53,9 @@ public class MemberFileHandler {
                     }
                     else {
                         member = new Member(firstName, surName, phoneNumber, birthDate, isCompetitive, isActive, isPaid);
-                        loadedMembers.add(member);
                     }
                     // Tilføjer den samme member i ArrayListen
-                     // TODO lav om så den er void og loader to arraylists, en for Member og en for CompetitiveSwimmer
-
-
+                    loadedMembers.add(member);
                 }
 
             }
@@ -103,13 +98,9 @@ public class MemberFileHandler {
             System.out.println("Der upstod en fejl under skrivning til filen");
             e.printStackTrace();
         }
-        finally {
-
-        }
     }
 
     // metode som får et String og laver det om til et LocalDate
-    //TODO: skal den her bruges? er den ikke også lavet et andet sted i programmet??? tjek op
     private LocalDate convertStringDateToLocalDate(String date){
         int birthYear = Integer.parseInt(date.split("-")[0]);
         int birthMonth = Integer.parseInt(date.split("-")[1]);

@@ -11,7 +11,6 @@ public class Member {
     private String surName;
     private String fullName;
     private final LocalDate birthDate;
-    private int age;
     private boolean isActive;
     private boolean isJunior; //instead of String ageGroup
     private boolean isPaid;
@@ -33,7 +32,6 @@ public class Member {
         this.isCompetitive = isCompetitive;
         this.isPaid = isPaid;
 
-        this.age = calculateAge();
         setAgeGroup();
         setYearlyFee();
 
@@ -56,7 +54,7 @@ public class Member {
     }
 
     public int getAge(){
-        return this.age;
+        return calculateAge();
     }
 
     public boolean getIsActive(){
@@ -105,7 +103,7 @@ public class Member {
     }
 
     public void setAgeGroup(){
-        if(age >= 18){
+        if(getAge() >= 18){
             isJunior = false;
         }
         else {

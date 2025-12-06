@@ -12,8 +12,6 @@ public class ResultFileHandler {
     // loading/saving
     // Responsibilities:
     // save results per swimmer or colletively
-    /*
-    // TODO load each swimmers results, load them back on program start
 
     private final String fileName;
 
@@ -42,7 +40,7 @@ public class ResultFileHandler {
                 String phone = lineData[0];
                 String type = lineData[1];
                 Discipline discipline = Discipline.valueOf(lineData[2]);
-                double time = Double.parseDouble(lineData[3]);
+                int timeMilliSeconds = Integer.parseInt(lineData[3]);
                 LocalDate date = LocalDate.parse(lineData[4]); // TODO har jeg lavet en metode for dette som egentlig er skrald, kan den slettes?? og i stedet for bruge parse i MemberFileHandler
 
                 Member member = findByPhoneNr(members, phone);
@@ -52,14 +50,14 @@ public class ResultFileHandler {
                 }
 
                 if (type.equals("TRÆNING")){
-                    Result result = new Result(discipline, time, date);
+                    Result result = new Result(discipline, timeMilliSeconds, date);
                     competitiveSwimmer.addTrainingResult(result);
                 }
 
                 if(type.equals("STÆVNE") && lineData.length == 7){
                     String eventName = lineData[5];
                     int placement = Integer.parseInt(lineData[6]);
-                    CompetitionResult competitionResult = new CompetitionResult(discipline,time, date,eventName, placement);
+                    CompetitionResult competitionResult = new CompetitionResult(discipline,timeMilliSeconds, date,eventName, placement);
                     competitiveSwimmer.addCompetitionResult(competitionResult);
                 }
             }
@@ -82,24 +80,28 @@ public class ResultFileHandler {
                 }
 
 
-                // gem træningsresultater //TODO fix formatet
+                // gem træningsresultater
                 for (Result result : competitiveSwimmer.getTrainingResults()){
-                    writer.println(member.getPhoneNr()+
-                            ",TRÆNING," +
-                            result.getDiscipline()+","+
-                            result.getTime()+ ","+
+                    String line = String.format("%s,TRÆNING,%s,%d,%s",
+                            member.getPhoneNr(),
+                            result.getDiscipline(),
+                            result.getTimeMilliSeconds(),
                             result.getDate());
+
+                    writer.println(line);
                 }
-                // TODO FIX FORMATET
+
+                // gem restltater for stævner
                 for (CompetitionResult result : competitiveSwimmer.getCompetitionResults()){
-                    writer.println(member.getPhoneNr()+
-                            ",STÆVNE,"+
-                            result.getDiscipline()+","+
-                            result.getTime()+","+
-                            result.getDate()+","+
-                            result.getEventName()+","+
+                    String line = String.format("%s,STÆVNE,%s,%d,%s,%s,%d",
+                            member.getPhoneNr(),
+                            result.getDiscipline(),
+                            result.getTimeMilliSeconds(),
+                            result.getDate(),
+                            result.getEventName(),
                             result.getPlacement()
                             );
+                    writer.println(line);
                 }
 
 
@@ -123,5 +125,5 @@ public class ResultFileHandler {
         }
         return null;
     }
-*/
+
 }

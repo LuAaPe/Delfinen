@@ -3,6 +3,8 @@ package controller;
 import data.MemberFileHandler;
 import data.ResultFileHandler;
 import domain.*;
+import util.MemberNotFoundException;
+import util.NotCompetitiveSwimmerException;
 
 import java.time.LocalDate;
 
@@ -11,10 +13,8 @@ public class ResultController {
     // Responsibilities:
     // add training results, add competition results, compute top 5
 
-    // TODO: addTrainingResult(member, discipline, time, date)
-    // TODO: addCompetitionResult(member, discipline, date, eventName, placement)
     // TODO: getTop5(discipline, junior/senior)
-    /*
+
     private final ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
     private final Database database;
 
@@ -23,29 +23,36 @@ public class ResultController {
     }
 
     // tilføj træningsresultat
-    public boolean addTrainingResult(String phone, Discipline discipline,
-                                     double time, LocalDate date){
+    public void addTrainingResult(String phone, Discipline discipline,
+                                     int timeMilliSeconds, LocalDate date){
         Member member = database.findByPhoneNr(phone);
 
-        if(!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
-            return false;
+        if(member == null) {
+            throw new MemberNotFoundException("Telefonnummer findes ikke.");
         }
 
-        competitiveSwimmer.addTrainingResult(new Result(discipline, time, date));
+        if(!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
+            throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
+        }
+
+        competitiveSwimmer.addTrainingResult(new Result(discipline, timeMilliSeconds, date));
         saveResults();
-        return true;
     }
 
-    public boolean addCompetitionResult(String phone, Discipline discipline, double time, LocalDate date, String eventName, int placement){
+    // tilføj stævneresultat
+    public void addCompetitionResult(String phone, Discipline discipline, int timeMilliSeconds, LocalDate date, String eventName, int placement){
         Member member = database.findByPhoneNr(phone);
 
-        if(!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
-            return false;
+        if (member == null){
+            throw new MemberNotFoundException("Telefonnummer findes ikke.");
         }
 
-        competitiveSwimmer.addCompetitionResult(new CompetitionResult(discipline, time, date, eventName, placement));
+        if(!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
+            throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
+        }
+
+        competitiveSwimmer.addCompetitionResult(new CompetitionResult(discipline, timeMilliSeconds, date, eventName, placement));
         saveResults();
-        return true;
     }
 
     public void saveResults(){
@@ -54,5 +61,20 @@ public class ResultController {
 
     public void loadResults(){
         fileHandler.loadAllResults(database.getAllMembers());
-    } */
+    }
+
+    // henter en konkurrencesvømmer via telefonnummer
+    public CompetitiveSwimmer getCompetitiveSwimmer(String phone){
+        Member member = database.findByPhoneNr(phone);
+
+        if (member == null){
+            throw new MemberNotFoundException("Telefonnummeret findes ikke.");
+        }
+
+        if (!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
+            throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
+        }
+
+        return competitiveSwimmer;
+    }
 }
