@@ -9,33 +9,56 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * MemberFileHandler har ansvaret for at:
+ * - indlæse alle medlemmer fra tekstfilen "Memberlist.txt"
+ * - gemme alle medlemmer tilbage i filen
+ *
+ * Denne klasse håndterer KUN filoperationer
+ *
+ * Formatet i filen er:
+ *      firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid
+ */
 public class MemberFileHandler {
-    // loading/saving
-    // Responsibilities:
-    // save all members to file, load all members from file,
+    /** Navnet på filen hvor medlemmerne gemmes.*/
     private String fileName;
 
+    /**
+     * Konstruktør, som modtager navnet på den fil
+     * der skal læses/skrive medlemmer til.
+     * @param fileName
+     */
     public MemberFileHandler(String fileName){
-        //Navnet på filen vi vil oprette til at gemme medlemmer i
         this.fileName = fileName;
     }
 
-    // Metode som giver os en liste af alle members som indtil videre er gemt i filen med members
+    /**
+     * Indlæser alle medlemmer fra tekstfilen og returnerer dem som en ArrayList.
+     *
+     * 1. Åbn filen
+     * 2. Læs linje for linje
+     * 3. Split linjen i 7 værdier
+     * 4. Opret enten Member eller CompetitiveSwimmer
+     * 5. Tilføj til listen
+     *
+     * Hvis filen ikke findes, returneres en tom liste.
+     */
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
         try {
-            // Åbner filen vi har members i
             File file = new File(fileName);
             Scanner scanner = new Scanner(file);
-            // så længe som det er noget tekst (hasNextLine) så looper denne while-loop:
+
+            // Læs alle linjer i filen
             while (scanner.hasNextLine()){
-                //Henter indholdet i linjen (dvs: fornavn, efternavn, 1979-03-13. . . . etc)
                 String line = scanner.nextLine();
-                // splitter indholdet, og lægger det i en liste
+
+                // Splitter linjen ved komma
                 String[] memberData = line.split(",");
-                // listen skulle gerne være 7 stk elementer lang
+
+                // Dataformatet kræver 7 værdier
                 if(memberData.length == 7){
-                    // Member(String firstName, String surName, String PhoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid)
+
                     String firstName = memberData[0];
                     String surName = memberData[1];
                     String phoneNumber = memberData[2];
@@ -46,7 +69,7 @@ public class MemberFileHandler {
                     Boolean isActive = Boolean.parseBoolean(memberData[5]);
                     Boolean isPaid = Boolean.parseBoolean(memberData[6]);
 
-                    // Opretter så et Member objekt
+                    // Opretter det riktige medlemstype
                     Member member;
                     if(isCompetitive){
                         member = new CompetitiveSwimmer(firstName, surName, phoneNumber, birthDate, true, isActive, isPaid);
@@ -73,7 +96,12 @@ public class MemberFileHandler {
         return loadedMembers;
     }
 
-    // Metode som får en ArrayList med aktuelle members og skriver dem ind i en fil
+    /**
+     * Gemmer alle medlemmer i tekstfilen.
+     *
+     * Hver linje skrives i samme format som ved indlæsning:
+     *      firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid
+     */
     public void saveListOfMembersToFile(ArrayList<Member> members){
         try {
             PrintWriter writer = new PrintWriter(new FileWriter(fileName));
@@ -100,7 +128,10 @@ public class MemberFileHandler {
         }
     }
 
-    // metode som får et String og laver det om til et LocalDate
+    /**
+     * Konverterer en dato i tekstformat (ÅÅÅÅ-MM-DD)
+     * til et LocalDate objekt.
+     */
     private LocalDate convertStringDateToLocalDate(String date){
         int birthYear = Integer.parseInt(date.split("-")[0]);
         int birthMonth = Integer.parseInt(date.split("-")[1]);

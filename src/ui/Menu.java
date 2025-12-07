@@ -1,5 +1,6 @@
 package ui;
 
+// Importerer alle klasser som den her Menu interagerer med
 import controller.Database;
 import controller.MemberController;
 import controller.ResultController;
@@ -16,16 +17,50 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class Menu {
-    Scanner input = new Scanner(System.in);
+    /**
+     * Menu-klassen viser alle menuerne i programmet,
+     * læser input fra konsollen, og kalder de metoder som skal
+     * bruges fra controller-klasserne.
+     *
+     * Menu indeholder INGEN forretningslogik
+     * Menu er kun til input/output
+     */
+
+    // Scanner til at læse brugerens input. Bruges overalt i Menu.
+    private final Scanner input;
+
+    // Hjælpeklasse der indeholder input-validering (f.eks. readInt)
+    private final InputHelper inputHelper; // Helper class som håndterer input validering
+
+    // Database indeholder ALLE medlemmer i hukommelsen
+    // MemberFileHandler sørger for at læse Memberlist.txt
     private final Database database = new Database(new MemberFileHandler("Memberlist.txt"));
+
+    // Controller med logik for medlemmer
     private final MemberController memberController = new MemberController(database);
-    ResultController resultController = new ResultController(database);
 
+    // Controller med logik for trænings- og stævneresultater
+    private final ResultController resultController = new ResultController(database);
 
+    /**
+     * Menu constructor:
+     *  - Opretter Scanner
+     *  - Opretter InputHelper
+     *  - Loader resultater fra fil, så programmet er klar med det samme
+     */
     public Menu(){
+        this.input = new Scanner(System.in);
+        this.inputHelper = new InputHelper(input);
+
+        // Indlæser resultater fra fil, vigtigt for at vise resultater senere
         resultController.loadResults();
     }
 
+    /**
+     * Hovedmenu ("forside menu")
+     *
+     * Den kører i et loop indtil brugeren vælger at afslutte.
+     */
     public void startMenu(){
         while (true){
             System.out.println("   NAVIGATIONS-MENU:");
@@ -52,19 +87,19 @@ public class Menu {
 
             try{
                 System.out.print(": ");
-                int choice = readInt(); // Metode som sørger for at brugeren taster en int ind
+                int choice = inputHelper.readInt(); // Læser et tal sikkert
                 switch (choice){
                     case 1:
-                        chairmanMenu();
+                        chairmanMenu(); // menu for formanden
                         break;
                     case 2:
-                        treasurerMenu();
+                        treasurerMenu(); // menu for kassereren
                         break;
                     case 3:
-                        trainerMenu();
+                        trainerMenu(); // menu for træner
                         break;
                     case 4:
-                        // exit
+                        // afslut programmet
                         input.close();
                         System.exit(0);
                         break;
@@ -79,6 +114,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Menu for Formand
+     * Indeholder medlemsadministration
+     */
     private void chairmanMenu(){
         while(true){
             System.out.println("   FORMAND:");
@@ -108,7 +147,7 @@ public class Menu {
 
             try {
                 System.out.print(": ");
-                int formandChoice = readInt();
+                int formandChoice = inputHelper.readInt();
                 switch (formandChoice){
                     case 1:
                         for(Member m : memberController.getAllMembers()){
@@ -147,17 +186,23 @@ public class Menu {
         }
     }
 
-    //Metode som samler input data ind fra brugeren og kan oprette ett domain.Member objekt
+    /**
+     * Opretter et nyt medlem baseret på brugerinput
+     */
     private void createMember(){
         boolean isActive;
         boolean isCompetitiveSwimmer;
-        // Evt senere at det kan be brugeren at indtaste det fulde navn i et trin, som vi splitter op i fornavn og efternavn
+
         System.out.println("Indtast fornavn\n : ");
         String firstName = input.nextLine();
+
         System.out.println("Indtast efternavn\n : ");
         String surName = input.nextLine();
+
+        // separate input-metoder
         String phoneNr = enterPhoneNr();
         LocalDate birthDate = enterBirthDate();
+
         System.out.println("Aktivere medlemskab? j/n\n : ");
         String activePassiveStatus = input.nextLine();
         if(activePassiveStatus.equals("j")){
@@ -187,9 +232,17 @@ public class Menu {
         }
 
         memberController.addNewMember(firstName, surName, phoneNr, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
+
+        // Reload so competitiveSwimmer-objekt synkroniseres med resultController
         resultController.loadResults(); // Så at når man lagt en isCompetitive = true member ind, så henter programmet den samme medlem som et CompetitiveSwimmer objekt
     }
 
+    /**
+     * Menu for kassereren
+     * - kontingent
+     * - restance
+     * - registrer betalning
+     * */
     private void treasurerMenu(){
         boolean run = true;
         while(run){
@@ -200,7 +253,7 @@ public class Menu {
                     3. Registrer betaling
                     0. Tilbage
                     """);
-            int choice = readInt();
+            int choice = inputHelper.readInt();
 
             switch (choice){
                 case 1 -> showTotalFees();
@@ -211,6 +264,15 @@ public class Menu {
             }
         }
     }
+
+    /**
+     * Menu for træner
+     * - tilføj træningsresultat
+     * - tilføj stævneresultat
+     * - top 5 (senere)
+     * - se alle konkurrencesvømmere
+     * - se en svømmers resultater
+     */
     private void trainerMenu(){
         while(true){
             System.out.println("   FORMAND:");
@@ -248,7 +310,7 @@ public class Menu {
 
             try {
                 System.out.print(": ");
-                int trainerChoice = readInt();
+                int trainerChoice = inputHelper.readInt();
                 switch (trainerChoice){
                     case 1:
                         addTrainingResult();
@@ -281,16 +343,28 @@ public class Menu {
             }
         }
     }
+
+    /**
+     * Beregner det samlede kontingent for alle medlemmer
+     */
     private void showTotalFees(){
         memberController.updateYearlyFee();
         double total = memberController.getTotalExpectedFees();
         System.out.println("Samlet forventet kontingent: " + total + " kr.");
     }
+
+    /**
+     * Viser alle medlemmer som ikke har betalt kontingent
+     */
     private void showMembersInDebt(){
         for (Member m : memberController.getMembersInDebt()){
             System.out.println(m);
         }
     }
+
+    /**
+     * Registerer betalning for et medlem baseret på telefonnummer
+     */
     private void registerPayment(){
         System.out.print("Indtast telefon nr. på medlemmet: ");
         String phoneNr = input.nextLine().trim();
@@ -304,6 +378,9 @@ public class Menu {
         }
     }
 
+    /**
+     * Tilføjer et træningsresultat til en konkurrencesvømmer
+     */
     private void addTrainingResult(){
         try {
             System.out.println("Indtast telefonnummer på svømmer\n: ");
@@ -324,6 +401,9 @@ public class Menu {
         }
     }
 
+    /**
+     * Tilføjer et stævneresultat
+     */
     private void addCompetitionResult(){
         try {
             System.out.println("Indtast telefonnummer på svømmer:\n");
@@ -339,7 +419,7 @@ public class Menu {
             String eventName = input.nextLine();
 
             System.out.println("Indtast placering (1, 2, 3,. . .\n: ");
-            int placement = readInt();
+            int placement = inputHelper.readInt();
 
             resultController.addCompetitionResult(phone, discipline, timeMilliSeconds, date, eventName, placement);
             System.out.println("Stævneresultat gemt!");
@@ -354,7 +434,9 @@ public class Menu {
 
     }
 
-    //helper: metode til at få brugeren at indtaste en disciplin
+    /**
+     * Menu for at vælge en disciplin
+     */
     private Discipline enterDiscipline(){
         System.out.println("""
                 --- INDTAST DISCIPLIN ---
@@ -365,7 +447,7 @@ public class Menu {
                 """);
 
         while (true){
-            int choice = readInt();
+            int choice = inputHelper.readInt();
             switch (choice){
                 case 1:
                     return Discipline.BUTTERFLY;
@@ -382,7 +464,9 @@ public class Menu {
         }
     }
 
-    // Metode som får brugeren at taste resultattid ind og konverterer det til millisekunder
+    /**
+     * Metode til at indtaste en tid på formatet "SS.mm" eller "MM:SS.mmm"
+     */
     private int enterSwimmingTime(){
         System.out.println("Indtast tid (SS.mmm eller MM:SS.mmm)\n: ");
 
@@ -414,7 +498,9 @@ public class Menu {
         }
     }
 
-    // Metode som får brugeren at taste et dato ind til resultater
+    /**
+     * Validerer datoen for et resultat ud fra svømmerens alder
+     */
     private LocalDate enterResultDate(CompetitiveSwimmer competitiveSwimmer){
         System.out.println("Indtast dato for resultat (ÅÅÅÅ-MM-DD)\n: ");
         while (true){
@@ -445,7 +531,9 @@ public class Menu {
         }
     }
 
-    // Metode som viser en liste af alle konkurrencesvømmere
+    /**
+     * Viser alle konkurrencesvømmere
+     */
     private void viewAllCompetitiveMembers(){
         System.out.println("\n - - - Liste over konkurrencesvømmere - - -");
 
@@ -468,7 +556,10 @@ public class Menu {
         System.out.println("------------------\n");
     }
 
-    // Metode som finder en konkurrensesvømmer, og viser resultater den har
+    /**
+     * Viser alle resultater for en konkurrencesvømmer,
+     * sorteret efter brugerens valg
+     */
     private void viewMemberResuls(){
         try {
             System.out.println("Indtast telefonnummer på svømmeren\n: ");
@@ -476,12 +567,13 @@ public class Menu {
 
             CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
 
-            // Spørg bruger hvordan de skal sorteres
+            // Først spørg hvordan vi skal sortere dem
             preferredSortingPrompt(competitiveSwimmer);
 
             System.out.println("\n- - - Resultater for "+
                     competitiveSwimmer.getFullName() + " - - -");
 
+            // Træningsresultater:
             System.out.println("\nTræningsresultater:");
             if (competitiveSwimmer.getTrainingResults().isEmpty()){
                 System.out.println("Ingen resultater.");
@@ -496,6 +588,7 @@ public class Menu {
                 }
             }
 
+            // Stævneresultater:
             System.out.println("\nStævneresultater:");
             if (competitiveSwimmer.getCompetitionResults().isEmpty()){
                 System.out.println("Ingen resultater.");
@@ -519,7 +612,10 @@ public class Menu {
         }
     }
 
-    // Metode tom får et CompetitiveSwimmer, og spørger brugeren hvordan svømmerens resultat skal sorteres
+
+    /**
+     * Spørger brugeren hvordan resultaterne skal sorteres
+     */
     private void preferredSortingPrompt(CompetitiveSwimmer competitiveSwimmer){
         System.out.println("Hvordan vil du sortere resultater?");
         System.out.println("1. Hurtigste tid");
@@ -527,7 +623,7 @@ public class Menu {
         System.out.println("3. Disciplin");
         System.out.println("Valg : ");
 
-        int choice = readInt();
+        int choice = inputHelper.readInt();
 
         switch (choice) {
             case 1:
@@ -548,28 +644,36 @@ public class Menu {
         }
     }
 
-    //Metode som får et CompetitiveSwimmer, og sorterer resultat med comparator
+    /**
+     * Sorterer resultater efter hurtigste tid først
+     */
     private void sortByTime(CompetitiveSwimmer competitiveSwimmer){
         // sorter efter tid (hurtigst først)
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparingInt(Result::getTimeMilliSeconds));
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparingInt(CompetitionResult::getTimeMilliSeconds));
     }
 
-    //Metode som får et CompetitiveSwimmer, og sorterer resultat med comparator
+    /**
+     * Sorterer resultater efter dato (nyeste først)
+     */
     private void sortByDate(CompetitiveSwimmer competitiveSwimmer){
         // sorter efter dato (nyeste først)
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDate).reversed());
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDate).reversed());
     }
 
-    //Metode som får et CompetitiveSwimmer, og sorterer resultat med comparator
+    /**
+     * Sorterer resultater alfabetisk efter disciplin
+     */
     private void sortByDiscipline(CompetitiveSwimmer competitiveSwimmer){
         // Sortere efter disciplin alfabetisk
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDiscipline));
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDiscipline));
     }
 
-    // Metode som formaterer resultattiden fra en int så den kan fremvises i konsolen
+    /**
+     * Formatterer millisekunder til MM:SS.mmm-format
+     */
     private String formatTime(int milliSeconds){
         int minutes = milliSeconds / 60000;
         int seconds = (milliSeconds % 60000) / 1000;
@@ -578,21 +682,9 @@ public class Menu {
         return String.format("%d:%02d.%03d", minutes, seconds, millis);
     }
 
-    // Metode som sørjer for at brugeren indtaster en int
-    private int readInt(){
-        while (true){
-            try {
-                int value = Integer.parseInt(input.nextLine());
-                return value;
-            }
-            catch (NumberFormatException e){
-                System.out.println("Ugyltigt tal, prøv igen.");
-                System.out.print(": ");
-            }
-        }
-    }
-
-    // Metode som ber brugeren at indtaste fødselsdato
+    /**
+     * Indlæs og valider fødseelsdato
+     */
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
@@ -618,6 +710,9 @@ public class Menu {
         return birthDate;
     }
 
+    /**
+     * Indlæs telefonnummer, valider format og tjek om det allerede findes
+     */
     public String enterPhoneNr() {
         while (true) {
             System.out.print("Indtast telefon Nr: ");
@@ -651,7 +746,9 @@ public class Menu {
         }
     }
 
-
+    /**
+     * Konverterer en dato String til LocalDate
+     */
     public LocalDate convertStringDateToLocalDate(String date){
         int birthYear = Integer.parseInt(date.split("-")[0]);
         int birthMonth = Integer.parseInt(date.split("-")[1]);
@@ -659,13 +756,18 @@ public class Menu {
         return LocalDate.of(birthYear, birthMonth, birthDay);
     }
 
+    /**
+     * Beregn alder ud fra fødselsdato
+     */
     public int calculateAge(LocalDate date){
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(date, currentDate);
         return period.getYears();
     }
 
-
+    /**
+     * Dekorativ ASCII kunst :-)
+     */
     public void printDolphinArt(){
         System.out.println("""
                     /*
