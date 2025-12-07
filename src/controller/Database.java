@@ -8,13 +8,16 @@ import java.util.ArrayList;
 
 public class Database {
     // memberList med alle member objekter vi bruger når programmet kører
-    private ArrayList<Member> memberList = new ArrayList<>();
+    private final MemberFileHandler fileHandler;
     // Et MemberFileHandler objekt, som har de metoder vi bruger for at læse og gemme filen med member info
-    private MemberFileHandler memberFileHandler = new MemberFileHandler("Memberlist.txt");
+    private final ArrayList<Member> members;
 
-    public Database(){
-        // når et Database opjekt oprettes, så fyldes memberList med de members som finnes i filen
-        this.memberList = memberFileHandler.loadedMembers();
+    public Database(MemberFileHandler fileHandler){
+        // når et Database objekt oprettes, så fyldes memberList med de members som finnes i filen
+        this.fileHandler = fileHandler;
+        this.members = fileHandler.loadedMembers();
+        updateYearlyFee(); // fees will always be correct when the program starts
+        saveMembers(); // if there was a change (in fees maybe, like above) it will be saved
     }
 
     // Metode som opretter nyt Member objekt, og tilføjer det i filen
@@ -22,8 +25,8 @@ public class Database {
     public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         try {
             Member member = new Member(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
-            memberList.add(member);
-            memberFileHandler.saveListOfMembersToFile(memberList);
+            members.add(member);
+            saveMembers();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -33,19 +36,24 @@ public class Database {
 
     // Metode der henter listen af members
     public ArrayList<Member> getAllMembers(){
-        return memberList;
+        return members;
+    }
+
+    // save members helper method
+    public void saveMembers(){
+        fileHandler.saveListOfMembersToFile(members);
     }
 
     // Metode der opdaterer ALLE medlemmers yearlyFee, så det er korrekt
     public void updateYearlyFee() {
-        for (Member member : memberList) {
+        for (Member member : members) {
             member.setYearlyFee();
         }
     }
 
     public double getTotalExpectedFees(){
         double sum = 0;
-        for (Member m : memberList){
+        for (Member m : members){
             sum += m.getYearlyFee();
         }
         return sum;
@@ -53,7 +61,7 @@ public class Database {
 
     public ArrayList<Member> getMembersInDebt(){
         ArrayList<Member> inDebt = new ArrayList<>();
-        for (Member m : memberList){
+        for (Member m : members){
             if (!m.getIsPaid()){
                 inDebt.add(m);
             }
@@ -62,7 +70,7 @@ public class Database {
     }
 
     public Member findByPhoneNr(String phoneNr){
-        for (Member m : memberList){
+        for (Member m : members){
             if (m.getPhoneNr().equals(phoneNr)){
                 return m;
             }
@@ -74,7 +82,7 @@ public class Database {
         Member m = findByPhoneNr(phoneNr);
         if (m != null) {
             m.setIsPaid(true);
-            memberFileHandler.saveListOfMembersToFile(memberList);
+            saveMembers();
             return true;
         }
         return false;

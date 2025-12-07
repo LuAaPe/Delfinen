@@ -3,18 +3,21 @@ package ui;
 import controller.Database;
 import controller.MemberController;
 import controller.ResultController;
+import data.MemberFileHandler;
 import domain.*;
 import util.InvalidBirthYearException;
+import util.InvalidResultDateException;
 import util.MemberNotFoundException;
 import util.NotCompetitiveSwimmerException;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in);
-    private final Database database = new Database();
+    private final Database database = new Database(new MemberFileHandler("Memberlist.txt"));
     private final MemberController memberController = new MemberController(database);
     ResultController resultController = new ResultController(database);
 
@@ -183,10 +186,8 @@ public class Menu {
             hasPaid = false;
         }
 
-        //Opret et nyt domain.Member objekt her med de data som samlets ind
-        // Test:
         memberController.addNewMember(firstName, surName, phoneNr, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
-
+        resultController.loadResults(); // Så at når man lagt en isCompetitive = true member ind, så henter programmet den samme medlem som et CompetitiveSwimmer objekt
     }
 
     private void treasurerMenu(){
@@ -309,7 +310,8 @@ public class Menu {
             String phone = input.nextLine();
             Discipline discipline = enterDiscipline();
             int timeMilliSeconds = enterSwimmingTime();
-            LocalDate date = enterResultDate();
+            CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
+            LocalDate date = enterResultDate(competitiveSwimmer);
 
             resultController.addTrainingResult(phone, discipline, timeMilliSeconds, date);
             System.out.println("Træningsresultat gemt!");
@@ -329,7 +331,9 @@ public class Menu {
 
             Discipline discipline = enterDiscipline();
             int timeMilliSeconds = enterSwimmingTime();
-            LocalDate date = enterResultDate();
+
+            CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
+            LocalDate date = enterResultDate(competitiveSwimmer);
 
             System.out.println("Indtast stævne\n: ");
             String eventName = input.nextLine();
@@ -411,13 +415,29 @@ public class Menu {
     }
 
     // Metode som får brugeren at taste et dato ind til resultater
-    private LocalDate enterResultDate(){
-        System.out.println("Indtast dato (ÅÅÅÅ-MM-DD)\n: ");
+    private LocalDate enterResultDate(CompetitiveSwimmer competitiveSwimmer){
+        System.out.println("Indtast dato for resultat (ÅÅÅÅ-MM-DD)\n: ");
         while (true){
+
+            LocalDate earliestByAge = competitiveSwimmer.getBirthDate().plusYears(6);
+            LocalDate today = LocalDate.now();
 
             try {
                 String inputDate = input.nextLine();
-                return LocalDate.parse(inputDate);
+                LocalDate date = LocalDate.parse(inputDate);
+
+                // Ej i fremtiden
+                if(date.isAfter(today)){
+                    System.out.println("Dato kan ikke være i fremtiden. Prøv igen.");
+                    continue;
+                }
+
+                // Ej inden minimum alder 6 år
+                if(date.isBefore(earliestByAge)){
+                    throw new InvalidResultDateException("Dato er før svømmeren var 6 år gammel.");
+                }
+
+                return date;
             }
             catch (Exception e){
                 System.out.println("Forkert format, prøv igen (ÅÅÅÅ-MM-DD)\n: ");
@@ -436,6 +456,7 @@ public class Menu {
                 System.out.printf("%-20s Tlf: %s ",
                         competitiveSwimmer.getFullName(),
                         competitiveSwimmer.getPhoneNr());
+                System.out.println();
                 foundSwimmers = true;
             }
         }
@@ -455,9 +476,8 @@ public class Menu {
 
             CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
 
-            // TODO: Can use Comparator here to sort results by date
-            // competitiveSwimmer.getResults() . . . // Comparator here
-            // competitiveSwimmer.getCompetitionResults() . . .
+            // Spørg bruger hvordan de skal sorteres
+            preferredSortingPrompt(competitiveSwimmer);
 
             System.out.println("\n- - - Resultater for "+
                     competitiveSwimmer.getFullName() + " - - -");
@@ -499,6 +519,56 @@ public class Menu {
         }
     }
 
+    // Metode tom får et CompetitiveSwimmer, og spørger brugeren hvordan svømmerens resultat skal sorteres
+    private void preferredSortingPrompt(CompetitiveSwimmer competitiveSwimmer){
+        System.out.println("Hvordan vil du sortere resultater?");
+        System.out.println("1. Hurtigste tid");
+        System.out.println("2. Dato (nyeste først)");
+        System.out.println("3. Disciplin");
+        System.out.println("Valg : ");
+
+        int choice = readInt();
+
+        switch (choice) {
+            case 1:
+                // sorter efter tid (hurtigst først)
+                sortByTime(competitiveSwimmer);
+                break;
+            case 2:
+                // sorter efter dato (nyeste først)
+                sortByDate(competitiveSwimmer);
+                break;
+            case 3:
+                // Sortere efter disciplin alfabetisk
+                sortByDiscipline(competitiveSwimmer);
+                break;
+            default:
+                System.out.println("Ugyltigt valg - sorter efter hurtigste tid");
+                sortByTime(competitiveSwimmer);
+        }
+    }
+
+    //Metode som får et CompetitiveSwimmer, og sorterer resultat med comparator
+    private void sortByTime(CompetitiveSwimmer competitiveSwimmer){
+        // sorter efter tid (hurtigst først)
+        competitiveSwimmer.getTrainingResults().sort(Comparator.comparingInt(Result::getTimeMilliSeconds));
+        competitiveSwimmer.getCompetitionResults().sort(Comparator.comparingInt(CompetitionResult::getTimeMilliSeconds));
+    }
+
+    //Metode som får et CompetitiveSwimmer, og sorterer resultat med comparator
+    private void sortByDate(CompetitiveSwimmer competitiveSwimmer){
+        // sorter efter dato (nyeste først)
+        competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDate).reversed());
+        competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDate).reversed());
+    }
+
+    //Metode som får et CompetitiveSwimmer, og sorterer resultat med comparator
+    private void sortByDiscipline(CompetitiveSwimmer competitiveSwimmer){
+        // Sortere efter disciplin alfabetisk
+        competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDiscipline));
+        competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDiscipline));
+    }
+
     // Metode som formaterer resultattiden fra en int så den kan fremvises i konsolen
     private String formatTime(int milliSeconds){
         int minutes = milliSeconds / 60000;
@@ -517,6 +587,7 @@ public class Menu {
             }
             catch (NumberFormatException e){
                 System.out.println("Ugyltigt tal, prøv igen.");
+                System.out.print(": ");
             }
         }
     }
