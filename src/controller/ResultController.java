@@ -24,7 +24,7 @@ public class ResultController {
 
     // tilføj træningsresultat
     public void addTrainingResult(String phone, Discipline discipline,
-                                     int timeMilliSeconds, LocalDate date){
+                                  int timeMilliSeconds, LocalDate date){
         Member member = database.findByPhoneNr(phone);
 
         if(member == null) {

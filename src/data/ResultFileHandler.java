@@ -100,7 +100,7 @@ public class ResultFileHandler {
                             result.getDate(),
                             result.getEventName(),
                             result.getPlacement()
-                            );
+                    );
                     writer.println(line);
                 }
 

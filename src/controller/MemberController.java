@@ -33,6 +33,12 @@ public class MemberController {
         database.updateYearlyFee();
     }
 
+    // Metode som skal bruges efter at have ændret fælter på en member
+    // f.eks. i forbindelse med setActive! så at ændringerne faktisk gemmes, når en medlem er gået fra passiv til aktiv
+    public void updateMember(Member member){
+        database.saveMembers();
+    }
+
     public double getTotalExpectedFees() {
         return database.getTotalExpectedFees();
     }
