@@ -2,12 +2,27 @@ package domain;
 
 import java.time.LocalDate;
 
+/**
+ * Result repræsenterer et simpelt svømmeresultat for en konkurrencesvømmer.
+ *
+ * Klassen indeholder:
+ * - disciplin
+ * - tid i millisekunder
+ * - dato for resultatet
+ *
+ * Klassen er en "databeholder", som CompetitionResult arver fra.
+ */
 public class Result {
+    /** Svømmedisciplin: butterfly, craw, bryst, osv. */
     private final Discipline discipline;
+    /** Svømmetiden målt i millisekunder (bruges til at sortere og sammenligne).*/
     private final int timeMilliSeconds;
+    /** Datoen hvoe resultatet blev opnået.*/
     private final LocalDate date;
-    Member member;
 
+    /**
+     * Constructor der opretter et alminderligt træningsresultat.
+     */
     public Result(Discipline discipline, int timeMilliSeconds, LocalDate date){
         this.discipline = discipline;
         this.timeMilliSeconds = timeMilliSeconds;
@@ -26,7 +41,13 @@ public class Result {
         return date;
     }
 
-    // Metode som hjælper med at formatere resultattiden
+    /**
+     * Formaterer tiden i et læsbart format:
+     * MM:SS.mmm
+     *
+     * Eksempel:
+     * timeMilleSeconds = 48300 --> "0:48.300"
+     */
     public String getFormattedTime(){
         int totalMilliSeconds = timeMilliSeconds;
         int minutes = totalMilliSeconds / 60000;

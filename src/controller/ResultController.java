@@ -8,21 +8,42 @@ import util.NotCompetitiveSwimmerException;
 
 import java.time.LocalDate;
 
+/**
+ * ResultController håndterer al logik relateret til svømmeresultater.
+ *
+ * Controllerns ansvar:
+ * - at tilføje træningsresultater
+ * - at tilføje stævneresultater
+ * - at indlæse alle resultater fra fil ved programstart
+ * - at gemme alle resultater i fil når noget ændres
+ * - at finde en konkurrencesvømmer ud fra telefonnummer
+ *
+ * Resultater gemmes ikke i Database-filen.
+ * De bliver gemt via ResultFileHandler i en separat Results.txtw
+ */
 public class ResultController {
-    // logic
-    // Responsibilities:
-    // add training results, add competition results, compute top 5
-
     // TODO: getTop5(discipline, junior/senior)
-
+    /** Håndtering af indlæsning og lagring af resultater i "Results.txt".*/
     private final ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
+    /** Reference til Database så controllern kan finde medlemmer.*/
     private final Database database;
 
+    /**
+     * Konstruktør der modtager en database, så vi kan søge efter medlemmer.
+     */
     public ResultController(Database database){
         this.database = database;
     }
 
-    // tilføj træningsresultat
+    /**
+     * Tilføjer et træningsresultat til en konkurrencesvømmer.
+     *
+     * 1. Find medlem via telefonnummer
+     * 2. Tjek at medlem findes
+     * 3. Tjek at medlem er konkurrencesvømmer (instanceof)
+     * 4. Tilføj resultat
+     * 5. Gem resultater i filen
+     */
     public void addTrainingResult(String phone, Discipline discipline,
                                   int timeMilliSeconds, LocalDate date){
         Member member = database.findByPhoneNr(phone);
@@ -31,15 +52,19 @@ public class ResultController {
             throw new MemberNotFoundException("Telefonnummer findes ikke.");
         }
 
+        // Tjek om medlemmet er en konkurrencesvømmer
         if(!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
             throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
         }
 
+        // Tilføj resultatet
         competitiveSwimmer.addTrainingResult(new Result(discipline, timeMilliSeconds, date));
-        saveResults();
+        saveResults(); // Gem i fil
     }
 
-    // tilføj stævneresultat
+    /**
+     * Tilføjer et stævneresultat til en konkurrencesvømmer.
+     */
     public void addCompetitionResult(String phone, Discipline discipline, int timeMilliSeconds, LocalDate date, String eventName, int placement){
         Member member = database.findByPhoneNr(phone);
 
@@ -47,23 +72,38 @@ public class ResultController {
             throw new MemberNotFoundException("Telefonnummer findes ikke.");
         }
 
+        // Tjek om medlemmet er en konkurrencesvømmer
         if(!(member instanceof CompetitiveSwimmer competitiveSwimmer)){
             throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
         }
 
+        //Tilføj stævneresultat
         competitiveSwimmer.addCompetitionResult(new CompetitionResult(discipline, timeMilliSeconds, date, eventName, placement));
-        saveResults();
+        saveResults(); // Gem i fil
     }
 
+    /**
+     * Gemmer ALLE resultater for ALLE konkurrencesvømmere
+     * ved at sende medlemslisten til ResultFileHandler.
+     */
     public void saveResults(){
         fileHandler.saveAllResults(database.getAllMembers());
     }
 
+    /**
+     * Indlæser ALLE resultater og tilføjer dem til de rigtige
+     * CompetitiveSwimmer objekter ved programstart.
+     */
     public void loadResults(){
         fileHandler.loadAllResults(database.getAllMembers());
     }
 
-    // henter en konkurrencesvømmer via telefonnummer
+    /**
+     * Finder og returnerer en konkurrencesvømmer ud fra telefonnummer.
+     * Smider fejl hvis:
+     * - medlem ikke findes
+     * - medlem findes, men ikke er konkurrencesvømmer
+     */
     public CompetitiveSwimmer getCompetitiveSwimmer(String phone){
         Member member = database.findByPhoneNr(phone);
 
