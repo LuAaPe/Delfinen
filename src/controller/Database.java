@@ -37,7 +37,6 @@ public class Database {
     }
 
     // Metode der opdaterer ALLE medlemmers yearlyFee, så det er korrekt
-    // TODO: sæt den ind et sted hvor der giver mening!
     public void updateYearlyFee() {
         for (Member member : memberList) {
             member.setYearlyFee();
