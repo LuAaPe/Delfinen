@@ -4,6 +4,15 @@ Anne,Jensen,+4512345678,2005-02-10,false,true,true
 Peter,Hansen,+4511112222,1970-06-03,false,true,true
 Lars,Kristensen,+4512341234,1960-01-10,false,true,false
 Jennie,Hansen,21212121,1989-12-01,true,true,true
+Marcus,Vennervald,87654321,2005-12-06,true,true,true
+Lasse,Fuglsang,65478512,1999-06-25,false,false,true
+Kim Sørensen,,36456978,1970-03-01,true,true,true
+Ægil,Saksogade,45213652,2000-06-14,false,false,false
+Muhammad,Hassan,36854712,2005-02-12,true,true,true
+Sigurd,Provsten,78591623,2010-08-30,true,false,false
+Lauritz,Klausen,65123457,2001-10-24,true,true,true
+Carlos,Santos,45632198,1995-07-29,true,true,true
+Hans,Overlov,56489561,1956-01-01,false,true,true
 Rikke ,Ledrup,+4571425362,2007-10-09,false,true,true
 Morty,Sørensen,+4598765432,2006-05-18,true,true,false
 Sascha,Jessen,+4524681012,1999-11-11,false,false,true
