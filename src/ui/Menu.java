@@ -232,9 +232,6 @@ public class Menu {
         }
 
         memberController.addNewMember(firstName, surName, phoneNr, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
-
-        // Reload so competitiveSwimmer-objekt synkroniseres med resultController
-        resultController.loadResults(); // Så at når man lagt en isCompetitive = true member ind, så henter programmet den samme medlem som et CompetitiveSwimmer objekt
     }
 
     /**
