@@ -4,3 +4,6 @@ Anne,Jensen,+4512345678,2005-02-10,false,true,true
 Peter,Hansen,+4511112222,1970-06-03,false,true,true
 Lars,Kristensen,+4512341234,1960-01-10,false,true,false
 Jennie,Hansen,21212121,1989-12-01,true,true,true
+Maria,Jensen,24242424,2002-05-08,true,true,true
+lisa,Rasmussen,55555555,1998-09-04,true,true,false
+Peter,Petersen,65656565,1989-02-06,true,false,true

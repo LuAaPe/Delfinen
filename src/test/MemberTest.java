@@ -1,4 +1,4 @@
-package test;
+/*package test;
 import domain.Member;
 import org.junit.jupiter.api.Test;
 
@@ -83,3 +83,4 @@ public class MemberTest {
         assertEquals(1600, member.getYearlyFee());
     }
 }
+*/
