@@ -3,3 +3,11 @@ Mikkel,Poulsen,+4510101010,1995-03-08,true,true,true
 Anne,Jensen,+4512345678,2005-02-10,false,true,true
 Peter,Hansen,+4511112222,1970-06-03,false,true,true
 Lars,Kristensen,+4512341234,1960-01-10,false,true,false
+Frodo,Baggins,36324520,1926-10-03,true,true,true
+Iggy,Pop,13371337,1957-09-23,true,true,false
+Ragnar,Lothbrok,68432013,1927-06-10,false,true,true
+Trent,Reznor,20740575,1973-03-22,true,true,true
+Laura,Bailey,12233445,1982-05-22,false,false,false
+Matthew,Mercer,56128923,1978-01-02,true,true,true
+Cotton-Eye,Joe,98765432,1994-08-02,true,true,true
+Alphonse,Elric,53237698,1989-03-22,false,true,true
