@@ -380,8 +380,11 @@ public class Menu {
      */
     private void addTrainingResult(){
         try {
-            System.out.println("Indtast telefonnummer på svømmer\n: ");
-            String phone = input.nextLine();
+            System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
+            String phone = input.nextLine(); // TODO make more robust
+            if (phone.equals("0")){
+                return;
+            }
             Discipline discipline = enterDiscipline();
             int timeMilliSeconds = enterSwimmingTime();
             CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
@@ -403,8 +406,10 @@ public class Menu {
      */
     private void addCompetitionResult(){
         try {
-            System.out.println("Indtast telefonnummer på svømmer:\n");
-            String phone = input.nextLine();
+            String phone = input.nextLine(); // TODO make more robust
+            if (phone.equals("0")){
+                return;
+            }
 
             Discipline discipline = enterDiscipline();
             int timeMilliSeconds = enterSwimmingTime();

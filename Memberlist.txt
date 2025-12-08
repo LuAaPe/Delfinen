@@ -32,3 +32,4 @@ Jan,Johansen,+4567432356,1959-02-28,false,true,false
 Marly Bobbisen,Ågerup,+4591827364,1945-02-06,true,true,true
 jørgen,kampson,+4576893452,2003-06-19,false,true,false
 ruth ,vestergaard,+4567832465,1967-06-07,false,true,true
+Mike,Patton,99885533,1968-01-27,true,true,true
