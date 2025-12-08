@@ -13,3 +13,11 @@ Sigurd,Provsten,78591623,2010-08-30,true,false,false
 Lauritz,Klausen,65123457,2001-10-24,true,true,true
 Carlos,Santos,45632198,1995-07-29,true,true,true
 Hans,Overlov,56489561,1956-01-01,false,true,true
+Rikke ,Ledrup,+4571425362,2007-10-09,false,true,true
+Morty,Sørensen,+4598765432,2006-05-18,true,true,false
+Sascha,Jessen,+4524681012,1999-11-11,false,false,true
+Ken,Kensen,+4536912151,1967-01-09,true,true,true
+Jan,Johansen,+4567432356,1959-02-28,false,true,false
+Marly Bobbisen,Ågerup,+4591827364,1945-02-06,true,true,true
+jørgen,kampson,+4576893452,2003-06-19,false,true,false
+ruth ,vestergaard,+4567832465,1967-06-07,false,true,true
