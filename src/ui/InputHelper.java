@@ -13,7 +13,7 @@ public class InputHelper {
     private final Scanner input;
 
     /**
-     * Indlæser en integer fra konsolen.
+     * Indlæser en integer fra konsollen.
      * Hvis brugeren taster noget forkert ind, bliver en fejlbesked printet
      * og brugeren bliver bet om at prøve igen indtil et korrekt nummer er indtastet.
      * @param input Scanneren som er oprettet i Menu
@@ -29,7 +29,6 @@ public class InputHelper {
      * Førsøger at læse et heltal fra brugeren.
      * Hvis brugeren skriver noget der ikke kan omdannes til et tal,
      * bliver der vist en fejlbesked og brugeren bliver bedt om at prøve igen.
-     * @return
      */
     public int readInt(){
         while (true){
@@ -40,7 +39,7 @@ public class InputHelper {
             }
             catch (NumberFormatException e){
                 // Brugeren skrev noget forkert ---> given fejlbesked og prøv igen
-                System.out.println("Ugyltigt tal, prøv igen.");
+                System.out.println("Ugyldigt tal, prøv igen.");
                 System.out.print(": ");
             }
         }

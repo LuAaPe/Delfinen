@@ -5,7 +5,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Klassen representerer et alminderligt medlem i svømmeklubben.
+ * Klassen repræsenterer et almindeligt medlem i svømmeklubben.
  *
  * Medlemmet indeholder:
  * - Personlige oplysninger (navn, tlf.nr., fødselsdato)
@@ -25,7 +25,7 @@ public class Member {
     private String firstName;
     /** Efternavn*/
     private String surName;
-    /** Fuldtnavn = fornavn + efternavn (gemmes for at undgå at bygge den hver gang).*/
+    /** Fuldtnavn = fornavn + efternavn. */
     private String fullName;
     /** Fødselsdato bruges til at beregne alder og kontingent.*/
     private final LocalDate birthDate;
@@ -44,15 +44,15 @@ public class Member {
 
 
     /**
-     * Kpnstruktør til at oprette et nyt medlem.
+     * Konstruktør til at oprette et nyt medlem.
      *
      * @param firstName     Fornavn
      * @param surName       Efternavn
      * @param phoneNr       Telefonnummer (unik)
-     * @param birthDate     Fødseksdato
+     * @param birthDate     Fødselsdato
      * @param isCompetitive Om medlemmet er konkurrencesvømmer
      * @param isActive      Om medlemmet er aktivt/passivt medlem
-     * @param isPaid        Om medlemet hat betalt kontingent
+     * @param isPaid        Om medlemmet hat betalt kontingent
      */
     public Member(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         this.firstName = firstName;
@@ -122,7 +122,7 @@ public class Member {
     /**
      * Ændrer aktiv/passiv status.
      * Når status ændres, skal kontingentprisen opdateres.
-     * @param isActive      true/false om medlemen skal være aktiv eller ej
+     * @param isActive      true/false om medlemmen skal være aktiv eller ej
      */
     public void setIsActive(boolean isActive){
         this.isActive = isActive;

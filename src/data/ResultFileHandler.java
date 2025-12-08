@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * ResultFileHandler er ansvarlig al filhåndering relateret til resultater.
+ * ResultFileHandler er ansvarlig al filhåndtering relateret til resultater.
  *
  * Den:
  * - indlæser alle resultater fra "Results.txt"
@@ -37,7 +37,7 @@ public class ResultFileHandler {
 
     /**
      * Indlæser ALLE resultater fra filen og tilføjer dem
-     * til de rigtige CompetitiveSeimmer-objekter i medlemslisten
+     * til de rigtige CompetitiveSwimmer-objekter i medlemslisten
      *
      * 1. Læs hver linje
      * 2. Split den ved komma
@@ -127,7 +127,7 @@ public class ResultFileHandler {
                     writer.println(line);
                 }
 
-                // gem restltater for stævner
+                // gem resultater for stævner
                 for (CompetitionResult result : competitiveSwimmer.getCompetitionResults()){
                     String line = String.format("%s,STÆVNE,%s,%d,%s,%s,%d",
                             member.getPhoneNr(),

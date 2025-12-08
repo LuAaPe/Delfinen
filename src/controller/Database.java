@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Database læser medlemmer fra Memberlist.txt når programmet starter,
  * og gemmer dem tilbage i filen når det sker ændringer
  *
- * Den her class interagerer IKKE med brugeren.
+ * Den her klasse interagerer IKKE med brugeren.
  * Den bruges alene af controllers.
  */
 public class Database {

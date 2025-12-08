@@ -3,7 +3,7 @@ package domain;
 import java.time.LocalDate;
 
 /**
- * CompetitionResult representerer et stævneresultat for en konkurrencesvømmer.
+ * CompetitionResult repræsenterer et stævneresultat for en konkurrencesvømmer.
  *
  * Klassen arver fra Result, som indeholder:
  * - disciplin

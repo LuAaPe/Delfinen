@@ -241,7 +241,7 @@ public class Menu {
      * Menu for kassereren
      * - kontingent
      * - restance
-     * - registrer betalning
+     * - registrer betaling
      * */
     private void treasurerMenu(){
         boolean run = true;
@@ -363,7 +363,7 @@ public class Menu {
     }
 
     /**
-     * Registerer betalning for et medlem baseret på telefonnummer
+     * Registerer betaling for et medlem baseret på telefonnummer
      */
     private void registerPayment(){
         System.out.print("Indtast telefon nr. på medlemmet: ");
@@ -683,7 +683,7 @@ public class Menu {
     }
 
     /**
-     * Indlæs og valider fødseelsdato
+     * Indlæs og valider fødselsdato
      */
     public LocalDate enterBirthDate(){
         boolean again = true; // så længe som again er true kører while-loopen

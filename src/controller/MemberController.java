@@ -5,7 +5,7 @@ import domain.Member;
 import java.time.LocalDate;
 import java.util.ArrayList;
 /**
- * Den her controller styrer al logik relateret til at styre medlemmer:
+ * Den her controller har al logik relateret til at styre medlemmer:
  * - oprette nye medlemmer
  * - finde medlemmer
  * - udskrive lister over medlemmer
@@ -55,11 +55,11 @@ public class MemberController {
     }
 
     /**
-     * Bruges når et medlems oplysninger er ændet.
+     * Bruges når et medlems oplysninger er ændret.
      *
      * Eksempel:
      * - medlem bliver aktiv efter at være passiv
-     * - betalningsstatus ændres
+     * - betalingsstatus ændres
      * - kontingent ændres
      *
      * Controlleren beder Database om at gemme ændringerne i filen.

@@ -17,11 +17,11 @@ public class Result {
     private final Discipline discipline;
     /** Svømmetiden målt i millisekunder (bruges til at sortere og sammenligne).*/
     private final int timeMilliSeconds;
-    /** Datoen hvoe resultatet blev opnået.*/
+    /** Datoen hvor resultatet blev opnået.*/
     private final LocalDate date;
 
     /**
-     * Constructor der opretter et alminderligt træningsresultat.
+     * Constructor der opretter et almindeligt træningsresultat.
      */
     public Result(Discipline discipline, int timeMilliSeconds, LocalDate date){
         this.discipline = discipline;
