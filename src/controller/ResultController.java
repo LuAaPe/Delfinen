@@ -18,8 +18,6 @@ import java.time.LocalDate;
  * - at gemme alle resultater i fil når noget ændres
  * - at finde en konkurrencesvømmer ud fra telefonnummer
  *
- * Resultater gemmes ikke i Database-filen.
- * De bliver gemt via ResultFileHandler i en separat Results.txt
  */
 public class ResultController {
     // TODO: getTop5(discipline, junior/senior)

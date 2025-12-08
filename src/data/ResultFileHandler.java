@@ -15,6 +15,10 @@ import java.util.Scanner;
  * - indlæser alle resultater fra "Results.txt"
  * - gemmer alle resultater tilbage i filen.
  *
+ * Klassen implementerer TextFileHandler-interfacet, så den kan bruge:
+ * - openScanner() til at åbne .txt-filen for læsning
+ * - openWriter() til at åbne .txt-filen for skrivning
+ *
  * Resultater skrives i formatet:
  *
  * TRÆNING
@@ -24,7 +28,7 @@ import java.util.Scanner;
  *      phone,STÆVNE,disciplin,timeMillis,date,eventName,placement
  *
  */
-public class ResultFileHandler {
+public class ResultFileHandler implements TextFileHandler {
     /** Navnet på filen hvor alle resultater gemmes.*/
     private final String fileName;
 
@@ -39,6 +43,8 @@ public class ResultFileHandler {
      * Indlæser ALLE resultater fra filen og tilføjer dem
      * til de rigtige CompetitiveSwimmer-objekter i medlemslisten
      *
+     * openScanner() fra TextFileHandler-interfacet bruges til at åbne filen.
+     *
      * 1. Læs hver linje
      * 2. Split den ved komma
      * 3. Find rigtigt medlem via telefonnummer
@@ -46,15 +52,10 @@ public class ResultFileHandler {
      * 5. Opret resultat og tilføj til medlem
      */
     public void loadAllResults(ArrayList<Member> members){
-        File file = new File(fileName);
-
-        // Hvis filen ikke findes, er der bare ingen resultater endnu
-        if(!file.exists()){
-            return;
-        }
 
         try {
-            Scanner scanner = new Scanner(file);
+            // INTERFACE TextFileWriter BRUGES HER!! :))
+            Scanner scanner = openScanner(fileName); // <--- SE HER!! :))
 
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
@@ -102,12 +103,14 @@ public class ResultFileHandler {
 
     /**
      * Gemmer alle resultater for alle konkurrencesvømmere i filen.
+     * openWriter() fra TextFileHandler-interfacet bruges.
      * Skriver træningsresultater først, derefter stævneresultater.
      * @param members
      */
     public void saveAllResults(ArrayList<Member> members){
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter(fileName));
+            // INTERFACE TextFileWriter BRUGES HER!!
+            PrintWriter writer = openWriter(fileName); // <---- SE HER!!
             for (Member member : members){
 
                 // spring ikke-competitive medlemme over

@@ -14,12 +14,15 @@ import java.util.Scanner;
  * - indlæse alle medlemmer fra tekstfilen "Memberlist.txt"
  * - gemme alle medlemmer tilbage i filen
  *
- * Denne klasse håndterer KUN filoperationer
+ * Klassen implementerer TextFileHandler-interfacet,
+ * hvilket betyder, at den automatisk arver fælles metoder til:
+ * - at åbne en Scanner til læsning
+ * - at åbne en PrintWriter til skrivning
  *
  * Formatet i filen er:
  *      firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid
  */
-public class MemberFileHandler {
+public class MemberFileHandler implements TextFileHandler{
     /** Navnet på filen hvor medlemmerne gemmes.*/
     private String fileName;
 
@@ -34,7 +37,7 @@ public class MemberFileHandler {
 
     /**
      * Indlæser alle medlemmer fra tekstfilen og returnerer dem som en ArrayList.
-     *
+     * Her benyttes openScanner() fra TextFileHandler-interfacet.
      * 1. Åbn filen
      * 2. Læs linje for linje
      * 3. Split linjen i 7 værdier
@@ -46,8 +49,8 @@ public class MemberFileHandler {
     public ArrayList<Member> loadedMembers(){
         ArrayList<Member> loadedMembers = new ArrayList<>();
         try {
-            File file = new File(fileName);
-            Scanner scanner = new Scanner(file);
+            // INTERFACE TextHandler BRUGES HER!! SE!! :))
+            Scanner scanner = openScanner(fileName); // <--- her!!
 
             // Læs alle linjer i filen
             while (scanner.hasNextLine()){
@@ -98,13 +101,15 @@ public class MemberFileHandler {
 
     /**
      * Gemmer alle medlemmer i tekstfilen.
+     * Benytter openWriter() fra TextFileHandler-interfacet.
      *
      * Hver linje skrives i samme format som ved indlæsning:
      *      firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid
      */
     public void saveListOfMembersToFile(ArrayList<Member> members){
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter(fileName));
+            // INTERFACE TextFileHandler BRUGES HER!!
+            PrintWriter writer = openWriter(fileName); // <--- SE HER!! :))
             for (Member member : members){
                 String memberString = String.format("%s,%s,%s,%s,%b,%b,%b",
                         member.getFirstName(),
