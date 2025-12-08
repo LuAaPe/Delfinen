@@ -508,6 +508,7 @@ public class Menu {
             LocalDate earliestByAge = competitiveSwimmer.getBirthDate().plusYears(6);
             LocalDate today = LocalDate.now();
 
+            // TODO kunne evt estatte det med if/else overvej om exceptions er nødvendigt
             try {
                 String inputDate = input.nextLine();
                 LocalDate date = LocalDate.parse(inputDate);
@@ -525,7 +526,7 @@ public class Menu {
 
                 return date;
             }
-            catch (Exception e){
+            catch (Exception e){ // TODO Beskeden kommer ikke rigtig frem : "Dato for svømmeren var år gammel..."
                 System.out.println("Forkert format, prøv igen (ÅÅÅÅ-MM-DD)\n: ");
             }
         }
@@ -724,7 +725,7 @@ public class Menu {
                 System.out.println("11 cifre: +45 12345678");
                 continue;
             }
-
+            // "Regular expressions"
             if (!phoneNr.matches("\\+?\\d+")){
                 System.out.println("Fejl Telfon nr. må kun indeholde tal og evt. + foran");
                 continue;
@@ -772,7 +773,7 @@ public class Menu {
         System.out.println("""
                     /*
                      *                                    __
-                     *                                _.-~  )
+                     *          3                      _.-~  )
                      *                     _..--~~~~,'   ,-/     _
                      *                  .-'. . . .'   ,-','    ,' )
                      *                ,'. . . _   ,--~,-'__..-'  ,'

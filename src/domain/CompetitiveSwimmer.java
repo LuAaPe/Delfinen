@@ -17,7 +17,7 @@ public class CompetitiveSwimmer extends Member{
     private ArrayList<Result> trainingResults = new ArrayList<>();
     /** Liste over alle stævneresultater for svømmeren.*/
     private ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
-
+    // TODO se om ikke ALLE resultater nu kan komme på samme liste
     /**
      * Konstruktør for en konkurrencesvømmer.
      * Alle basis-informationer håndteres af superklassen Member.

@@ -3,3 +3,4 @@ Mikkel,Poulsen,+4510101010,1995-03-08,true,true,true
 Anne,Jensen,+4512345678,2005-02-10,false,true,true
 Peter,Hansen,+4511112222,1970-06-03,false,true,true
 Lars,Kristensen,+4512341234,1960-01-10,false,true,false
+Jennie,Hansen,21212121,1989-12-01,true,true,true
