@@ -12,7 +12,7 @@ import java.time.LocalDate;
  *
  * Klassen er en "databeholder", som CompetitionResult arver fra.
  */
-public class Result {
+public abstract class Result {
     /** Svømmedisciplin: butterfly, craw, bryst, osv. */
     private final Discipline discipline;
     /** Svømmetiden målt i millisekunder (bruges til at sortere og sammenligne).*/

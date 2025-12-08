@@ -80,7 +80,7 @@ public class ResultFileHandler {
 
                 // - - - Træningsresultat:
                 if (type.equals("TRÆNING")){
-                    Result result = new Result(discipline, timeMilliSeconds, date);
+                    Result result = new TrainingResult(discipline, timeMilliSeconds, date);
                     competitiveSwimmer.addTrainingResult(result);
                 }
 

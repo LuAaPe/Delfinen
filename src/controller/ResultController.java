@@ -58,7 +58,7 @@ public class ResultController {
         }
 
         // Tilføj resultatet
-        competitiveSwimmer.addTrainingResult(new Result(discipline, timeMilliSeconds, date));
+        competitiveSwimmer.addTrainingResult(new TrainingResult(discipline, timeMilliSeconds, date));
         saveResults(); // Gem i fil
     }
 

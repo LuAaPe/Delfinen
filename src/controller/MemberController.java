@@ -98,5 +98,4 @@ public class MemberController {
     public boolean setMemberPaid(String phoneNr) {
         return database.setMemberPaid(phoneNr);
     }
-
 }
