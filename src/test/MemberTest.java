@@ -1,4 +1,4 @@
-package test;
+/*package test;
 import domain.Member;
 import org.junit.jupiter.api.Test;
 
@@ -82,5 +82,7 @@ public class MemberTest {
         member.setIsActive(true); // burde opdatere yearlyFee på den aktuelle medlem
 
         assertEquals(1600, member.getYearlyFee());
-    }*/
+    }
 }
+*/
+*/

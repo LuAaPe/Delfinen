@@ -272,7 +272,7 @@ public class Menu {
      */
     private void trainerMenu(){
         while(true){
-            System.out.println("   FORMAND:");
+            System.out.println("   TRÆNER:");
             System.out.println("""
                     ╔══════════════════════════╗
                     ║1. Tilføj træningsresultat║
