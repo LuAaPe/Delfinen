@@ -232,9 +232,6 @@ public class Menu {
         }
 
         memberController.addNewMember(firstName, surName, phoneNr, birthDate, isCompetitiveSwimmer, isActive, hasPaid);
-
-        // Reload so competitiveSwimmer-objekt synkroniseres med resultController
-        resultController.loadResults(); // Så at når man lagt en isCompetitive = true member ind, så henter programmet den samme medlem som et CompetitiveSwimmer objekt
     }
 
     /**
@@ -383,8 +380,11 @@ public class Menu {
      */
     private void addTrainingResult(){
         try {
-            System.out.println("Indtast telefonnummer på svømmer\n: ");
-            String phone = input.nextLine();
+            System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
+            String phone = input.nextLine(); // TODO make more robust
+            if (phone.equals("0")){
+                return;
+            }
             Discipline discipline = enterDiscipline();
             int timeMilliSeconds = enterSwimmingTime();
             CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
@@ -406,8 +406,10 @@ public class Menu {
      */
     private void addCompetitionResult(){
         try {
-            System.out.println("Indtast telefonnummer på svømmer:\n");
-            String phone = input.nextLine();
+            String phone = input.nextLine(); // TODO make more robust
+            if (phone.equals("0")){
+                return;
+            }
 
             Discipline discipline = enterDiscipline();
             int timeMilliSeconds = enterSwimmingTime();

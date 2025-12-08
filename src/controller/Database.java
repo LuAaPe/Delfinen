@@ -1,6 +1,7 @@
 package controller;
 
 import data.MemberFileHandler;
+import domain.CompetitiveSwimmer;
 import domain.Member;
 
 import java.time.LocalDate;
@@ -54,7 +55,15 @@ public class Database {
      */
     public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
         try {
-            Member member = new Member(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
+            Member member;
+
+            if (isCompetitive){
+                member = new CompetitiveSwimmer(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
+            }
+            else {
+                member = new Member(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
+            }
+
             members.add(member);
             saveMembers(); // Gem liste med ny medlem
         }
