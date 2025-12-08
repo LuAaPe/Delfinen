@@ -83,4 +83,5 @@ public class MemberTest {
 
         assertEquals(1600, member.getYearlyFee());
     }
-}*/
+}
+*/
