@@ -5,8 +5,11 @@ import data.ResultFileHandler;
 import domain.*;
 import util.MemberNotFoundException;
 import util.NotCompetitiveSwimmerException;
+import util.SwimmerBestResultComparator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * ResultController håndterer al logik relateret til svømmeresultater.
@@ -114,5 +117,52 @@ public class ResultController {
         }
 
         return competitiveSwimmer;
+    }
+
+    /**
+     * Finder top-5 hurtigste konkurrencesvømmere i en bestemt disciplin,
+     * opdelt efter aldersgruppe (junior/senior).
+     *
+     * Processen er:
+     * 1. Gennemgå alle medlemmer i databasen
+     * 2. Vælg kun konkurrencesvømmere
+     * 3. Sorter dem efter bedste resultat i den valgte disciplin
+     * 4. Returner de første fem svømmere (eller færre, hvis der ikke
+     * findes fem med tider)
+     *
+     *
+     * @param discipline        Disciplinen den sorteres efter
+     * @param junior            true = junior, false = senior
+     *
+     * @return                  enArrayList med top 5 svømmere
+     */
+    public ArrayList<CompetitiveSwimmer> getTop5(Discipline discipline, boolean junior){
+        ArrayList<CompetitiveSwimmer> list = new ArrayList<>();
+
+        // 1. Find alle relevante svømmere
+        for (Member member: database.getAllMembers()){
+            if (member instanceof CompetitiveSwimmer swimmer){
+                boolean isJunior = swimmer.getAge() < 18;
+
+                // spring svømmere over i forkert aldersgruppe
+                if (isJunior != junior) continue;
+
+                // svømmeren SKAL have en tid i disciplinen
+                if (swimmer.getBestResultForDiscipline(discipline) != null){
+                    list.add(swimmer);
+                }
+            }
+        }
+
+        // 2. Sorter svømmere efter bedste tid
+        list.sort(new SwimmerBestResultComparator(discipline));
+
+        // 3. Returner top 5
+        if(list.size() > 5){
+            return new ArrayList<>(list.subList(0,5));
+        }
+        else {
+            return list;
+        }
     }
 }
