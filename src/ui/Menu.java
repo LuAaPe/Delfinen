@@ -13,6 +13,7 @@ import util.NotCompetitiveSwimmerException;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -409,6 +410,7 @@ public class Menu {
      */
     private void addCompetitionResult(){
         try {
+            System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage): ");
             String phone = input.nextLine(); // TODO make more robust
             if (phone.equals("0")){
                 return;
@@ -507,33 +509,39 @@ public class Menu {
      * Validerer datoen for et resultat ud fra svømmerens alder
      */
     private LocalDate enterResultDate(CompetitiveSwimmer competitiveSwimmer){
-        System.out.println("Indtast dato for resultat (ÅÅÅÅ-MM-DD)\n: ");
+
+        LocalDate earliestByAge = competitiveSwimmer.getBirthDate().plusYears(6);
+        LocalDate today = LocalDate.now();
+
         while (true){
-
-            LocalDate earliestByAge = competitiveSwimmer.getBirthDate().plusYears(6);
-            LocalDate today = LocalDate.now();
-
-            // TODO kunne evt estatte det med if/else overvej om exceptions er nødvendigt
-            try {
+                System.out.println("Indtast dato for resultat (ÅÅÅÅ-MM-DD)\n: ");
                 String inputDate = input.nextLine();
-                LocalDate date = LocalDate.parse(inputDate);
 
-                // Ej i fremtiden
+                LocalDate date;
+
+                // Format-tjek
+                try{
+                    date = LocalDate.parse(inputDate);
+                }
+                catch (DateTimeParseException e) {
+                    System.out.println("Forkert datoformat. Prøv igen (ÅÅÅÅ-MM-DD)\n: ");
+                    continue;
+                }
+
+                // Dato i fremtiden
                 if(date.isAfter(today)){
                     System.out.println("Dato kan ikke være i fremtiden. Prøv igen.");
                     continue;
                 }
 
-                // Ej inden minimum alder 6 år
-                if(date.isBefore(earliestByAge)){
-                    throw new InvalidResultDateException("Dato er før svømmeren var 6 år gammel.");
+                // Svømmeren var under 6 år
+                if (date.isBefore(earliestByAge)) {
+                    System.out.println("Resultat er ugyldigt: Svømmeren var under 6 år på denne dato.");
+                    continue;
                 }
 
+                // Hvis alt er ok, returnerer datoen
                 return date;
-            }
-            catch (Exception e){ // TODO Beskeden kommer ikke rigtig frem : "Dato for svømmeren var år gammel..."
-                System.out.println("Forkert format, prøv igen (ÅÅÅÅ-MM-DD)\n: ");
-            }
         }
     }
 
