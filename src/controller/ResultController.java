@@ -23,7 +23,6 @@ import java.util.Comparator;
  *
  */
 public class ResultController {
-    // TODO: getTop5(discipline, junior/senior)
     /** Håndtering af indlæsning og lagring af resultater i "Results.txt".*/
     private final ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
     /** Reference til Database så controllern kan finde medlemmer.*/
