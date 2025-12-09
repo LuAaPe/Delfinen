@@ -151,9 +151,8 @@ public class Menu {
                 int formandChoice = inputHelper.readInt();
                 switch (formandChoice){
                     case 1:
-                        for(Member m : memberController.getAllMembers()){
-                            System.out.println(m);
-                        }
+                        // se alle medlemmer
+                        printMembersByAgeGroup();
                         break;
                     case 2:
                         // opret medlem
@@ -539,15 +538,68 @@ public class Menu {
     }
 
     /**
-     * Viser alle konkurrencesvømmere
+     * Udskriver alle medlemmer opdelt i junior- og seniormedlemmer.
+     *
+     * Junior = under 18 år.
+     * Senior = 18 år og derover
+     *
+     * Metoden gennemløber alle medlemmer i databasen to gange:
+     * - Først udskrives alle juniorer
+     * Derefter udskrives alle seniorer
+     */
+    private void printMembersByAgeGroup(){
+
+        System.out.println("\n - - - Junior Medlemmer (under 18) - - -");
+
+        System.out.println("Konkurrencesvømmere:");
+        for (Member member : database.getAllMembers()){
+            if (member.getAge() < 18 && member.getIsCompetitive()){
+                System.out.println(member);
+            }
+        }
+
+        System.out.println("\nMotionister:");
+        for (Member member : database.getAllMembers()){
+            if (member.getAge() < 18 && !member.getIsCompetitive()){
+                System.out.println(member);
+            }
+        }
+
+        System.out.println("\n - - - Senior Medlemmer (18 og over) - - -");
+
+        System.out.println("Konkurrencesvømmere:");
+        for (Member member : database.getAllMembers()){
+            if (member.getAge() >= 18 && member.getIsCompetitive()){
+                System.out.println(member);
+            }
+        }
+
+        System.out.println("\nMotionister:");
+        for (Member member : database.getAllMembers()){
+            if (member.getAge() >= 18 && !member.getIsCompetitive()){
+                System.out.println(member);
+            }
+        }
+
+    }
+
+    /**
+     * Viser alle konkurrencesvømmere opdelt i junior og senior
+     *
+     * Metoden gennemløber alle medlemmer og finder kun dem,
+     * der er konkurrencesvømmere. Derefter udskrives de i to
+     * grupper, så træneren kan se aldersfordelningen.
      */
     private void viewAllCompetitiveMembers(){
         System.out.println("\n - - - Liste over konkurrencesvømmere - - -");
 
-        boolean foundSwimmers = false; // boolean flag for a simple check
+        boolean foundSwimmers = false; // boolean flag for et enkelt tjek om det overhoved blev fundet nogle svømmere
+
+        System.out.println("\n- - - JUNIOR (under 18) - - -");
+        boolean juniorFound = false;
 
         for ( Member member : database.getAllMembers()){
-            if (member instanceof CompetitiveSwimmer competitiveSwimmer){
+            if (member instanceof CompetitiveSwimmer competitiveSwimmer && competitiveSwimmer.getAge() < 18){
                 System.out.printf("%-20s Tlf: %s ",
                         competitiveSwimmer.getFullName(),
                         competitiveSwimmer.getPhoneNr());
@@ -556,6 +608,29 @@ public class Menu {
             }
         }
 
+        if (!juniorFound){
+            System.out.println("Ingen juniorsvømmere");
+        }
+
+        System.out.println("\n- - - SENIOR (18 og over) - - -");
+
+        boolean seniorFound = false;
+
+        for ( Member member : database.getAllMembers()){
+            if (member instanceof CompetitiveSwimmer competitiveSwimmer && competitiveSwimmer.getAge() >= 18){
+                System.out.printf("%-20s Tlf: %s ",
+                        competitiveSwimmer.getFullName(),
+                        competitiveSwimmer.getPhoneNr());
+                System.out.println();
+                foundSwimmers = true;
+            }
+        }
+
+        if (!seniorFound){
+            System.out.println("Ingen seniorsvømmere.");
+        }
+
+        // Hvis ingen konkurrencesvømmere blev fundet overhovedet
         if (!foundSwimmers){
             System.out.println("Ingen konkurrencesvømmere.");
         }
