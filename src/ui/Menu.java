@@ -13,6 +13,7 @@ import util.NotCompetitiveSwimmerException;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -120,7 +121,7 @@ public class Menu {
      */
     private void chairmanMenu(){
         while(true){
-            System.out.println("   FORMAND:");
+            System.out.println("\n   FORMAND:");
             System.out.println("""
                     ╔═══════════════╗
                     ║1. SE MEDLEMMER║
@@ -272,7 +273,7 @@ public class Menu {
      */
     private void trainerMenu(){
         while(true){
-            System.out.println("   TRÆNER:");
+            System.out.println("\n   TRÆNER:");
             System.out.println("""
                     ╔══════════════════════════╗
                     ║1. Tilføj træningsresultat║
@@ -283,7 +284,10 @@ public class Menu {
                     ║2. Tilføj stævneresultat║
                     ╚════════════════════════╝
                     """);
-            System.out.println("3. Se top 5");
+            System.out.println("""
+                    ╔═══════════╗
+                    ║3. Se top 5║
+                    ╚═══════════╝""");
             System.out.println("""
                     ╔═════════════════════════════════════╗
                     ║4. Vis liste over konkurrencesvømmere║
@@ -316,7 +320,7 @@ public class Menu {
                         addCompetitionResult();
                         break;
                     case 3:
-                        // top 5
+                        showTopFive();
                         break;
                     case 4:
                         viewAllCompetitiveMembers();
@@ -615,6 +619,69 @@ public class Menu {
         }
     }
 
+    /**
+     * Viser top 5 konkurrencesvømmere i en valgt disciplin og aldersgruppe
+     */
+    private void showTopFive(){
+        System.out.println("""
+                --- INDTAST DISCIPLIN ---
+                1. Butterfly
+                2. Crawl
+                3. Backstroke
+                4. Breaststroke
+                """);
+        System.out.print(": ");
+        int disciplineChoice = inputHelper.readInt();
+        Discipline discipline;
+
+        switch (disciplineChoice){
+            case 1:
+                discipline = Discipline.BUTTERFLY;
+                break;
+            case 2:
+                discipline = Discipline.CRAWL;
+                break;
+            case 3:
+                discipline = Discipline.BACKSTROKE;
+                break;
+            case 4:
+                discipline = Discipline.BREASTSTROKE;
+                break;
+            default:
+                System.out.println("Ugyldigt valg.");
+                return;
+        }
+
+        // Vælg aldersgruppe
+        System.out.println("Junior (under 18) eller senior (18 og over)?");
+        System.out.println("1. Junior");
+        System.out.println("2. Senior");
+
+        System.out.print(": ");
+        int ageChoice = inputHelper.readInt();
+        boolean junior = ageChoice == 1;
+
+        // Hent resultater via ResultController
+        ArrayList<CompetitiveSwimmer> top5 = resultController.getTop5(discipline, junior);
+
+        // vis resultater
+        if(top5.isEmpty()){
+            System.out.println("Ingen svømmere har resultater i denne disciplin.");
+            return;
+        }
+        // TODO MAKE A FORMAT STRING
+        System.out.println("Top 5 i "+ discipline + " (" +
+                (junior ? "Junior" : "Senior") + "): ");
+
+        for (int i = 0; i < top5.size(); i++){
+            CompetitiveSwimmer swimmer = top5.get(i);
+
+            Result best = swimmer.getBestResultForDiscipline(discipline);
+            System.out.println();
+            System.out.printf("%d. %s %s - Tid: %s sek",
+            i+1, swimmer.getFirstName(), swimmer.getSurName(), best.getFormattedTime());
+        }
+    }
 
     /**
      * Spørger brugeren hvordan resultaterne skal sorteres
