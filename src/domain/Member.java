@@ -22,7 +22,7 @@ public class Member {
     private final String firstName;
     /** Efternavn*/
     private final String surName;
-    /** Fuldtnavn = fornavn + efternavn. */
+    /** Fuldt navn = fornavn + efternavn. */
     private final String fullName;
     /** Fødselsdato bruges til at beregne alder og kontingent.*/
     private final LocalDate birthDate;
@@ -47,18 +47,17 @@ public class Member {
      * @param surName       Efternavn
      * @param phoneNr       Telefonnummer (unik)
      * @param birthDate     Fødselsdato
-     * @param isCompetitive Om medlemmet er konkurrencesvømmer
      * @param isActive      Om medlemmet er aktivt/passivt medlem
      * @param isPaid        Om medlemmet hat betalt kontingent
      */
-    public Member(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
+    public Member(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isActive, boolean isPaid){
         this.firstName = firstName;
         this.surName = surName;
         this.fullName = firstName + " " + surName; // TODO metode, noget :))
         this.phoneNr = phoneNr;
         this.birthDate = birthDate;
         this.isActive = isActive;
-        this.isCompetitive = isCompetitive;
+        this.isCompetitive = false;
         this.isPaid = isPaid;
 
         // Beregn aldersgruppe og årlig kontingent når medlemmet oprettes
