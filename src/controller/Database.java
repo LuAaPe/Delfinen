@@ -7,7 +7,7 @@ import domain.Member;
 import java.time.LocalDate;
 import java.util.ArrayList;
 /**
- * Database-klassen fungerer som programmets "hukommelse".
+ * Database-klassen fungerer som programmets "hukommelse"/"datalager".
  *
  * Den indeholder:
  * - En liste over alle medlemmer

@@ -45,4 +45,18 @@ public class InputHelper {
         }
     }
 
+    public boolean readYesOrNo(String output){
+        while (true){
+            System.out.println(output);
+            String answer = input.nextLine().toLowerCase().trim();
+            if (answer.equals("j")){
+                return true;
+            }
+            if (answer.equals("n")){
+                return false;
+            }
+            System.out.println("Skriv j eller n");
+        }
+    }
+
 }
