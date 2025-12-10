@@ -74,6 +74,7 @@ public class TreasurerMenu {
         boolean success = memberController.setMemberPaid(phoneNr);
 
         if (success) {
+            memberController.updateMember(memberController.findByPhoneNr(phoneNr));
             System.out.println("Betaling registreret på: " + memberController.findByPhoneNr(phoneNr));
         } else {
             System.out.println("Ingen medlem med det telefonnummer blev fundet.");

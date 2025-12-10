@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * InputHelper håndterer validering af brugerens input
- *
+
  * Grunden til at InputHelper eksisterer:
  * - Menu-klassen bliver renere og nemmere at læse
  */
@@ -34,8 +34,7 @@ public class InputHelper {
         while (true){
             try {
                 // Læser en linje tekst og førsøger at konvertere den til et tal
-                int value = Integer.parseInt(input.nextLine());
-                return value;
+                return Integer.parseInt(input.nextLine().trim());
             }
             catch (NumberFormatException e){
                 // Brugeren skrev noget forkert ---> given fejlbesked og prøv igen

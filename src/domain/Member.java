@@ -2,18 +2,15 @@ package domain;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
-
 /**
  * Klassen repræsenterer et almindeligt medlem i svømmeklubben.
- *
  * Medlemmet indeholder:
  * - Personlige oplysninger (navn, tlf.nr., fødselsdato)
  * - Medlemsstatus (aktiv/passiv, betalt/ikke betalt)
  * - Aldersgruppe (junior/senior) beregnet ud fra fødselsdato
  * - Om medlemmet er konkurrencesvømmer eller ej
  * - Den årlige kontingentpris, som beregnes automatisk
- *
+
  * Bemærk:
  * isCompetitive bruges af fil-indlæsningen for at afgøre,
  * om medlemmer fra filen skal oprettes som CompetitiveSwimmer objekter.
@@ -22,11 +19,11 @@ public class Member {
     /** Medlemmets telefonnummer. Bruges som unikt ID i systemet. */
     private final String phoneNr;
     /** Fornavn.*/
-    private String firstName;
+    private final String firstName;
     /** Efternavn*/
-    private String surName;
+    private final String surName;
     /** Fuldtnavn = fornavn + efternavn. */
-    private String fullName;
+    private final String fullName;
     /** Fødselsdato bruges til at beregne alder og kontingent.*/
     private final LocalDate birthDate;
     /** Aktiv = alminderligt kontingent. Passiv = reduceret kontingent.*/
@@ -152,12 +149,7 @@ public class Member {
      * Junior = under 18 år.
      */
     public void setAgeGroup(){
-        if(getAge() >= 18){
-            isJunior = false;
-        }
-        else {
-            isJunior = true;
-        }
+        isJunior = getAge() < 18;
     }
 
 

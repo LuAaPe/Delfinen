@@ -7,6 +7,7 @@ import util.MemberNotFoundException;
 import util.NotCompetitiveSwimmerException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -35,8 +36,8 @@ public class TrainerMenu {
      * - se en svømmers resultater
      * flyttet til trinaer menu
      */
-    public void show(){
-        while(true){
+    public void show() {
+        while (true) {
             System.out.println("   TRÆNER:");
             System.out.println("""
                     ╔══════════════════════════╗
@@ -48,7 +49,11 @@ public class TrainerMenu {
                     ║2. Tilføj stævneresultat║
                     ╚════════════════════════╝
                     """);
-            System.out.println("3. Se top 5");
+            System.out.println("""
+                    ╔══════════════╗
+                    ║3. Se TOP 5   ║
+                    ╚══════════════╝
+                    """);
             System.out.println("""
                     ╔═════════════════════════════════════╗
                     ║4. Vis liste over konkurrencesvømmere║
@@ -70,40 +75,34 @@ public class TrainerMenu {
                     ╚═══════════════╝
                     """);
 
-            try {
-                System.out.print(": ");
-                int trainerChoice = inputHelper.readInt();
-                switch (trainerChoice){
-                    case 1:
-                        addTrainingResult();
-                        break;
-                    case 2:
-                        addCompetitionResult();
-                        break;
-                    case 3:
-                        // top 5
-                        break;
-                    case 4:
-                        viewAllCompetitiveMembers();
-                        break;
-                    case 5:
-                        viewMemberResuls();
-                        break;
-                    case 6:
-                        return;
-                    case 7:
-                        // exit
-                        input.close();
-                        System.exit(0);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            //TODO
-            //Hvad skal der fanges her?
-            catch (Exception e){
-                System.out.println(e);
+
+            System.out.print(": ");
+            int trainerChoice = inputHelper.readInt();
+            switch (trainerChoice) {
+                case 1:
+                    addTrainingResult();
+                    break;
+                case 2:
+                    addCompetitionResult();
+                    break;
+                case 3:
+                    viewTop5();
+                    break;
+                case 4:
+                    viewAllCompetitiveMembers();
+                    break;
+                case 5:
+                    viewMemberResuls();
+                    break;
+                case 6:
+                    return;
+                case 7:
+                    // exit
+                    input.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Ugyldigt valg.");
             }
         }
     }
@@ -111,11 +110,11 @@ public class TrainerMenu {
     /**
      * Tilføjer et træningsresultat til en konkurrencesvømmer
      */
-    private void addTrainingResult(){
+    private void addTrainingResult() {
         try {
             System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
             String phone = input.nextLine(); // TODO make more robust
-            if (phone.equals("0")){
+            if (phone.equals("0")) {
                 return;
             }
             Discipline discipline = resultInput.enterDiscipline();
@@ -125,23 +124,21 @@ public class TrainerMenu {
 
             resultController.addTrainingResult(phone, discipline, timeMilliSeconds, date);
             System.out.println("Træningsresultat gemt!");
-        }
-        catch (MemberNotFoundException | NotCompetitiveSwimmerException e){
-            System.out.println("Fejl: "+ e.getMessage());
-        }
-        catch (Exception e){
-            System.out.println("Et fejl upstod. "+ e.getMessage());
+        } catch (MemberNotFoundException | NotCompetitiveSwimmerException e) {
+            System.out.println("Fejl: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Et fejl upstod. " + e.getMessage());
         }
     }
 
     /**
      * Tilføjer et stævneresultat
      */
-    private void addCompetitionResult(){
+    private void addCompetitionResult() {
         try {
-            System.out.println("Indtast telefonnummer på svømmer. (Tast 0 for at gå tilbage) \n : "  );
+            System.out.println("Indtast telefonnummer på svømmer. (Tast 0 for at gå tilbage) \n : ");
             String phone = input.nextLine(); // TODO make more robust
-            if (phone.equals("0")){
+            if (phone.equals("0")) {
                 return;
             }
 
@@ -160,28 +157,25 @@ public class TrainerMenu {
             resultController.addCompetitionResult(phone, discipline, timeMilliSeconds, date, eventName, placement);
             System.out.println("Stævneresultat gemt!");
 
-        }
-        catch (MemberNotFoundException | NotCompetitiveSwimmerException e){
+        } catch (MemberNotFoundException | NotCompetitiveSwimmerException e) {
             System.out.println("Fejl: " + e.getMessage());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("En fejl upstod: " + e.getMessage());
         }
 
     }
 
 
-
     /**
      * Viser alle konkurrencesvømmere
      */
-    private void viewAllCompetitiveMembers(){
+    private void viewAllCompetitiveMembers() {
         System.out.println("\n - - - Liste over konkurrencesvømmere - - -");
 
         boolean foundSwimmers = false; // boolean flag for a simple check
 
-        for ( Member member : memberController.getAllMembers()){
-            if (member instanceof CompetitiveSwimmer competitiveSwimmer){
+        for (Member member : memberController.getAllMembers()) {
+            if (member instanceof CompetitiveSwimmer competitiveSwimmer) {
                 System.out.printf("%-20s Tlf: %s ",
                         competitiveSwimmer.getFullName(),
                         competitiveSwimmer.getPhoneNr());
@@ -190,18 +184,19 @@ public class TrainerMenu {
             }
         }
 
-        if (!foundSwimmers){
+        if (!foundSwimmers) {
             System.out.println("Ingen konkurrencesvømmere.");
         }
 
         System.out.println("------------------\n");
     }
 
+
     /**
      * Viser alle resultater for en konkurrencesvømmer,
      * sorteret efter brugerens valg
      */
-    private void viewMemberResuls(){
+    private void viewMemberResuls() {
         try {
             System.out.println("Indtast telefonnummer på svømmeren\n: ");
             String phone = input.nextLine();
@@ -211,16 +206,15 @@ public class TrainerMenu {
             // Først spørg hvordan vi skal sortere dem
             preferredSortingPrompt(competitiveSwimmer);
 
-            System.out.println("\n- - - Resultater for "+
+            System.out.println("\n- - - Resultater for " +
                     competitiveSwimmer.getFullName() + " - - -");
 
             // Træningsresultater:
             System.out.println("\nTræningsresultater:");
-            if (competitiveSwimmer.getTrainingResults().isEmpty()){
+            if (competitiveSwimmer.getTrainingResults().isEmpty()) {
                 System.out.println("Ingen resultater.");
-            }
-            else {
-                for (Result result : competitiveSwimmer.getTrainingResults()){
+            } else {
+                for (Result result : competitiveSwimmer.getTrainingResults()) {
                     String line = String.format("%s - %s - %s",
                             result.getDate(),
                             result.getDiscipline(),
@@ -231,11 +225,10 @@ public class TrainerMenu {
 
             // Stævneresultater:
             System.out.println("\nStævneresultater:");
-            if (competitiveSwimmer.getCompetitionResults().isEmpty()){
+            if (competitiveSwimmer.getCompetitionResults().isEmpty()) {
                 System.out.println("Ingen resultater.");
-            }
-            else {
-                for (CompetitionResult competitionResult : competitiveSwimmer.getCompetitionResults()){
+            } else {
+                for (CompetitionResult competitionResult : competitiveSwimmer.getCompetitionResults()) {
                     String line = String.format("%s - %s - %s (%s, placering: %d)",
                             competitionResult.getDate(),
                             competitionResult.getDiscipline(),
@@ -247,8 +240,7 @@ public class TrainerMenu {
                 }
             }
             System.out.println("\n--------------------------");
-        }
-        catch (MemberNotFoundException | NotCompetitiveSwimmerException e){
+        } catch (MemberNotFoundException | NotCompetitiveSwimmerException e) {
             System.out.println("Fejl: " + e.getMessage());
         }
     }
@@ -256,7 +248,7 @@ public class TrainerMenu {
     /**
      * Spørger brugeren hvordan resultaterne skal sorteres
      */
-    private void preferredSortingPrompt(CompetitiveSwimmer competitiveSwimmer){
+    private void preferredSortingPrompt(CompetitiveSwimmer competitiveSwimmer) {
         System.out.println("Hvordan vil du sortere resultater?");
         System.out.println("1. Hurtigste tid");
         System.out.println("2. Dato (nyeste først)");
@@ -283,18 +275,80 @@ public class TrainerMenu {
                 sortByTime(competitiveSwimmer);
         }
     }
+
+    private void viewTop5() {
+        System.out.println("""
+                Vælg en disciplin:
+                1. Butterfly
+                2. Crawl
+                3. Ryg crawl
+                4. Bryst Svømning
+                """);
+        int choice = inputHelper.readInt();
+
+        Discipline discipline;
+
+        switch (choice) {
+            case 1 -> discipline = Discipline.BUTTERFLY;
+            case 2 -> discipline = Discipline.CRAWL;
+            case 3 -> discipline = Discipline.BACKSTROKE;
+            case 4 -> discipline = Discipline.BREASTSTROKE;
+            default -> {
+                System.out.println("Ugyldigt valg");
+                return;
+            }
+        }
+
+        System.out.println("""
+                Vælg aldersgruppe:
+                1. Junior (<18)
+                2. Senior (18+)
+                """);
+
+        int ageChoice = inputHelper.readInt();
+        boolean isJunior;
+
+        switch (ageChoice) {
+            case 1 -> isJunior = true;
+            case 2 -> isJunior = false;
+            default -> {
+                System.out.println("Ugyldigt valg.");
+                return;
+            }
+        }
+
+        ArrayList<CompetitiveSwimmer> top5 = resultController.getTop5(discipline, isJunior);
+
+        System.out.println("\n--- TOP 5 " + discipline + " (" + (isJunior ? "Junior" : "Senior") + ") ---\n");
+
+        if (top5.isEmpty()) {
+            System.out.println("Ingen resultater fundet");
+            return;
+        }
+
+        int rank = 1;
+
+        for (CompetitiveSwimmer s : top5) {
+            System.out.println(rank++ + ". " + s.getFullName() + " - " + s.getBestResultForDiscipline(discipline).getFormattedTime());
+        }
+        System.out.println("--------------------------------");
+
+    }
+
+
     /**
      * Sorterer resultater efter hurtigste tid først
      */
-    private void sortByTime(CompetitiveSwimmer competitiveSwimmer){
+    private void sortByTime(CompetitiveSwimmer competitiveSwimmer) {
         // sorter efter tid (hurtigst først)
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparingInt(Result::getTimeMilliSeconds));
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparingInt(CompetitionResult::getTimeMilliSeconds));
     }
+
     /**
      * Sorterer resultater efter dato (nyeste først)
      */
-    private void sortByDate(CompetitiveSwimmer competitiveSwimmer){
+    private void sortByDate(CompetitiveSwimmer competitiveSwimmer) {
         // sorter efter dato (nyeste først)
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDate).reversed());
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDate).reversed());
@@ -303,7 +357,7 @@ public class TrainerMenu {
     /**
      * Sorterer resultater alfabetisk efter disciplin
      */
-    private void sortByDiscipline(CompetitiveSwimmer competitiveSwimmer){
+    private void sortByDiscipline(CompetitiveSwimmer competitiveSwimmer) {
         // Sortere efter disciplin alfabetisk
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDiscipline));
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDiscipline));
