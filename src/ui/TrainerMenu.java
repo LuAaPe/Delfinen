@@ -113,7 +113,7 @@ public class TrainerMenu {
     private void addTrainingResult() {
         try {
             System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
-            String phone = input.nextLine(); // TODO make more robust
+            String phone = input.nextLine();
             if (phone.equals("0")) {
                 return;
             }

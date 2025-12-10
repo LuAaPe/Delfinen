@@ -1,6 +1,7 @@
 package ui;
 
 import controller.MemberController;
+import domain.CompetitiveSwimmer;
 import domain.Member;
 
 import java.time.LocalDate;
@@ -82,9 +83,32 @@ public class ChairmanMenu {
     }
 
     private void showAllMembers() {
-        for (Member m : memberController.getAllMembers()) {
-            System.out.println(m);
+        System.out.println("\n- - - JUNIOR MEDLEMMER - - -");
+        for (Member member : memberController.getAllMembers()){
+            if (member.getAge() < 18){
+                printMemberLine(member);
+            }
         }
+
+        System.out.println("\n- - - SENIOR MEDLEMMER - - -");
+        for (Member member : memberController.getAllMembers()){
+            if (member.getAge() >= 18){
+                printMemberLine(member);
+            }
+        }
+        System.out.println();
+    }
+
+    private void printMemberLine(Member member){
+        String type = (member instanceof CompetitiveSwimmer) ? "Konkurrensesvømmer" : "Motionist";
+        String status = member.getIsActive() ? "Aktiv" : "Passiv";
+
+        System.out.printf("%-20s | Tlf: %-12s | Alder: %-2d | %-11s | %-9s\n",
+                member.getFullName(),
+                member.getPhoneNr(),
+                member.getAge(),
+                type,
+                status);
     }
 
     /**
