@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Den her klasse interagerer IKKE med brugeren.
  * Den bruges alene af controllers.
  */
-public class Database {
+public class Klubben {
 
     /** Bruges til at læse og gemme members i tekstfilen. */
     private final MemberFileHandler fileHandler;
@@ -34,7 +34,7 @@ public class Database {
      * 2. Kontingenter opdateres (i tilfælde af ændrede priser)
      * 3. Alt gemmes igen så filen er opdateret
      */
-    public Database(MemberFileHandler fileHandler){
+    public Klubben(MemberFileHandler fileHandler){
         this.fileHandler = fileHandler;
 
         // Indlæs medlemmer fra filen via MemberFileHandler

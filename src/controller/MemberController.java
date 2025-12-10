@@ -17,14 +17,14 @@ import java.util.ArrayList;
  */
 public class MemberController {
     /** Reference til Database-objektet, hvor alle medlemmer ligger.*/
-    Database database;
+    Klubben klubben;
 
     /**
      * Konstruktør.
      * Modtager et Database-objekt, som controllern skal arbejde med.
      */
-    public MemberController(Database database){
-        this.database = database;
+    public MemberController(Klubben klubben){
+        this.klubben = klubben;
     }
 
 
@@ -35,7 +35,7 @@ public class MemberController {
      * som opretter objektet og gemmer det i filen.
      */
     public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
-        database.addNewMember(firstName,surName, phoneNr, birthDate,isCompetitive,isActive,isPaid);
+        klubben.addNewMember(firstName,surName, phoneNr, birthDate,isCompetitive,isActive,isPaid);
     }
 
     /**
@@ -43,7 +43,7 @@ public class MemberController {
      * Bruges bl.a. i Formand-menuen.
      */
     public ArrayList<Member> getAllMembers(){
-        return database.getAllMembers();
+        return klubben.getAllMembers();
     }
 
     /**
@@ -51,7 +51,7 @@ public class MemberController {
      * Bruges ved programstart og hvis kontingentregler ændres.
      */
     public void updateYearlyFee() {
-        database.updateYearlyFee();
+        klubben.updateYearlyFee();
     }
 
     /**
@@ -65,7 +65,7 @@ public class MemberController {
      * Controlleren beder Database om at gemme ændringerne i filen.
      */
     public void updateMember(Member member){
-        database.saveMembers();
+        klubben.saveMembers();
     }
 
     /**
@@ -73,14 +73,14 @@ public class MemberController {
      * Bruges af Kassereren.
      */
     public double getTotalExpectedFees() {
-        return database.getTotalExpectedFees();
+        return klubben.getTotalExpectedFees();
     }
 
     /**
      * Returnerer liste over alle medlemmer, som ikke har betalt.
      */
     public ArrayList<Member> getMembersInDebt() {
-        return database.getMembersInDebt();
+        return klubben.getMembersInDebt();
     }
 
     /**
@@ -88,7 +88,7 @@ public class MemberController {
      * Returnerer null hvis det ikke findes.
      */
     public Member findByPhoneNr(String phoneNr) {
-        return database.findByPhoneNr(phoneNr);
+        return klubben.findByPhoneNr(phoneNr);
     }
 
     /**
@@ -96,6 +96,6 @@ public class MemberController {
      * Returnerer true hvis det lykkes, ellers false.
      */
     public boolean setMemberPaid(String phoneNr) {
-        return database.setMemberPaid(phoneNr);
+        return klubben.setMemberPaid(phoneNr);
     }
 }

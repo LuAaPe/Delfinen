@@ -1,6 +1,6 @@
 package ui;
 
-import controller.Database;
+import controller.Klubben;
 import controller.MemberController;
 import controller.ResultController;
 import data.MemberFileHandler;
@@ -12,9 +12,9 @@ public class App {
         Scanner input = new Scanner(System.in);
         InputHelper inputHelper = new InputHelper(input);
 
-        Database database = new Database(new MemberFileHandler("Memberlist.txt"));
-        MemberController memberController = new MemberController(database);
-        ResultController resultController = new ResultController(database);
+        Klubben klubben = new Klubben(new MemberFileHandler("Memberlist.txt"));
+        MemberController memberController = new MemberController(klubben);
+        ResultController resultController = new ResultController(klubben);
         resultController.loadResults();
 
         // Input håndtering og behandling
