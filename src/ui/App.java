@@ -5,6 +5,7 @@ import controller.MemberController;
 import controller.ResultController;
 import data.MemberFileHandler;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class App {
