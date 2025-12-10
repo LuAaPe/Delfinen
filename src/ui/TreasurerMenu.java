@@ -32,6 +32,7 @@ public class TreasurerMenu {
                     1. Vis samlet forventet kontingent
                     2. Vis medlemmer i restance
                     3. Registrer betaling
+                    4. Vis et medlems kontingent
                     0. Tilbage
                     """);
             int choice = inputHelper.readInt();
@@ -40,6 +41,7 @@ public class TreasurerMenu {
                 case 1 -> showTotalFees();
                 case 2 -> showMembersInDebt();
                 case 3 -> registerPayment();
+                case 4 -> checkYearlyFee();
                 case 0 -> run = false;
                 default -> System.out.println("Ugyldigt Valg");
             }
@@ -79,5 +81,15 @@ public class TreasurerMenu {
         } else {
             System.out.println("Ingen medlem med det telefonnummer blev fundet.");
         }
+    }
+
+    private void checkYearlyFee(){
+        System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
+        String phone = input.nextLine();
+        if (phone.equals("0")) {
+            return;
+        }
+        Member member = memberController.findByPhoneNr(phone);
+        System.out.println(member.getFullName()+", Kontingent: "+member.getYearlyFee());
     }
 }
