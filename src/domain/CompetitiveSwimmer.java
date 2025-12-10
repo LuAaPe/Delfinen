@@ -4,20 +4,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 /**
  * Klassen repræsenterer en konkurrencesvømmer.
- *
+
  * Denne klasse udvider member og tilføjer:
  * - en liste med træningsresultater
  * - en liste med stævneresultater
- *
+
  * CompetitiveSwimmer bruges af træneren i systemet
  * til at administrere resultater og sortering.
  */
 public class CompetitiveSwimmer extends Member{
     /** Liste over alle træningsresultater for svømmeren.*/
-    private ArrayList<Result> trainingResults = new ArrayList<>();
+    private final ArrayList<TrainingResult> trainingResults = new ArrayList<>();
     /** Liste over alle stævneresultater for svømmeren.*/
-    private ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
-    // TODO se om ikke ALLE resultater nu kan komme på samme liste
+    private final ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
     /**
      * Konstruktør for en konkurrencesvømmer.
      * Alle basis-informationer håndteres af superklassen Member.
@@ -40,8 +39,8 @@ public class CompetitiveSwimmer extends Member{
     /**
      * Tilføjer et træningsresultat til svømmeren.
      */
-    public void addTrainingResult(Result result){
-        trainingResults.add(result);
+    public void addTrainingResult(TrainingResult trainingResult){
+        trainingResults.add(trainingResult);
     }
 
     /**
@@ -55,7 +54,7 @@ public class CompetitiveSwimmer extends Member{
      * Returnerer listen med træningsresultater.
      * Bruges bl.a. til sortering i Menu.
      */
-    public ArrayList<Result> getTrainingResults() {
+    public ArrayList<TrainingResult> getTrainingResults() {
         return trainingResults;
     }
 
@@ -68,11 +67,11 @@ public class CompetitiveSwimmer extends Member{
 
     /**
      * Finder svømmerens bedste (hurtigeste) resultat i en bestemt disciplin.
-     *
+
      * Metoden kigger både i:
      * - træningsresultater
      * - stævneresultater
-     *
+
      * Den gennemgår ALLE resultater i den givne disciplin og returnerer det
      * resultat som har den lavaste tid (hurtigst).
      *
@@ -99,11 +98,4 @@ public class CompetitiveSwimmer extends Member{
         }
         return best;
     }
-        /*public void removeTrainingResult(Member member) {
-            for(CompetitionResult competitionResult : competitionResults) {
-                if(member.getPhoneNr()== )
-            }
-        }
-
-         */
 }

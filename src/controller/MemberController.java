@@ -11,13 +11,13 @@ import java.util.ArrayList;
  * - udskrive lister over medlemmer
  * - opdatere oplysninger om medlemmer
  * - at sørge for at kalde database, når noget skal gemmes
- *
+
  * Menu-klassen arbejder IKKE direkte med Database
  * Menu --> MemberController --> Database
  */
 public class MemberController {
     /** Reference til Database-objektet, hvor alle medlemmer ligger.*/
-    Klubben klubben;
+    private final Klubben klubben;
 
     /**
      * Konstruktør.
@@ -30,7 +30,7 @@ public class MemberController {
 
     /**
      * Opretter et nyt medlem i systemet.
-     *
+
      * Controllern sender informationen videre til Database,
      * som opretter objektet og gemmer det i filen.
      */
@@ -56,12 +56,12 @@ public class MemberController {
 
     /**
      * Bruges når et medlems oplysninger er ændret.
-     *
+
      * Eksempel:
      * - medlem bliver aktiv efter at være passiv
      * - betalingsstatus ændres
      * - kontingent ændres
-     *
+
      * Controlleren beder Database om at gemme ændringerne i filen.
      */
     public void updateMember(Member member){
@@ -95,11 +95,11 @@ public class MemberController {
      * Markerer et medlem som betalt.
      * Returnerer true hvis det lykkes, ellers false.
      */
-    public boolean setMemberPaid(String phoneNr) {
-        return klubben.setMemberPaid(phoneNr);
+    public void setMemberPaid(String phoneNr) {
+        klubben.setMemberPaid(phoneNr);
     }
 
-    public void removeMember (String phoneNr) {
-        klubben.removeMember(phoneNr);
+    public Member removeMember (String phoneNr) {
+        return klubben.removeMember(phoneNr);
     }
 }

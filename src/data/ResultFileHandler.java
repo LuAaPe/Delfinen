@@ -5,25 +5,24 @@ import domain.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
  * ResultFileHandler er ansvarlig al filhåndtering relateret til resultater.
- *
+
  * Den:
  * - indlæser alle resultater fra "Results.txt"
  * - gemmer alle resultater tilbage i filen.
- *
+
  * Klassen implementerer TextFileHandler-interfacet, så den kan bruge:
  * - openScanner() til at åbne .txt-filen for læsning
  * - openWriter() til at åbne .txt-filen for skrivning
- *
+
  * Resultater skrives i formatet:
- *
+
  * TRÆNING
  *      phone,TRÆNING,disciplin,timeMillis,date
- *
+
  * STÆVNE
  *      phone,STÆVNE,disciplin,timeMillis,date,eventName,placement
  *
@@ -42,9 +41,9 @@ public class ResultFileHandler implements TextFileHandler {
     /**
      * Indlæser ALLE resultater fra filen og tilføjer dem
      * til de rigtige CompetitiveSwimmer-objekter i medlemslisten
-     *
+
      * openScanner() fra TextFileHandler-interfacet bruges til at åbne filen.
-     *
+
      * 1. Læs hver linje
      * 2. Split den ved komma
      * 3. Find rigtigt medlem via telefonnummer
@@ -81,8 +80,8 @@ public class ResultFileHandler implements TextFileHandler {
 
                 // - - - Træningsresultat:
                 if (type.equals("TRÆNING")){
-                    Result result = new TrainingResult(discipline, timeMilliSeconds, date);
-                    competitiveSwimmer.addTrainingResult(result);
+                    TrainingResult trainingResult = new TrainingResult(discipline, timeMilliSeconds, date);
+                    competitiveSwimmer.addTrainingResult(trainingResult);
                 }
 
                 // - - - Stævneresultat:

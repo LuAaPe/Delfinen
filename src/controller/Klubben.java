@@ -1,31 +1,36 @@
 package controller;
 
 import data.MemberFileHandler;
-import domain.CompetitionResult;
 import domain.CompetitiveSwimmer;
 import domain.Member;
+import util.MemberNotFoundException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 /**
  * Database-klassen fungerer som programmets "hukommelse"/"datalager".
- *
+ * <p>
  * Den indeholder:
  * - En liste over alle medlemmer
  * - Metoder til at oprette, ændre og hente medlemmer
  * - Forbindelse til filsystemet via MemberFileHandler
- *
+ * <p>
  * Database læser medlemmer fra Memberlist.txt når programmet starter,
  * og gemmer dem tilbage i filen når det sker ændringer
- *
+ * <p>
  * Den her klasse interagerer IKKE med brugeren.
  * Den bruges alene af controllers.
  */
 public class Klubben {
 
-    /** Bruges til at læse og gemme members i tekstfilen. */
+    /**
+     * Bruges til at læse og gemme members i tekstfilen.
+     */
     private final MemberFileHandler fileHandler;
-    /** Listen med alle Member-objekter som programmet bruger mens det kører.*/
+    /**
+     * Listen med alle Member-objekter som programmet bruger mens det kører.
+     */
     private final ArrayList<Member> members;
 
     /**
@@ -35,7 +40,7 @@ public class Klubben {
      * 2. Kontingenter opdateres (i tilfælde af ændrede priser)
      * 3. Alt gemmes igen så filen er opdateret
      */
-    public Klubben(MemberFileHandler fileHandler){
+    public Klubben(MemberFileHandler fileHandler) {
         this.fileHandler = fileHandler;
 
         // Indlæs medlemmer fra filen via MemberFileHandler
@@ -43,34 +48,27 @@ public class Klubben {
 
         // Sørg for at kontingent-priser altid er korrekte ved opstart
         updateYearlyFee();
-
-        // Gem igen hvis priserne blev ændret
-        saveMembers();
     }
 
     /**
      * Opretter et nyt Member-objekt og tilføjer det til listen,
      * samt gemmer hele listen i tekstfilen.
-     *
+     * <p>
      * Member(. . .) konstruktøren tager alle de nødvendige parametre.
      */
-    public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
-        try {
-            Member member;
+    public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid) {
 
-            if (isCompetitive){
-                member = new CompetitiveSwimmer(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
-            }
-            else {
-                member = new Member(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
-            }
+        Member member;
 
-            members.add(member);
-            saveMembers(); // Gem liste med ny medlem
+        if (isCompetitive) {
+            member = new CompetitiveSwimmer(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
+        } else {
+            member = new Member(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+
+        members.add(member);
+        saveMembers(); // Gem liste med ny medlem
+
     }
 
 
@@ -78,7 +76,7 @@ public class Klubben {
      * Returnerer listen over alle medlemmer.
      * Bruges bl.a. af Formand- og Kasserer-menuerne.
      */
-    public ArrayList<Member> getAllMembers(){
+    public ArrayList<Member> getAllMembers() {
         return members;
     }
 
@@ -89,7 +87,7 @@ public class Klubben {
      * - medlem ændres
      * - medlem betaler
      */
-    public void saveMembers(){
+    public void saveMembers() {
         fileHandler.saveListOfMembersToFile(members);
     }
 
@@ -101,15 +99,16 @@ public class Klubben {
         for (Member member : members) {
             member.setYearlyFee();
         }
+        saveMembers();
     }
 
     /**
      * Beregner samlet forventet kontingent fra alle medlemmer.
      * Bruges af Kasserer-menuen.
      */
-    public double getTotalExpectedFees(){
+    public double getTotalExpectedFees() {
         double sum = 0;
-        for (Member m : members){
+        for (Member m : members) {
             sum += m.getYearlyFee();
         }
         return sum;
@@ -118,10 +117,10 @@ public class Klubben {
     /**
      * Returnerer en liste med alle medlemmer, som IKKE har betalt.
      */
-    public ArrayList<Member> getMembersInDebt(){
+    public ArrayList<Member> getMembersInDebt() {
         ArrayList<Member> inDebt = new ArrayList<>();
-        for (Member m : members){
-            if (!m.getIsPaid()){
+        for (Member m : members) {
+            if (!m.getIsPaid()) {
                 inDebt.add(m);
             }
         }
@@ -131,40 +130,32 @@ public class Klubben {
     /**
      * Finder et medlem ud fra telefonnummer.
      */
-    public Member findByPhoneNr(String phoneNr){
-        for (Member m : members){
-            if (m.getPhoneNr().equals(phoneNr)){
+    public Member findByPhoneNr(String phoneNr) {
+        for (Member m : members) {
+            if (m.getPhoneNr().equals(phoneNr)) {
                 return m;
             }
         }
-        return null;
+        throw new MemberNotFoundException("Intet medlem med telefonnummer: " + phoneNr);
     }
 
     /**
      * Markerer et medlem som betalr, gemmer ændringen i filen,
      * og returnerer true hvis det lykkes.
-     *
+     * <p>
      * Bruges i Kasserer-menuen.
      */
-    public boolean setMemberPaid(String phoneNr){
+    public void setMemberPaid(String phoneNr) {
         Member m = findByPhoneNr(phoneNr);
-        if (m != null) {
-            m.setIsPaid(true);
-            saveMembers(); // Gem ændringen
-            return true;
-        }
-        return false; // Medlem findes ikke
+        m.setIsPaid(true);
+        saveMembers(); // Gem ændringen
     }
 
-    public void removeMember (String phoneNr) {
+    public Member removeMember(String phoneNr) {
         Member m = findByPhoneNr(phoneNr);
-        if (m == null) {
-            System.out.println("Tlf nummer eksisterer ikke.");
-        } else {
-            members.remove(m);
-            System.out.println("Medlemmer fjernet." + m.getFullName());
-        }
-
+        members.remove(m);
+        saveMembers();
+        return m;
     }
 
 }

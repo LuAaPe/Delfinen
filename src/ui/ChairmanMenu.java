@@ -3,6 +3,7 @@ package ui;
 import controller.MemberController;
 import domain.CompetitiveSwimmer;
 import domain.Member;
+import util.MemberNotFoundException;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -63,7 +64,7 @@ public class ChairmanMenu {
                     break;
                 case 4:
                     // f.eks slet medlem
-                    // f.eks memberList.deleteMember();
+                    removeMember();
                     break;
                 case 5:
                     // Vis kontingenter f.eks
@@ -130,6 +131,18 @@ public class ChairmanMenu {
 
         memberController.addNewMember(firstName, surName, phoneNr, birthDate,
                 isCompetitiveSwimmer, isActive, hasPaid);
+    }
+
+    private void removeMember() {
+        System.out.println("Indtast telefon nr. på medlem der skal slettes fra klubben");
+        String phoneNr = input.nextLine();
+
+        try {
+            Member removed = memberController.removeMember(phoneNr);
+            System.out.println("Medlem fjernet: " + removed.getFullName() + " (" + removed.getPhoneNr() + ")");
+        } catch (MemberNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
 

@@ -2,6 +2,7 @@ package ui;
 
 import controller.MemberController;
 import domain.Member;
+import util.MemberNotFoundException;
 
 import java.util.Scanner;
 
@@ -23,10 +24,10 @@ public class TreasurerMenu {
      * - kontingent
      * - restance
      * - registrer betaling
-     * */
-    public void show(){
+     */
+    public void show() {
         boolean run = true;
-        while(run){
+        while (run) {
             System.out.println("""
                     --KASSERER--
                     1. Vis samlet forventet kontingent
@@ -37,7 +38,7 @@ public class TreasurerMenu {
                     """);
             int choice = inputHelper.readInt();
 
-            switch (choice){
+            switch (choice) {
                 case 1 -> showTotalFees();
                 case 2 -> showMembersInDebt();
                 case 3 -> registerPayment();
@@ -51,7 +52,7 @@ public class TreasurerMenu {
     /**
      * Beregner det samlede kontingent for alle medlemmer
      */
-    private void showTotalFees(){
+    private void showTotalFees() {
         memberController.updateYearlyFee();
         double total = memberController.getTotalExpectedFees();
         System.out.println("Samlet forventet kontingent: " + total + " kr.");
@@ -60,8 +61,8 @@ public class TreasurerMenu {
     /**
      * Viser alle medlemmer som ikke har betalt kontingent
      */
-    private void showMembersInDebt(){
-        for (Member m : memberController.getMembersInDebt()){
+    private void showMembersInDebt() {
+        for (Member m : memberController.getMembersInDebt()) {
             System.out.println(m);
         }
     }
@@ -69,27 +70,28 @@ public class TreasurerMenu {
     /**
      * Registerer betaling for et medlem baseret på telefonnummer
      */
-    private void registerPayment(){
+    private void registerPayment() {
+
         System.out.print("Indtast telefon nr. på medlemmet: ");
         String phoneNr = input.nextLine().trim();
+        Member member = memberController.findByPhoneNr(phoneNr);
 
-        boolean success = memberController.setMemberPaid(phoneNr);
+        try {
+            memberController.setMemberPaid(phoneNr);
+            System.out.println("Betaling registreret på: " + member);
 
-        if (success) {
-            memberController.updateMember(memberController.findByPhoneNr(phoneNr));
-            System.out.println("Betaling registreret på: " + memberController.findByPhoneNr(phoneNr));
-        } else {
-            System.out.println("Ingen medlem med det telefonnummer blev fundet.");
+        } catch (MemberNotFoundException e){
+            System.out.println(e.getMessage());
         }
     }
 
-    private void checkYearlyFee(){
+    private void checkYearlyFee() {
         System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
         String phone = input.nextLine();
         if (phone.equals("0")) {
             return;
         }
         Member member = memberController.findByPhoneNr(phone);
-        System.out.println(member.getFullName()+", Kontingent: "+member.getYearlyFee());
+        System.out.println(member.getFullName() + ", Kontingent: " + member.getYearlyFee());
     }
 }
