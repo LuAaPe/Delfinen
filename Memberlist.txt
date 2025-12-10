@@ -3,27 +3,7 @@ Mikkel,Poulsen,+4510101010,1995-03-08,true,true,true
 Anne,Jensen,+4512345678,2005-02-10,false,true,true
 Peter,Hansen,+4511112222,1970-06-03,false,true,true
 Lars,Kristensen,+4512341234,1960-01-10,false,true,false
-Frodo,Baggins,36324520,1926-10-03,true,true,true
-Iggy,Pop,13371337,1957-09-23,true,true,false
-Ragnar,Lothbrok,68432013,1927-06-10,false,true,true
-Trent,Reznor,20740575,1973-03-22,true,true,true
-Laura,Bailey,12233445,1982-05-22,false,false,false
-Matthew,Mercer,56128923,1978-01-02,true,true,true
-Cotton-Eye,Joe,98765432,1994-08-02,true,true,true
-Alphonse,Elric,53237698,1989-03-22,false,true,true
 Jennie,Hansen,21212121,1989-12-01,true,true,true
-Maria,Jensen,24242424,2002-05-08,true,true,true
-lisa,Rasmussen,55555555,1998-09-04,true,true,false
-Peter,Petersen,65656565,1989-02-06,true,false,true
-Marcus,Vennervald,87654321,2005-12-06,true,true,true
-Lasse,Fuglsang,65478512,1999-06-25,false,false,true
-Kim Sørensen,,36456978,1970-03-01,true,true,true
-Ægil,Saksogade,45213652,2000-06-14,false,false,false
-Muhammad,Hassan,36854712,2005-02-12,true,true,true
-Sigurd,Provsten,78591623,2010-08-30,true,false,false
-Lauritz,Klausen,65123457,2001-10-24,true,true,true
-Carlos,Santos,45632198,1995-07-29,true,true,true
-Hans,Overlov,56489561,1956-01-01,false,true,true
 Rikke ,Ledrup,+4571425362,2007-10-09,false,true,true
 Morty,Sørensen,+4598765432,2006-05-18,true,true,false
 Sascha,Jessen,+4524681012,1999-11-11,false,false,true
@@ -32,5 +12,3 @@ Jan,Johansen,+4567432356,1959-02-28,false,true,false
 Marly Bobbisen,Ågerup,+4591827364,1945-02-06,true,true,true
 jørgen,kampson,+4576893452,2003-06-19,false,true,false
 ruth ,vestergaard,+4567832465,1967-06-07,false,true,true
-Rasmus,Dahlbjerg,65453212,2002-04-12,true,true,true
-Mike,Patton,99885533,1968-01-27,true,true,true

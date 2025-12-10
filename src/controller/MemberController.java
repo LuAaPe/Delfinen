@@ -98,4 +98,8 @@ public class MemberController {
     public boolean setMemberPaid(String phoneNr) {
         return klubben.setMemberPaid(phoneNr);
     }
+
+    public void removeMember (String phoneNr) {
+        klubben.removeMember(phoneNr);
+    }
 }

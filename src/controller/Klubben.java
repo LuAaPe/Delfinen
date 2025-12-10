@@ -1,6 +1,7 @@
 package controller;
 
 import data.MemberFileHandler;
+import domain.CompetitionResult;
 import domain.CompetitiveSwimmer;
 import domain.Member;
 
@@ -153,6 +154,17 @@ public class Klubben {
             return true;
         }
         return false; // Medlem findes ikke
+    }
+
+    public void removeMember (String phoneNr) {
+        Member m = findByPhoneNr(phoneNr);
+        if (m == null) {
+            System.out.println("Tlf nummer eksisterer ikke.");
+        } else {
+            members.remove(m);
+            System.out.println("Medlemmer fjernet." + m.getFullName());
+        }
+
     }
 
 }

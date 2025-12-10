@@ -99,4 +99,11 @@ public class CompetitiveSwimmer extends Member{
         }
         return best;
     }
+        /*public void removeTrainingResult(Member member) {
+            for(CompetitionResult competitionResult : competitionResults) {
+                if(member.getPhoneNr()== )
+            }
+        }
+
+         */
 }
