@@ -1,6 +1,5 @@
 package util;
 
-import controller.Database;
 import domain.CompetitiveSwimmer;
 import domain.Discipline;
 import domain.Result;
