@@ -17,11 +17,11 @@ public class App {
         ResultController resultController = new ResultController(klubben);
         resultController.loadResults();
 
-        // Input håndetering og behandling
+        // Input håndtering og behandling
         MemberInput memberInput = new MemberInput(input, inputHelper, memberController);
         ResultInput resultInput = new ResultInput(input, inputHelper);
 
-        // Rolle-meuer
+        // Rolle-menuer
         ChairmanMenu chairmanMenu = new ChairmanMenu(input, inputHelper, memberController, memberInput);
         TreasurerMenu treasurerMenu = new TreasurerMenu(input, inputHelper, memberController);
         TrainerMenu trainerMenu = new TrainerMenu(input, inputHelper, resultInput, resultController, memberController);
