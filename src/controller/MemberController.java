@@ -1,6 +1,8 @@
 package controller;
 
+import domain.CompetitiveSwimmer;
 import domain.Member;
+import util.AlreadyCompetitiveSwimmerException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class MemberController {
      * - betalingsstatus ændres
      * - kontingent ændres
 
-     * Controlleren beder Database om at gemme ændringerne i filen.
+     * Controlleren beder Klubben om at gemme ændringerne i filen.
      */
     public void updateMember(Member member){
         klubben.saveMembers();
@@ -101,5 +103,9 @@ public class MemberController {
 
     public Member removeMember (String phoneNr) {
         return klubben.removeMember(phoneNr);
+    }
+
+    public CompetitiveSwimmer promoteToCompetitive(String phoneNr){
+        return klubben.promoteToCompetitive(phoneNr);
     }
 }

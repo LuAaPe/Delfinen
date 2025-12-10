@@ -3,6 +3,7 @@ package controller;
 import data.MemberFileHandler;
 import domain.CompetitiveSwimmer;
 import domain.Member;
+import util.AlreadyCompetitiveSwimmerException;
 import util.MemberNotFoundException;
 
 import java.time.LocalDate;
@@ -61,9 +62,9 @@ public class Klubben {
         Member member;
 
         if (isCompetitive) {
-            member = new CompetitiveSwimmer(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
+            member = new CompetitiveSwimmer(firstName, surName, phoneNr, birthDate, isActive, isPaid);
         } else {
-            member = new Member(firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid);
+            member = new Member(firstName, surName, phoneNr, birthDate, isActive, isPaid);
         }
 
         members.add(member);
@@ -128,7 +129,8 @@ public class Klubben {
     }
 
     /**
-     * Finder et medlem ud fra telefonnummer.
+     * Finder et medlem via telefonnummer.
+     * Kaster MemberNotFoundException hvis det ikke findes.
      */
     public Member findByPhoneNr(String phoneNr) {
         for (Member m : members) {
@@ -157,5 +159,32 @@ public class Klubben {
         saveMembers();
         return m;
     }
+
+    public CompetitiveSwimmer promoteToCompetitive(String phoneNr){
+
+        Member member = findByPhoneNr(phoneNr);
+
+        if (member instanceof CompetitiveSwimmer){
+            throw new AlreadyCompetitiveSwimmerException("Medlem er allerede konkurrence svømmer");
+        }
+        members.remove(member);
+        CompetitiveSwimmer competitiveSwimmer = new CompetitiveSwimmer(
+                member.getFirstName(),
+                member.getSurName(),
+                member.getPhoneNr(),
+                member.getBirthDate(),
+                member.getIsActive(),
+                member.getIsPaid()
+        );
+
+        members.add(competitiveSwimmer);
+
+        saveMembers();
+
+        return competitiveSwimmer;
+
+    }
+
+
 
 }

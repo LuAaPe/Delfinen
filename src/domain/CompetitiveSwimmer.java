@@ -25,13 +25,13 @@ public class CompetitiveSwimmer extends Member{
      * @param surName       Efternavn
      * @param phoneNumber   Telefonnummer
      * @param birthDate     Fødselsdato
-     * @param isCompetitive Skal altid være true for denne type
      * @param isActive      Aktiv/passiv medlem
      * @param isPaid        Betalt/ikke betalt
      */
-    public CompetitiveSwimmer(String firstName, String surName, String phoneNumber, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid) {
+    public CompetitiveSwimmer(String firstName, String surName, String phoneNumber, LocalDate birthDate, boolean isActive, boolean isPaid) {
         // Kalder Members konstruktør (super)
-        super(firstName, surName, phoneNumber, birthDate, isCompetitive, isActive, isPaid);
+        super(firstName, surName, phoneNumber, birthDate, isActive, isPaid);
+        setIsCompetitive(true);
     }
 
     // - - - RESULTAT METODER - - - //

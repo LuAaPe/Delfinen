@@ -110,8 +110,10 @@ public class ResultInput {
                 }
 
                 return date;
+            }catch (InvalidResultDateException e){
+                System.out.println("Fejl: " + e.getMessage());
             }
-            catch (Exception e){ // TODO Beskeden kommer ikke rigtig frem : "Dato for svømmeren var år gammel..."
+            catch (Exception e){
                 System.out.println("Forkert format, prøv igen (ÅÅÅÅ-MM-DD)\n: ");
             }
         }

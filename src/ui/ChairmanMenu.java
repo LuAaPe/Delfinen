@@ -3,6 +3,7 @@ package ui;
 import controller.MemberController;
 import domain.CompetitiveSwimmer;
 import domain.Member;
+import util.AlreadyCompetitiveSwimmerException;
 import util.MemberNotFoundException;
 
 import java.time.LocalDate;
@@ -40,9 +41,21 @@ public class ChairmanMenu {
                     ║2. OPRET MEDLEM║
                     ╚═══════════════╝
                     """);
-            System.out.println("3. Rediger medlem");
-            System.out.println("4. Slet medlem");
-            System.out.println("5. Find medlem");
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║3. Rediger medlem║
+                    ╚═══════════════╝
+                    """);
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║4. Slet medlem║
+                    ╚═══════════════╝
+                    """);
+            System.out.println("""
+                    ╔═══════════════╗
+                    ║5. Find medlem║
+                    ╚═══════════════╝
+                    """);
             System.out.println("""
                     ╔═══════════════╗
                     ║6. TILBAGE     ║
@@ -61,12 +74,14 @@ public class ChairmanMenu {
                     break;
                 case 3:
                     // Redigere medlem f.eks
+                    promoteMemberToCompetitive();
                     break;
                 case 4:
                     // f.eks slet medlem
                     removeMember();
                     break;
                 case 5:
+                    findMember();
                     // Vis kontingenter f.eks
                     break;
                 case 6:
@@ -140,6 +155,36 @@ public class ChairmanMenu {
         try {
             Member removed = memberController.removeMember(phoneNr);
             System.out.println("Medlem fjernet: " + removed.getFullName() + " (" + removed.getPhoneNr() + ")");
+        } catch (MemberNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void promoteMemberToCompetitive() {
+        System.out.println("Indtast telefon nr. på medlem der skal gøres til konkurrencesvømmer");
+        String phoneNr = input.nextLine();
+
+        try {
+            CompetitiveSwimmer promoted = memberController.promoteToCompetitive(phoneNr);
+            System.out.println("Medlem opdateret til konkurrencesvømmer: " +
+                    promoted.getFullName() + " (" + promoted.getPhoneNr() + ")");
+        } catch (AlreadyCompetitiveSwimmerException e) {
+            System.out.println(e.getMessage());
+        } catch (MemberNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    private void findMember() {
+        System.out.println("Indtast telefon nr. på medlem der skal findes");
+        String phoneNr = input.nextLine();
+
+        try {
+            Member member = memberController.findByPhoneNr(phoneNr);
+            System.out.println("\nMedlem fundet:");
+            printMemberLine(member);
+            System.out.println();
         } catch (MemberNotFoundException e) {
             System.out.println(e.getMessage());
         }
