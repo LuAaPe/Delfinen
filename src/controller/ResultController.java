@@ -1,6 +1,5 @@
 package controller;
 
-import data.MemberFileHandler;
 import data.ResultFileHandler;
 import domain.*;
 import util.MemberNotFoundException;
@@ -9,7 +8,6 @@ import util.SwimmerBestResultComparator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * ResultController håndterer al logik relateret til svømmeresultater.
@@ -26,13 +24,13 @@ public class ResultController {
     /** Håndtering af indlæsning og lagring af resultater i "Results.txt".*/
     private final ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
     /** Reference til Database så controllern kan finde medlemmer.*/
-    private final Database database;
+    private final Klubben klubben;
 
     /**
      * Konstruktør der modtager en database, så vi kan søge efter medlemmer.
      */
-    public ResultController(Database database){
-        this.database = database;
+    public ResultController(Klubben klubben){
+        this.klubben = klubben;
     }
 
     /**
@@ -46,7 +44,7 @@ public class ResultController {
      */
     public void addTrainingResult(String phone, Discipline discipline,
                                   int timeMilliSeconds, LocalDate date){
-        Member member = database.findByPhoneNr(phone);
+        Member member = klubben.findByPhoneNr(phone);
 
         if(member == null) {
             throw new MemberNotFoundException("Telefonnummer findes ikke.");
@@ -66,7 +64,7 @@ public class ResultController {
      * Tilføjer et stævneresultat til en konkurrencesvømmer.
      */
     public void addCompetitionResult(String phone, Discipline discipline, int timeMilliSeconds, LocalDate date, String eventName, int placement){
-        Member member = database.findByPhoneNr(phone);
+        Member member = klubben.findByPhoneNr(phone);
 
         if (member == null){
             throw new MemberNotFoundException("Telefonnummer findes ikke.");
@@ -87,7 +85,7 @@ public class ResultController {
      * ved at sende medlemslisten til ResultFileHandler.
      */
     public void saveResults(){
-        fileHandler.saveAllResults(database.getAllMembers());
+        fileHandler.saveAllResults(klubben.getAllMembers());
     }
 
     /**
@@ -95,7 +93,7 @@ public class ResultController {
      * CompetitiveSwimmer objekter ved programstart.
      */
     public void loadResults(){
-        fileHandler.loadAllResults(database.getAllMembers());
+        fileHandler.loadAllResults(klubben.getAllMembers());
     }
 
     /**
@@ -105,7 +103,7 @@ public class ResultController {
      * - medlem findes, men ikke er konkurrencesvømmer
      */
     public CompetitiveSwimmer getCompetitiveSwimmer(String phone){
-        Member member = database.findByPhoneNr(phone);
+        Member member = klubben.findByPhoneNr(phone);
 
         if (member == null){
             throw new MemberNotFoundException("Telefonnummeret findes ikke.");
@@ -139,7 +137,7 @@ public class ResultController {
         ArrayList<CompetitiveSwimmer> list = new ArrayList<>();
 
         // 1. Find alle relevante svømmere
-        for (Member member: database.getAllMembers()){
+        for (Member member: klubben.getAllMembers()){
             if (member instanceof CompetitiveSwimmer swimmer){
                 boolean isJunior = swimmer.getAge() < 18;
 

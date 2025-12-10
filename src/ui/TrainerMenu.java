@@ -106,8 +106,6 @@ public class TrainerMenu {
                 System.out.println(e);
             }
         }
-
-
     }
 
     /**
