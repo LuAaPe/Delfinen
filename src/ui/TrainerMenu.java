@@ -141,6 +141,7 @@ public class TrainerMenu {
      */
     private void addCompetitionResult(){
         try {
+            System.out.println("Indtast telefonnummer på svømmer. (Tast 0 for at gå tilbage) \n : "  );
             String phone = input.nextLine(); // TODO make more robust
             if (phone.equals("0")){
                 return;
