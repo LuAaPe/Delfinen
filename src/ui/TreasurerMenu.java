@@ -74,9 +74,9 @@ public class TreasurerMenu {
 
         System.out.print("Indtast telefon nr. på medlemmet: ");
         String phoneNr = input.nextLine().trim();
-        Member member = memberController.findByPhoneNr(phoneNr);
 
         try {
+            Member member = memberController.findByPhoneNr(phoneNr);
             memberController.setMemberPaid(phoneNr);
             System.out.println("Betaling registreret på: " + member);
 
@@ -91,7 +91,11 @@ public class TreasurerMenu {
         if (phone.equals("0")) {
             return;
         }
-        Member member = memberController.findByPhoneNr(phone);
-        System.out.println(member.getFullName() + ", Kontingent: " + member.getYearlyFee());
+        try {
+            Member member = memberController.findByPhoneNr(phone);
+            System.out.println(member.getFullName() + ", Kontingent: " + member.getYearlyFee());
+        } catch (MemberNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
