@@ -23,7 +23,7 @@ public class MainMenu {
 
     public void start() {
         while (true) {
-            System.out.println("   NAVIGATIONS-MENU:");
+            System.out.println("\n   NAVIGATIONS-MENU:");
             System.out.println("""
                     +-+\s
                     |1|  FORMAND

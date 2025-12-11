@@ -30,7 +30,7 @@ public class ChairmanMenu {
      */
     public void show() {
         while (true) {
-            System.out.println("   FORMAND:");
+            System.out.println("\n   FORMAND-MENU:");
             System.out.println("""
                     ╔═══════════════╗
                     ║1. SE MEDLEMMER║
@@ -42,23 +42,23 @@ public class ChairmanMenu {
                     ╚═══════════════╝
                     """);
             System.out.println("""
-                    ╔═══════════════╗
+                    ╔═════════════════╗
                     ║3. Rediger medlem║
-                    ╚═══════════════╝
+                    ╚═════════════════╝
                     """);
             System.out.println("""
-                    ╔═══════════════╗
+                    ╔══════════════╗
                     ║4. Slet medlem║
-                    ╚═══════════════╝
+                    ╚══════════════╝
                     """);
             System.out.println("""
-                    ╔═══════════════╗
+                    ╔══════════════╗
                     ║5. Find medlem║
-                    ╚═══════════════╝
+                    ╚══════════════╝
                     """);
             System.out.println("""
                     ╔═══════════════╗
-                    ║6. TILBAGE     ║
+                    ║0. TILBAGE     ║
                     ╚═══════════════╝
                     """);
 
@@ -84,14 +84,9 @@ public class ChairmanMenu {
                     //Viser Oplysninger for et medlem
                     findMember();
                     break;
-                case 6:
+                case 0:
                     //Tilbage
                     return;
-                case 7:
-                    // exit
-                    input.close();
-                    System.exit(0);
-                    break;
                 default:
                     System.out.println("Ugyldigt valg");
             }

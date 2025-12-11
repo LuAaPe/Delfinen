@@ -38,7 +38,7 @@ public class TrainerMenu {
      */
     public void show() {
         while (true) {
-            System.out.println("   TRÆNER:");
+            System.out.println("   TRÆNER-MENU:");
             System.out.println("""
                     ╔══════════════════════════╗
                     ║1. Tilføj træningsresultat║

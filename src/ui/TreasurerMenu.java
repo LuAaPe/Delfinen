@@ -28,14 +28,33 @@ public class TreasurerMenu {
     public void show() {
         boolean run = true;
         while (run) {
+            System.out.println("\n   KASSERER-MENU:");
             System.out.println("""
-                    --KASSERER--
-                    1. Vis samlet forventet kontingent
-                    2. Vis medlemmer i restance
-                    3. Registrer betaling
-                    4. Vis et medlems kontingent
-                    0. Tilbage
+                    ╔══════════════════════════════════╗
+                    ║1. Vis samlet forventet kontingent║
+                    ╚══════════════════════════════════╝
                     """);
+            System.out.println("""
+                    ╔═══════════════════════════╗
+                    ║2. Vis medlemmer i restance║
+                    ╚═══════════════════════════╝
+                    """);
+            System.out.println("""
+                    ╔═════════════════════╗
+                    ║3. Registrer betaling║
+                    ╚═════════════════════╝
+                    """);
+            System.out.println("""
+                    ╔════════════════════════════╗
+                    ║4. Vis et medlems kontingent║
+                    ╚════════════════════════════╝
+                    """);
+            System.out.println("""
+                    ╔══════════╗
+                    ║0. Tilbage║
+                    ╚══════════╝
+                    """);
+            System.out.print(": ");
             int choice = inputHelper.readInt();
 
             switch (choice) {
