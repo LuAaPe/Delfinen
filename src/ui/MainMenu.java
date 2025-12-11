@@ -26,22 +26,22 @@ public class MainMenu {
             System.out.println("   NAVIGATIONS-MENU:");
             System.out.println("""
                     +-+\s
-                    |1|\s FORMAND
+                    |1|  FORMAND
                     +-+\s
                     """);
             System.out.println("""
                     +-+\s
-                    |2|\s KASSERER
+                    |2|  KASSERER
                     +-+\s
                     """);
             System.out.println("""
                     +-+\s
-                    |3|\s TRÆNER
+                    |3|  TRÆNER
                     +-+\s
                     """);
             System.out.println("""
                     +-+\s
-                    |4|\s AFSLUT
+                    |4|  AFSLUT
                     +-+\s
                     """);
 

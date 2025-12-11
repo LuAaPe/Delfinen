@@ -26,14 +26,14 @@ public class InputHelper {
     }
 
     /**
-     * Førsøger at læse et heltal fra brugeren.
+     * Forsøger at læse et heltal fra brugeren.
      * Hvis brugeren skriver noget der ikke kan omdannes til et tal,
      * bliver der vist en fejlbesked og brugeren bliver bedt om at prøve igen.
      */
     public int readInt(){
         while (true){
             try {
-                // Læser en linje tekst og førsøger at konvertere den til et tal
+                // Læser en linje tekst og forsøger at konvertere den til et tal
                 return Integer.parseInt(input.nextLine().trim());
             }
             catch (NumberFormatException e){

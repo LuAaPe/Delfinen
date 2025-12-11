@@ -98,14 +98,4 @@ public class TreasurerMenu {
             System.out.println(e.getMessage());
         }
     }
-
-    private void checkYearlyFee(){
-        System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
-        String phone = input.nextLine();
-        if (phone.equals("0")) {
-            return;
-        }
-        Member member = memberController.findByPhoneNr(phone);
-        System.out.println(member.getFullName()+", Kontingent: "+member.getYearlyFee());
-    }
 }

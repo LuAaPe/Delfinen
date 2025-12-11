@@ -4,15 +4,15 @@ import java.time.LocalDate;
 
 /**
  * CompetitionResult repræsenterer et stævneresultat for en konkurrencesvømmer.
- *
+ * <p>
  * Klassen arver fra Result, som indeholder:
  * - disciplin
  * - tid i millisekunder
  * - dato for resultatet
- *
+ * <p>
  * CompetitionResult tilføjer to ekstra oplysninger:
  * - eventName, navnet på stævnet
- * - placement, hvilken placering svømmeren fik (1, 2, 3, . . .)
+ * - placement, hvilken placering svømmeren fik (1, 2, 3,. . .)
  */
 public class CompetitionResult extends Result{
     /** Navnet på stævnet hvor resultatet blev opnået.*/

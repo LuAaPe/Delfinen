@@ -66,14 +66,14 @@ public class CompetitiveSwimmer extends Member{
     }
 
     /**
-     * Finder svømmerens bedste (hurtigeste) resultat i en bestemt disciplin.
+     * Finder svømmerens bedste (hurtigste) resultat i en bestemt disciplin.
 
      * Metoden kigger både i:
      * - træningsresultater
      * - stævneresultater
 
      * Den gennemgår ALLE resultater i den givne disciplin og returnerer det
-     * resultat som har den lavaste tid (hurtigst).
+     * resultat som har den laveste tid (hurtigst).
      *
      */
     public Result getBestResultForDiscipline(Discipline discipline) {

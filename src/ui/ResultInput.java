@@ -1,6 +1,5 @@
 package ui;
 
-import controller.MemberController;
 import domain.CompetitiveSwimmer;
 import domain.Discipline;
 import util.InvalidResultDateException;
@@ -93,7 +92,6 @@ public class ResultInput {
             LocalDate earliestByAge = competitiveSwimmer.getBirthDate().plusYears(6);
             LocalDate today = LocalDate.now();
 
-            // TODO kunne evt estatte det med if/else overvej om exceptions er nødvendigt
             try {
                 String inputDate = input.nextLine();
                 LocalDate date = LocalDate.parse(inputDate);
@@ -120,7 +118,7 @@ public class ResultInput {
     }
 
     /**
-     * Formatterer millisekunder til MM:SS.mmm-format
+     * Formarter millisekunder til MM:SS.mmm-format
      */
     public String formatTime(int milliSeconds){
         int minutes = milliSeconds / 60000;

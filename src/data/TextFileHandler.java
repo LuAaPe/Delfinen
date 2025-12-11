@@ -6,11 +6,11 @@ import java.util.Scanner;
 /**
  * Interface som indeholder fælles funktionalitet til filhåndtering,
  * som både MemberFileHandler og ResultFileHandler har brug for.
- *
+ * <p>
  * Begge klasser arbejder med tekstfiler, og begge skal kunne:
  * - åbne en fil til læsning (Scanner)
  * - åbne en fil til skrivning (PrintWriter)
- *
+ * <p>
  * Default-metoder:
  * et interface indeholder "default"-metoder, som har en færdig implementering.
  * Klasser som implenterer interfacet kan bruge metoderne uden selv at skulle skrive dem.

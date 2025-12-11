@@ -5,7 +5,6 @@ import controller.MemberController;
 import controller.ResultController;
 import data.MemberFileHandler;
 
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class App {
@@ -19,7 +18,7 @@ public class App {
         resultController.loadResults();
 
         // Input håndtering og behandling
-        MemberInput memberInput = new MemberInput(input, inputHelper, memberController);
+        MemberInput memberInput = new MemberInput(input, memberController);
         ResultInput resultInput = new ResultInput(input, inputHelper);
 
         // Rolle-menuer

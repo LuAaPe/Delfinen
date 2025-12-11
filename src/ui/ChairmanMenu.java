@@ -77,12 +77,12 @@ public class ChairmanMenu {
                     promoteMemberToCompetitive();
                     break;
                 case 4:
-                    // f.eks slet medlem
+                    // slet medlem
                     removeMember();
                     break;
                 case 5:
+                    //Viser Oplysninger for et medlem
                     findMember();
-                    // Vis kontingenter f.eks
                     break;
                 case 6:
                     //Tilbage

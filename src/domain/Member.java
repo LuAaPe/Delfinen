@@ -26,7 +26,7 @@ public class Member {
     private final String fullName;
     /** Fødselsdato bruges til at beregne alder og kontingent.*/
     private final LocalDate birthDate;
-    /** Aktiv = alminderligt kontingent. Passiv = reduceret kontingent.*/
+    /** Aktiv = almindeligt kontingent. Passiv = reduceret kontingent.*/
     private boolean isActive;
     /** Junior = under 18 år. Udregnes automatisk.*/
     private boolean isJunior;

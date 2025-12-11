@@ -140,37 +140,24 @@ public class ResultController {
         if (junior) {
             // 1. Find alle relevante svømmere
             for (Member member : klubben.getAllMembers()) {
-                if (member instanceof CompetitiveSwimmer swimmer) {
-                    boolean isJunior = swimmer.getAge() < 18;
 
-                    // spring svømmere over i forkert aldersgruppe
-                    if (isJunior != junior) continue;
-
-                    // svømmeren SKAL have en tid i disciplinen
-                    if (swimmer.getBestResultForDiscipline(discipline) != null) {
-                        list.add(swimmer);
-                    }
+                //2. Sikre at medlem er Konkurrence svømmer og at de har et resultat i disciplinen
+                if (member instanceof CompetitiveSwimmer swimmer &&
+                        swimmer.getBestResultForDiscipline(discipline) != null) {
+                    list.add(swimmer);
                 }
             }
         } else {
             for (Member member : klubben.getAllMembers()) {
-                if (member instanceof CompetitiveSwimmer swimmer) {
-                    boolean isJunior = swimmer.getAge() < 18;
-
-                    // spring svømmere over i forkert aldersgruppe
-                    if (isJunior == junior) continue;
-
-                    // svømmeren SKAL have en tid i disciplinen
-                    if (swimmer.getBestResultForDiscipline(discipline) != null) {
-                        list.add(swimmer);
-                    }
+                if (member instanceof CompetitiveSwimmer swimmer && swimmer.getBestResultForDiscipline(discipline) != null) {
+                    list.add(swimmer);
                 }
             }
         }
-        // 2. Sorter svømmere efter bedste tid
+        // 3. Sorter svømmere efter bedste tid
         list.sort(new SwimmerBestResultComparator(discipline));
 
-        // 3. Returner top 5
+        // 4. Returner top 5
         if (list.size() > 5) {
             return new ArrayList<>(list.subList(0, 5));
         } else {

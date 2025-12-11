@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 /**
  * Result repræsenterer et simpelt svømmeresultat for en konkurrencesvømmer.
- *
+ * <p>
  * Klassen indeholder:
  * - disciplin
  * - tid i millisekunder
  * - dato for resultatet
- *
+ * <p>
  * Klassen er en "databeholder", som CompetitionResult arver fra.
  */
 public abstract class Result {
@@ -44,7 +44,7 @@ public abstract class Result {
     /**
      * Formaterer tiden i et læsbart format:
      * MM:SS.mmm
-     *
+     * <p>
      * Eksempel:
      * timeMilleSeconds = 48300 --> "0:48.300"
      */

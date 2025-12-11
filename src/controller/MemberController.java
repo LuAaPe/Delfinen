@@ -2,7 +2,7 @@ package controller;
 
 import domain.CompetitiveSwimmer;
 import domain.Member;
-import util.AlreadyCompetitiveSwimmerException;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class MemberController {
 
     /**
      * Konstruktør.
-     * Modtager et Database-objekt, som controllern skal arbejde med.
+     * Modtager et Database-objekt, som controller skal arbejde med.
      */
     public MemberController(Klubben klubben){
         this.klubben = klubben;
@@ -33,7 +33,7 @@ public class MemberController {
     /**
      * Opretter et nyt medlem i systemet.
 
-     * Controllern sender informationen videre til Database,
+     * Controlleren sender informationen videre til Database,
      * som opretter objektet og gemmer det i filen.
      */
     public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid){
@@ -54,20 +54,6 @@ public class MemberController {
      */
     public void updateYearlyFee() {
         klubben.updateYearlyFee();
-    }
-
-    /**
-     * Bruges når et medlems oplysninger er ændret.
-
-     * Eksempel:
-     * - medlem bliver aktiv efter at være passiv
-     * - betalingsstatus ændres
-     * - kontingent ændres
-
-     * Controlleren beder Klubben om at gemme ændringerne i filen.
-     */
-    public void updateMember(Member member){
-        klubben.saveMembers();
     }
 
     /**

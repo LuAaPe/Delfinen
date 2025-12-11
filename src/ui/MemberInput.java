@@ -12,12 +12,10 @@ import java.util.Scanner;
 public class MemberInput {
 
     private final Scanner input;
-    private final InputHelper inputHelper;
     private final MemberController memberController;
 
-    public MemberInput(Scanner input, InputHelper inputHelper, MemberController memberController) {
+    public MemberInput(Scanner input, MemberController memberController) {
         this.input = input;
-        this.inputHelper = inputHelper;
         this.memberController = memberController;
     }
 
@@ -61,7 +59,7 @@ public class MemberInput {
             }
             // "Regular expressions"
             if (!phoneNr.matches("\\+?\\d+")) {
-                System.out.println("Fejl Telfon nr. må kun indeholde tal og evt. + foran");
+                System.out.println("Fejl Telefon nr. må kun indeholde tal og evt. + foran");
                 continue;
             }
 

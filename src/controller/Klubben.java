@@ -3,11 +3,13 @@ package controller;
 import data.MemberFileHandler;
 import domain.CompetitiveSwimmer;
 import domain.Member;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy;
 import util.AlreadyCompetitiveSwimmerException;
 import util.MemberNotFoundException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 
 /**
  * Database-klassen fungerer som programmets "hukommelse"/"datalager".
@@ -74,11 +76,13 @@ public class Klubben {
 
 
     /**
-     * Returnerer listen over alle medlemmer.
+     * Returnerer en kopi listen over alle medlemmer.
+     * Der returneres en kopi for ikke at bryde encapsulation
+     * Vi vil ikke give adgang til ændring via getAllMembers
      * Bruges bl.a. af Formand- og Kasserer-menuerne.
      */
     public ArrayList<Member> getAllMembers() {
-        return members;
+        return new ArrayList<>(members);
     }
 
     /**

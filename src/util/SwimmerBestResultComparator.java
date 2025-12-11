@@ -9,15 +9,15 @@ import java.util.Comparator;
 /**
  * Comparator der sammenligner to konkurrencesvømmere ud fra deres
  * beste resultat i en bestemt disciplin.
- *
- * Comparatoren bruges af ResultController.getTop5(), så vi kan sortere svømmere:
+ * <p>
+ * Comparator bruges af ResultController.getTop5(), så vi kan sortere svømmere:
  *          hurtigste tid ----> langsommere tid
- *
+ * <p>
  * Hvis en svømmer ikke har nogen tid i den disciplin, bliver de sorteret
  * nederst på listen (efter dem som HAR tider).
  */
 public class SwimmerBestResultComparator implements Comparator<CompetitiveSwimmer> {
-    private Discipline discipline;
+    private final Discipline discipline;
 
     public SwimmerBestResultComparator(Discipline discipline){
         this.discipline = discipline;
