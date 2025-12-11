@@ -57,7 +57,7 @@ public class MemberInput {
                 continue;
             }
             // "Regular expressions"
-            if (!phoneNr.matches("\\+?\\d")) {
+            if (!phoneNr.matches("\\d+")) {
                 System.out.println("Fejl Telefon nr. må kun indeholde tal");
                 continue;
             }
