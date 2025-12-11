@@ -1,6 +1,7 @@
 package data;
 
 import domain.*;
+import util.MemberNotFoundException;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -176,11 +177,11 @@ public class ResultFileHandler implements TextFileHandler {
      */
     public Member findByPhoneNr(ArrayList<Member> members, String phoneNr) {
         for (Member m : members) {
-            if (m.getPhoneNr().equals(phoneNr)) {
+            if (m.getPhoneNr().equals(phoneNr) || m.getPhoneNr().contains(phoneNr)) {
                 return m;
             }
         }
-        return null;
+        throw new MemberNotFoundException("Intet medlem med telefonnummer fundet: " + phoneNr);
     }
 
 }

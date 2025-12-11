@@ -12,12 +12,10 @@ import java.util.Scanner;
 public class MemberInput {
 
     private final Scanner input;
-    private final InputHelper inputHelper;
     private final MemberController memberController;
 
-    public MemberInput(Scanner input, InputHelper inputHelper, MemberController memberController) {
+    public MemberInput(Scanner input, MemberController memberController) {
         this.input = input;
-        this.inputHelper = inputHelper;
         this.memberController = memberController;
     }
 
