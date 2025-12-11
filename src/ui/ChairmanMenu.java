@@ -35,34 +35,34 @@ public class ChairmanMenu {
         while (true) {
             System.out.println("\n   FORMAND-MENU:");
             System.out.println("""
+                    ╔════════════════╗
+                    ║1. Se medlemmer ║
+                    ╚════════════════╝
+                    """);
+            System.out.println("""
+                    ╔════════════════╗
+                    ║2. Opret medlem ║
+                    ╚════════════════╝
+                    """);
+            System.out.println("""
+                    ╔══════════════════╗
+                    ║3. Rediger medlem ║
+                    ╚══════════════════╝
+                    """);
+            System.out.println("""
                     ╔═══════════════╗
-                    ║1. SE MEDLEMMER║
+                    ║4. Slet medlem ║
                     ╚═══════════════╝
                     """);
             System.out.println("""
                     ╔═══════════════╗
-                    ║2. OPRET MEDLEM║
+                    ║5. Find medlem ║
                     ╚═══════════════╝
                     """);
             System.out.println("""
-                    ╔═════════════════╗
-                    ║3. Rediger medlem║
-                    ╚═════════════════╝
-                    """);
-            System.out.println("""
-                    ╔══════════════╗
-                    ║4. Slet medlem║
-                    ╚══════════════╝
-                    """);
-            System.out.println("""
-                    ╔══════════════╗
-                    ║5. Find medlem║
-                    ╚══════════════╝
-                    """);
-            System.out.println("""
-                    ╔═══════════════╗
-                    ║0. TILBAGE     ║
-                    ╚═══════════════╝
+                    ╔═══════════╗
+                    ║0. TILBAGE ║
+                    ╚═══════════╝
                     """);
 
             System.out.print(": ");
@@ -97,95 +97,168 @@ public class ChairmanMenu {
     }
 
     private void showAllMembers() {
-        System.out.println("\n- - - JUNIOR MEDLEMMER - - -");
-        for (Member member : memberController.getAllMembers()){
-            if (member.getAge() < 18){
+        System.out.println("\n----------------------------------------");
+        System.out.println("           JUNIOR MEDLEMMER");
+        System.out.println("----------------------------------------");
+
+        boolean foundJunior = false;
+        for (Member member : memberController.getAllMembers()) {
+            if (member.getAge() < 18) {
                 printMemberLine(member);
+                foundJunior = true;
             }
         }
 
-        System.out.println("\n- - - SENIOR MEDLEMMER - - -");
-        for (Member member : memberController.getAllMembers()){
-            if (member.getAge() >= 18){
+        if (!foundJunior) {
+            System.out.println("Ingen junior medlemmer registreret.");
+        }
+
+        boolean foundSenior = false;
+        System.out.println("\n----------------------------------------");
+        System.out.println("           SENIOR MEDLEMMER");
+        System.out.println("----------------------------------------");
+        for (Member member : memberController.getAllMembers()) {
+            if (member.getAge() >= 18) {
                 printMemberLine(member);
+                foundSenior = true;
             }
         }
-        System.out.println();
+        if (!foundSenior){
+            System.out.println("Ingen senior medlemmer registreret.");
+        }
+
+        System.out.println("----------------------------------------\n");
     }
 
-    private void printMemberLine(Member member){
-        String type = (member instanceof CompetitiveSwimmer) ? "Konkurrensesvømmer" : "Motionist";
-        String status = member.getIsActive() ? "Aktiv" : "Passiv";
+    private void printMemberLine(Member member) {
+        if (member == null) {
+            System.out.println("Ingen medlemsdata at vise.");
+            return;
+        }
 
-        System.out.printf("%-20s | Tlf: %-12s | Alder: %-2d | %-11s | %-9s\n",
+        String type = (member instanceof CompetitiveSwimmer) ? "Konkurrence" : "Motionist";
+        String status = member.getIsActive() ? "Aktiv" : "Passiv";
+        int age = member.getAge();
+
+        System.out.printf(
+                "%-20s | Tlf: %-12s | Alder: %-3d | %-10s | %-11s\n",
                 member.getFullName(),
                 member.getPhoneNr(),
-                member.getAge(),
-                type,
-                status);
+                age,
+                status,
+                type
+        );
     }
 
     /**
      * Opretter et nyt medlem baseret på brugerinput
      */
     private void createMember() {
-        System.out.println("Indtast fornavn\n : ");
+        System.out.println("\n----------------------------------------");
+        System.out.println("           OPRET NYT MEDLEM");
+        System.out.println("----------------------------------------");
+        System.out.print("Fornavn: ");
         String firstName = input.nextLine();
 
-        System.out.println("Indtast efternavn\n : ");
+        System.out.print("Efternavn: ");
         String surName = input.nextLine();
 
         String phoneNr = memberInput.enterPhoneNr();
         LocalDate birthDate = memberInput.enterBirthDate();
 
-        boolean isActive = inputHelper.readYesOrNo("Aktivere medlemskab? j/n\n: ");
-        boolean isCompetitiveSwimmer = inputHelper.readYesOrNo("Konkurrencesvømmer? j/n\n: ");
-        boolean hasPaid = inputHelper.readYesOrNo("Har medlem betalt? j/n\n: ");
+        boolean isActive = inputHelper.readYesOrNo("Aktivt medlemskab? (j/n): ");
+        boolean isCompetitiveSwimmer = inputHelper.readYesOrNo("Konkurrencesvømmer? (j/n): ");
+        boolean hasPaid = inputHelper.readYesOrNo("Har medlemmet betalt? (j/n): ");
 
         memberController.addNewMember(firstName, surName, phoneNr, birthDate,
                 isCompetitiveSwimmer, isActive, hasPaid);
+        System.out.println("\n----------------------------------------");
+        System.out.println("            MEDLEM OPRETTET");
+        System.out.println("----------------------------------------");
+        Member created = memberController.findByPhoneNr(phoneNr);
+        printMemberLine(created);
+        System.out.println("----------------------------------------\n");
     }
 
     private void removeMember() {
-        System.out.println("Indtast telefon nr. på medlem der skal slettes fra klubben");
+        System.out.println("\n----------------------------------------");
+        System.out.println("      FJERN MEDLEM FRA KLUBBEN");
+        System.out.println("----------------------------------------");
+
+        System.out.print("Telefonnummer: ");
         String phoneNr = input.nextLine();
 
         try {
             Member removed = memberController.removeMember(phoneNr);
-            System.out.println("Medlem fjernet: " + removed.getFullName() + " (" + removed.getPhoneNr() + ")");
+            System.out.println("\n----------------------------------------");
+            System.out.println("             MEDLEM FJERNET");
+            System.out.println("----------------------------------------");
+
+            printMemberLine(removed);
             resultController.removeResultsForMember(phoneNr);
+            System.out.println("----------------------------------------\n");
         } catch (MemberNotFoundException e) {
+            System.out.println("\n----------------------------------------");
+            System.out.println("           MEDLEM IKKE FUNDET");
+            System.out.println("----------------------------------------");
             System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         }
     }
 
     private void promoteMemberToCompetitive() {
-        System.out.println("Indtast telefon nr. på medlem der skal gøres til konkurrencesvømmer");
+        System.out.println("\n----------------------------------------");
+        System.out.println("   GØR MEDLEM TIL KONKURRENCESVØMMER");
+        System.out.println("----------------------------------------");
+        System.out.print("Telefonnummer: ");
         String phoneNr = input.nextLine();
 
         try {
             CompetitiveSwimmer promoted = memberController.promoteToCompetitive(phoneNr);
-            System.out.println("Medlem opdateret til konkurrencesvømmer: " +
-                    promoted.getFullName() + " (" + promoted.getPhoneNr() + ")");
+            System.out.println("\n----------------------------------------");
+            System.out.println("         MEDLEM OPGRADERET");
+            System.out.println("----------------------------------------");
+
+            printMemberLine(promoted);
+
+            System.out.println("----------------------------------------\n");
         } catch (AlreadyCompetitiveSwimmerException e) {
+            System.out.println("\n----------------------------------------");
+            System.out.println("       ALLEREDE KONKURRENCESVØMMER");
+            System.out.println("----------------------------------------");
             System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         } catch (MemberNotFoundException e) {
+            System.out.println("\n----------------------------------------");
+            System.out.println("           MEDLEM IKKE FUNDET");
+            System.out.println("----------------------------------------");
             System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         }
     }
 
 
     private void findMember() {
-        System.out.println("Indtast telefon nr. på medlem der skal findes");
+        System.out.println("\n----------------------------------------");
+        System.out.println("    FIND MEDLEM VIA TELEFONNUMMER");
+        System.out.println("----------------------------------------");
+        System.out.print("Telefonnummer: ");
         String phoneNr = input.nextLine();
 
         try {
             Member member = memberController.findByPhoneNr(phoneNr);
-            System.out.println("\nMedlem fundet:");
+
+            System.out.println("\n----------------------------------------");
+            System.out.println("             MEDLEM FUNDET");
+            System.out.println("----------------------------------------");
             printMemberLine(member);
-            System.out.println();
+            System.out.println("----------------------------------------\n");
         } catch (MemberNotFoundException e) {
+            System.out.println("\n----------------------------------------");
+            System.out.println("           MEDLEM IKKE FUNDET");
+            System.out.println("----------------------------------------");
             System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         }
     }
 }

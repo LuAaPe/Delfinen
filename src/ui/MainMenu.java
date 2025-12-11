@@ -60,6 +60,7 @@ public class MainMenu {
                     break;
                 case 4:
                     // afslut programmet
+                    LookItsADolphin.printDolphinArt();
                     input.close();
                     System.exit(0);
                     break;

@@ -38,41 +38,36 @@ public class TrainerMenu {
      */
     public void show() {
         while (true) {
-            System.out.println("   TRÆNER-MENU:");
+            System.out.println("\n   TRÆNER-MENU:");
             System.out.println("""
-                    ╔══════════════════════════╗
-                    ║1. Tilføj træningsresultat║
-                    ╚══════════════════════════╝
+                    ╔═══════════════════════════╗
+                    ║1. Tilføj træningsresultat ║
+                    ╚═══════════════════════════╝
                     """);
             System.out.println("""
-                    ╔════════════════════════╗
-                    ║2. Tilføj stævneresultat║
-                    ╚════════════════════════╝
+                    ╔═════════════════════════╗
+                    ║2. Tilføj stævneresultat ║
+                    ╚═════════════════════════╝
                     """);
             System.out.println("""
-                    ╔══════════════╗
-                    ║3. Se TOP 5   ║
-                    ╚══════════════╝
+                    ╔════════════╗
+                    ║3. Se TOP 5 ║
+                    ╚════════════╝
                     """);
             System.out.println("""
-                    ╔═════════════════════════════════════╗
-                    ║4. Vis liste over konkurrencesvømmere║
-                    ╚═════════════════════════════════════╝
+                    ╔══════════════════════════════════════╗
+                    ║4. Vis liste over konkurrencesvømmere ║
+                    ╚══════════════════════════════════════╝
                     """);
             System.out.println("""
-                    ╔════════════════════════════╗
-                    ║5. Vis en medlems resultater║
-                    ╚════════════════════════════╝
+                    ╔═════════════════════════════╗
+                    ║5. Vis en medlems resultater ║
+                    ╚═════════════════════════════╝
                     """);
             System.out.println("""
-                    ╔═══════════════╗
-                    ║6. TILBAGE     ║
-                    ╚═══════════════╝
-                    """);
-            System.out.println("""
-                    ╔═══════════════╗
-                    ║7. AFSLUT      ║
-                    ╚═══════════════╝
+                    ╔═══════════╗
+                    ║0. Tilbage ║
+                    ╚═══════════╝
                     """);
 
 
@@ -94,13 +89,8 @@ public class TrainerMenu {
                 case 5:
                     viewMemberResuls();
                     break;
-                case 6:
+                case 0:
                     return;
-                case 7:
-                    // exit
-                    input.close();
-                    System.exit(0);
-                    break;
                 default:
                     System.out.println("Ugyldigt valg.");
             }
@@ -111,23 +101,49 @@ public class TrainerMenu {
      * Tilføjer et træningsresultat til en konkurrencesvømmer
      */
     private void addTrainingResult() {
+
+        System.out.println("\n----------------------------------------");
+        System.out.println("       TILFØJ TRÆNINGSRESULTAT");
+        System.out.println("----------------------------------------");
+
+        System.out.print("Telefonnummer (0 for tilbage): ");
+        String phone = input.nextLine();
+        if (phone.equals("0")) {
+            return;
+        }
+
+
         try {
-            System.out.println("Indtast telefonnummer på svømmer (Tast 0 for at gå tilbage)\n: ");
-            String phone = input.nextLine();
-            if (phone.equals("0")) {
-                return;
-            }
+            CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
+
             Discipline discipline = resultInput.enterDiscipline();
             int timeMilliSeconds = resultInput.enterSwimmingTime();
-            CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
             LocalDate date = resultInput.enterResultDate(competitiveSwimmer);
 
             resultController.addTrainingResult(phone, discipline, timeMilliSeconds, date);
-            System.out.println("Træningsresultat gemt!");
+
+            System.out.println("\n----------------------------------------");
+            System.out.println("       TRÆNINGSRESULTAT GEMT");
+            System.out.println("----------------------------------------");
+            printMemberLine(competitiveSwimmer);
+
+            System.out.println("Disciplin:  " + discipline);
+            System.out.println("Tid:        " + resultInput.formatTime(timeMilliSeconds));
+            System.out.println("Dato:       " + date);
+            System.out.println("----------------------------------------\n");
         } catch (MemberNotFoundException | NotCompetitiveSwimmerException e) {
-            System.out.println("Fejl: " + e.getMessage());
+            System.out.println("\n----------------------------------------");
+            System.out.println("                FEJL");
+            System.out.println("----------------------------------------");
+            System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
+
         } catch (Exception e) {
-            System.out.println("Et fejl upstod. " + e.getMessage());
+            System.out.println("\n----------------------------------------");
+            System.out.println("         UKENDT FEJL OPSTOD");
+            System.out.println("----------------------------------------");
+            System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         }
     }
 
@@ -135,32 +151,55 @@ public class TrainerMenu {
      * Tilføjer et stævneresultat
      */
     private void addCompetitionResult() {
+        System.out.println("\n----------------------------------------");
+        System.out.println("        TILFØJ STÆVNERESULTAT");
+        System.out.println("----------------------------------------");
+
+        System.out.print("Telefonnummer (0 for tilbage): ");
+        String phone = input.nextLine().trim();
+        if (phone.equals("0")) {
+            return;
+        }
+
         try {
-            System.out.println("Indtast telefonnummer på svømmer. (Tast 0 for at gå tilbage) \n : ");
-            String phone = input.nextLine(); // TODO make more robust
-            if (phone.equals("0")) {
-                return;
-            }
+            CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
 
             Discipline discipline = resultInput.enterDiscipline();
             int timeMilliSeconds = resultInput.enterSwimmingTime();
-
-            CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
             LocalDate date = resultInput.enterResultDate(competitiveSwimmer);
 
-            System.out.println("Indtast stævne\n: ");
+            System.out.print("Stævnenavn: ");
             String eventName = input.nextLine();
 
-            System.out.println("Indtast placering (1, 2, 3,. . .\n: ");
+            System.out.print("Indtast placering (1, 2, 3...): ");
             int placement = inputHelper.readInt();
 
             resultController.addCompetitionResult(phone, discipline, timeMilliSeconds, date, eventName, placement);
-            System.out.println("Stævneresultat gemt!");
+            System.out.println("\n----------------------------------------");
+            System.out.println("        STÆVNERESULTAT GEMT");
+            System.out.println("----------------------------------------");
+
+            printMemberLine(competitiveSwimmer);
+
+            System.out.println("Stævne:     " + eventName);
+            System.out.println("Placering:  " + placement);
+            System.out.println("Disciplin:  " + discipline);
+            System.out.println("Tid:        " + resultInput.formatTime(timeMilliSeconds));
+            System.out.println("Dato:       " + date);
+            System.out.println("Dato:   " + date);
 
         } catch (MemberNotFoundException | NotCompetitiveSwimmerException e) {
-            System.out.println("Fejl: " + e.getMessage());
+            System.out.println("\n----------------------------------------");
+            System.out.println("                FEJL");
+            System.out.println("----------------------------------------");
+            System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         } catch (Exception e) {
-            System.out.println("En fejl upstod: " + e.getMessage());
+            System.out.println("\n----------------------------------------");
+            System.out.println("         UKENDT FEJL OPSTOD");
+            System.out.println("----------------------------------------");
+            System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         }
 
     }
@@ -170,25 +209,56 @@ public class TrainerMenu {
      * Viser alle konkurrencesvømmere
      */
     private void viewAllCompetitiveMembers() {
-        System.out.println("\n - - - Liste over konkurrencesvømmere - - -");
+        System.out.println("\n----------------------------------------");
+        System.out.println("       LISTE OVER KONKURRENCESVØMMERE");
+        System.out.println("----------------------------------------");
 
-        boolean foundSwimmers = false; // boolean flag for a simple check
+        ArrayList<CompetitiveSwimmer> juniors = new ArrayList<>();
+        ArrayList<CompetitiveSwimmer> seniors = new ArrayList<>();
+
 
         for (Member member : memberController.getAllMembers()) {
             if (member instanceof CompetitiveSwimmer competitiveSwimmer) {
-                System.out.printf("%-20s Tlf: %s ",
-                        competitiveSwimmer.getFullName(),
-                        competitiveSwimmer.getPhoneNr());
-                System.out.println();
-                foundSwimmers = true;
+                if (competitiveSwimmer.getAge() < 18) {
+                    juniors.add(competitiveSwimmer);
+                } else {
+                    seniors.add(competitiveSwimmer);
+                }
             }
         }
 
-        if (!foundSwimmers) {
+        if (juniors.isEmpty() && seniors.isEmpty()) {
             System.out.println("Ingen konkurrencesvømmere.");
+            System.out.println("----------------------------------------\n");
+            return;
         }
 
-        System.out.println("------------------\n");
+        System.out.println("\n----------------------------------------");
+        System.out.println("           JUNIOR");
+        System.out.println("----------------------------------------");
+        if (juniors.isEmpty()) {
+            System.out.println("Ingen juniorsvømmere.");
+            System.out.println("----------------------------------------\n");
+
+        } else {
+            for (CompetitiveSwimmer swimmer : juniors) {
+                printMemberLine(swimmer);
+            }
+        }
+
+        System.out.println("\n----------------------------------------");
+        System.out.println("           SENIOR");
+        System.out.println("----------------------------------------");
+        if (seniors.isEmpty()) {
+            System.out.println("Ingen seniorsvømmere.");
+            System.out.println("----------------------------------------\n");
+        } else {
+            for (CompetitiveSwimmer swimmer : seniors) {
+                printMemberLine(swimmer);
+            }
+        }
+
+        System.out.println("----------------------------------------\n");
     }
 
 
@@ -198,50 +268,64 @@ public class TrainerMenu {
      */
     private void viewMemberResuls() {
         try {
-            System.out.println("Indtast telefonnummer på svømmeren\n: ");
-            String phone = input.nextLine();
+            System.out.println("\n----------------------------------------");
+            System.out.println("     VIS RESULTATER FOR KONKURRENCESVØMMER");
+            System.out.println("----------------------------------------");
+
+            System.out.print("Telefonnummer: ");
+            String phone = input.nextLine().trim();
 
             CompetitiveSwimmer competitiveSwimmer = resultController.getCompetitiveSwimmer(phone);
 
             // Først spørg hvordan vi skal sortere dem
             preferredSortingPrompt(competitiveSwimmer);
 
-            System.out.println("\n- - - Resultater for " +
-                    competitiveSwimmer.getFullName() + " - - -");
+            System.out.println("\n----------------------------------------");
+            System.out.println("          RESULTATER FOR " + competitiveSwimmer.getFullName());
+            System.out.println("----------------------------------------");
+
+            printMemberLine(competitiveSwimmer);
+            System.out.println("----------------------------------------");
 
             // Træningsresultater:
             System.out.println("\nTræningsresultater:");
             if (competitiveSwimmer.getTrainingResults().isEmpty()) {
-                System.out.println("Ingen resultater.");
+                System.out.println("Ingen træningsresultater.");
             } else {
                 for (Result result : competitiveSwimmer.getTrainingResults()) {
-                    String line = String.format("%s - %s - %s",
+                    System.out.printf(
+                            "%-12s | %-12s | %s\n",
                             result.getDate(),
                             result.getDiscipline(),
                             resultInput.formatTime(result.getTimeMilliSeconds()));
-                    System.out.println(line);
                 }
             }
 
             // Stævneresultater:
             System.out.println("\nStævneresultater:");
             if (competitiveSwimmer.getCompetitionResults().isEmpty()) {
-                System.out.println("Ingen resultater.");
+                System.out.println("Ingen stævneresultater.");
             } else {
                 for (CompetitionResult competitionResult : competitiveSwimmer.getCompetitionResults()) {
-                    String line = String.format("%s - %s - %s (%s, placering: %d)",
+                    System.out.printf(
+                            "%-12s | %-12s | %s | %s (placering: %d)\n",
                             competitionResult.getDate(),
                             competitionResult.getDiscipline(),
                             resultInput.formatTime(competitionResult.getTimeMilliSeconds()),
                             competitionResult.getEventName(),
-                            competitionResult.getPlacement());
-                    System.out.println(line);
+                            competitionResult.getPlacement()
+                    );
 
                 }
             }
-            System.out.println("\n--------------------------");
+            System.out.println("\n----------------------------------------\n");
+
         } catch (MemberNotFoundException | NotCompetitiveSwimmerException e) {
-            System.out.println("Fejl: " + e.getMessage());
+            System.out.println("\n----------------------------------------");
+            System.out.println("                 FEJL");
+            System.out.println("----------------------------------------");
+            System.out.println(e.getMessage());
+            System.out.println("----------------------------------------\n");
         }
     }
 
@@ -253,7 +337,7 @@ public class TrainerMenu {
         System.out.println("1. Hurtigste tid");
         System.out.println("2. Dato (nyeste først)");
         System.out.println("3. Disciplin");
-        System.out.println("Valg : ");
+        System.out.print(": ");
 
         int choice = inputHelper.readInt();
 
@@ -271,21 +355,25 @@ public class TrainerMenu {
                 sortByDiscipline(competitiveSwimmer);
                 break;
             default:
-                System.out.println("Ugyltigt valg - sorter efter hurtigste tid");
+                System.out.println("Ugyldigt valg - sorter efter hurtigste tid");
                 sortByTime(competitiveSwimmer);
         }
     }
 
     private void viewTop5() {
-        System.out.println("""
-                Vælg en disciplin:
-                1. Butterfly
-                2. Crawl
-                3. Ryg crawl
-                4. Bryst Svømning
-                """);
-        int choice = inputHelper.readInt();
+        System.out.println("\n----------------------------------------");
+        System.out.println("              TOP 5 MENU");
+        System.out.println("----------------------------------------");
 
+        System.out.println("Vælg disciplin:");
+        System.out.println("1. Butterfly");
+        System.out.println("2. Crawl");
+        System.out.println("3. Rygcrawl");
+        System.out.println("4. Brystsvømning");
+        System.out.println("----------------------------------------");
+        System.out.print("Valg: ");
+
+        int choice = inputHelper.readInt();
         Discipline discipline;
 
         switch (choice) {
@@ -298,13 +386,14 @@ public class TrainerMenu {
                 return;
             }
         }
-
+        System.out.println("\n----------------------------------------");
         System.out.println("""
                 Vælg aldersgruppe:
                 1. Junior (<18)
                 2. Senior (18+)
                 """);
-
+        System.out.println("----------------------------------------");
+        System.out.print("Valg: ");
         int ageChoice = inputHelper.readInt();
         boolean isJunior;
 
@@ -319,19 +408,28 @@ public class TrainerMenu {
 
         ArrayList<CompetitiveSwimmer> top5 = resultController.getTop5(discipline, isJunior);
 
-        System.out.println("\n--- TOP 5 " + discipline + " (" + (isJunior ? "Junior" : "Senior") + ") ---\n");
+        System.out.println("\n----------------------------------------");
+        System.out.println("         TOP 5 " + discipline +
+                " (" + (isJunior ? "Junior" : "Senior") + ")");
+        System.out.println("----------------------------------------\n");
 
         if (top5.isEmpty()) {
-            System.out.println("Ingen resultater fundet");
+            System.out.println("Ingen resultater fundet.\n");
             return;
         }
 
         int rank = 1;
+        for (CompetitiveSwimmer swimmer : top5) {
+            var best = swimmer.getBestResultForDiscipline(discipline);
 
-        for (CompetitiveSwimmer s : top5) {
-            System.out.println(rank++ + ". " + s.getFullName() + " - " + s.getBestResultForDiscipline(discipline).getFormattedTime());
+            System.out.println(rank++ + ".");
+            printMemberLine(swimmer);
+
+            System.out.println("   Bedste tid: " + best.getFormattedTime());
+            System.out.println();
         }
-        System.out.println("--------------------------------");
+
+        System.out.println("\n----------------------------------------\n");
 
     }
 
@@ -361,5 +459,29 @@ public class TrainerMenu {
         // Sortere efter disciplin alfabetisk
         competitiveSwimmer.getTrainingResults().sort(Comparator.comparing(Result::getDiscipline));
         competitiveSwimmer.getCompetitionResults().sort(Comparator.comparing(CompetitionResult::getDiscipline));
+    }
+
+    /**
+     * Udskriver ét medlem i et ensartet format.
+     * Samme format som i ChairmanMenu og TreasurerMenu.
+     */
+    private void printMemberLine(Member member) {
+        if (member == null) {
+            System.out.println("Ingen medlemsdata at vise.");
+            return;
+        }
+
+        String type = (member instanceof CompetitiveSwimmer) ? "Konkurrence" : "Motionist";
+        String status = member.getIsActive() ? "Aktiv" : "Passiv";
+        int age = member.getAge();
+
+        System.out.printf(
+                "%-20s | Tlf: %-12s | Alder: %-3d | %-10s | %-11s\n",
+                member.getFullName(),
+                member.getPhoneNr(),
+                age,
+                status,
+                type
+        );
     }
 }

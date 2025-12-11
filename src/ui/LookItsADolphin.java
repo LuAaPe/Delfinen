@@ -5,11 +5,11 @@ public class LookItsADolphin {
     /**
      * Dekorativ ASCII kunst :-)
      */
-    public void printDolphinArt(){
+    public static void printDolphinArt(){
         System.out.println("""
                     /*
-                     *                                    __
-                     *          3                      _.-~  )
+                     *      So Long, and thanks for all the fish! 
+                     *                                 _.-~  )
                      *                     _..--~~~~,'   ,-/     _
                      *                  .-'. . . .'   ,-','    ,' )
                      *                ,'. . . _   ,--~,-'__..-'  ,'

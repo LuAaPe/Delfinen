@@ -32,6 +32,7 @@ public class ResultInput {
                 """);
 
         while (true){
+            System.out.print(": ");
             int choice = inputHelper.readInt();
             switch (choice){
                 case 1:
@@ -43,7 +44,7 @@ public class ResultInput {
                 case 4:
                     return Discipline.BREASTSTROKE;
                 default:
-                    System.out.println("Ugyldigt valg, prøv igen:");
+                    System.out.print("Ugyldigt valg, prøv igen\n: ");
                     break;
             }
         }
@@ -53,7 +54,7 @@ public class ResultInput {
 
      */
     public int enterSwimmingTime(){
-        System.out.println("Indtast tid (SS.mmm eller MM:SS.mmm)\n: ");
+        System.out.print("Indtast tid (SS.mmm eller MM:SS.mmm)\n: ");
 
         while (true){
             String timeString = input.nextLine();
@@ -78,7 +79,7 @@ public class ResultInput {
                 }
             }
             catch (Exception e){
-                System.out.println("Ugyldig tid. Prøv igen\n: ");
+                System.out.print("Ugyldig tid. Prøv igen\n: ");
             }
         }
     }
@@ -86,7 +87,7 @@ public class ResultInput {
      * Validerer datoen for et resultat ud fra svømmerens alder
      */
     public LocalDate enterResultDate(CompetitiveSwimmer competitiveSwimmer){
-        System.out.println("Indtast dato for resultat (ÅÅÅÅ-MM-DD)\n: ");
+        System.out.print("Indtast dato for resultat (ÅÅÅÅ-MM-DD)\n: ");
         while (true){
 
             LocalDate earliestByAge = competitiveSwimmer.getBirthDate().plusYears(6);
@@ -112,7 +113,7 @@ public class ResultInput {
                 System.out.println("Fejl: " + e.getMessage());
             }
             catch (Exception e){
-                System.out.println("Forkert format, prøv igen (ÅÅÅÅ-MM-DD)\n: ");
+                System.out.print("Forkert format, prøv igen (ÅÅÅÅ-MM-DD)\n: ");
             }
         }
     }
