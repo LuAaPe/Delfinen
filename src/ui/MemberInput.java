@@ -24,20 +24,20 @@ public class MemberInput {
      * Indlæs og valider fødselsdato
      */
     public LocalDate enterBirthDate() {
-        System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD): ");
+        System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD)\n: ");
         while (true) {
             try {
                 String date = input.nextLine();
                 LocalDate birthDate = convertStringDateToLocalDate(date);// prøver på at lave et LocalDate objekt fra den input String
                 int age = calculateAge(birthDate); // finder lige ud af alderen....
                 if (age < 6 || age > 100) {
-                    throw new InvalidBirthYearException("Alder skal være minimum 6 og maks 100.\nVenligst prøv igen (ÅÅÅÅ-MM-DD): ");
+                    throw new InvalidBirthYearException("Alder skal være minimum 6 og maks 100.\nVenligst prøv igen (ÅÅÅÅ-MM-DD)\n: ");
                 }
                 return birthDate;
             } catch (InvalidBirthYearException e) {
                 System.out.println(e.getMessage());
             } catch (Exception j) {
-                System.out.println("Tastefejl. Venligst prøv igen (ÅÅÅÅ-MM-DD): ");
+                System.out.print("Tastefejl. Venligst prøv igen (ÅÅÅÅ-MM-DD)\n: ");
             }
         }
     }
@@ -48,7 +48,7 @@ public class MemberInput {
      */
     public String enterPhoneNr() {
         while (true) {
-            System.out.print("Indtast telefon Nr: ");
+            System.out.print("Indtast telefon Nr\n: ");
             String phoneNr = input.nextLine().trim();
 
 
