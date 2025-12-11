@@ -135,5 +135,12 @@ public class ResultController {
         int limit = Math.min(5, list.size());
         return new ArrayList<>(list.subList(0, limit));
     }
+    /**
+     * Fjerner alle gemte resultater for et medlem ud fra telefonnummer.
+     * Bruges når et medlem slettes, så resultater ikke efterlades i filen.
+     */
+    public void removeResultsForMember(String phone) {
+        fileHandler.removeResultsForMember(phone);
+    }
 }
 

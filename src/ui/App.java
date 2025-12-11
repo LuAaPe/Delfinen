@@ -22,7 +22,7 @@ public class App {
         ResultInput resultInput = new ResultInput(input, inputHelper);
 
         // Rolle-menuer
-        ChairmanMenu chairmanMenu = new ChairmanMenu(input, inputHelper, memberController, memberInput);
+        ChairmanMenu chairmanMenu = new ChairmanMenu(input, inputHelper, memberController, memberInput, resultController);
         TreasurerMenu treasurerMenu = new TreasurerMenu(input, inputHelper, memberController);
         TrainerMenu trainerMenu = new TrainerMenu(input, inputHelper, resultInput, resultController, memberController);
 

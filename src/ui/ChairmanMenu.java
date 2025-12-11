@@ -1,6 +1,7 @@
 package ui;
 
 import controller.MemberController;
+import controller.ResultController;
 import domain.CompetitiveSwimmer;
 import domain.Member;
 import util.AlreadyCompetitiveSwimmerException;
@@ -14,13 +15,15 @@ public class ChairmanMenu {
     private final Scanner input;
     private final InputHelper inputHelper;
     private final MemberController memberController;
+    private final ResultController resultController;
     private final MemberInput memberInput;
 
-    public ChairmanMenu(Scanner input, InputHelper inputHelper, MemberController memberController, MemberInput memberInput) {
+    public ChairmanMenu(Scanner input, InputHelper inputHelper, MemberController memberController, MemberInput memberInput, ResultController resultController) {
         this.input = input;
         this.inputHelper = inputHelper;
         this.memberController = memberController;
         this.memberInput = memberInput;
+        this.resultController = resultController;
     }
 
 
@@ -150,6 +153,7 @@ public class ChairmanMenu {
         try {
             Member removed = memberController.removeMember(phoneNr);
             System.out.println("Medlem fjernet: " + removed.getFullName() + " (" + removed.getPhoneNr() + ")");
+            resultController.removeResultsForMember(phoneNr);
         } catch (MemberNotFoundException e) {
             System.out.println(e.getMessage());
         }

@@ -172,6 +172,42 @@ public class ResultFileHandler implements TextFileHandler {
     }
 
     /**
+     * Fjerner alle linjer i resultatfilen for det angivne telefonnummer.
+     * Hvis filen ikke findes, gøres intet.
+     */
+    public void removeResultsForMember(String phone) {
+        ArrayList<String> remainingLines = new ArrayList<>();
+
+        try (Scanner scanner = openScanner(fileName)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+
+                if (line.isEmpty()) {
+                    continue;
+                }
+
+                String[] parts = line.split(",");
+                if (parts.length > 0 && parts[0].equals(phone)) {
+                    continue;
+                }
+
+                remainingLines.add(line);
+            }
+        } catch (FileNotFoundException e) {
+            return; // Intet at slette hvis filen ikke findes
+        }
+
+        try (PrintWriter writer = openWriter(fileName)) {
+            for (String line : remainingLines) {
+                writer.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Der upstod en fejl under skrivning til filen");
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Finder et medlem i listen ud fra telefonnummer.
      * Returnerer null hvis intet medlem findes.
      */
