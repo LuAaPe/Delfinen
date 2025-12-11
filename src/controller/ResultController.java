@@ -47,13 +47,8 @@ public class ResultController {
      */
     public void addTrainingResult(String phone, Discipline discipline,
                                   int timeMilliSeconds, LocalDate date) {
-        Member member = klubben.findByPhoneNr(phone);
 
-
-        // Tjek om medlemmet er en konkurrencesvømmer
-        if (!(member instanceof CompetitiveSwimmer competitiveSwimmer)) {
-            throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
-        }
+        CompetitiveSwimmer competitiveSwimmer = getCompetitiveSwimmer(phone);
 
         // Tilføj resultatet
         competitiveSwimmer.addTrainingResult(new TrainingResult(discipline, timeMilliSeconds, date));
@@ -64,13 +59,8 @@ public class ResultController {
      * Tilføjer et stævneresultat til en konkurrencesvømmer.
      */
     public void addCompetitionResult(String phone, Discipline discipline, int timeMilliSeconds, LocalDate date, String eventName, int placement) {
-        Member member = klubben.findByPhoneNr(phone);
 
-
-        // Tjek om medlemmet er en konkurrencesvømmer
-        if (!(member instanceof CompetitiveSwimmer competitiveSwimmer)) {
-            throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
-        }
+        CompetitiveSwimmer competitiveSwimmer = getCompetitiveSwimmer(phone);
 
         //Tilføj stævneresultat
         competitiveSwimmer.addCompetitionResult(new CompetitionResult(discipline, timeMilliSeconds, date, eventName, placement));
