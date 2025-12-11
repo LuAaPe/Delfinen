@@ -49,9 +49,6 @@ public class ResultController {
                                   int timeMilliSeconds, LocalDate date) {
         Member member = klubben.findByPhoneNr(phone);
 
-        if (member == null) {
-            throw new MemberNotFoundException("Telefonnummer findes ikke.");
-        }
 
         // Tjek om medlemmet er en konkurrencesvømmer
         if (!(member instanceof CompetitiveSwimmer competitiveSwimmer)) {
@@ -69,9 +66,6 @@ public class ResultController {
     public void addCompetitionResult(String phone, Discipline discipline, int timeMilliSeconds, LocalDate date, String eventName, int placement) {
         Member member = klubben.findByPhoneNr(phone);
 
-        if (member == null) {
-            throw new MemberNotFoundException("Telefonnummer findes ikke.");
-        }
 
         // Tjek om medlemmet er en konkurrencesvømmer
         if (!(member instanceof CompetitiveSwimmer competitiveSwimmer)) {
@@ -108,10 +102,6 @@ public class ResultController {
     public CompetitiveSwimmer getCompetitiveSwimmer(String phone) {
         Member member = klubben.findByPhoneNr(phone);
 
-        if (member == null) {
-            throw new MemberNotFoundException("Telefonnummeret findes ikke.");
-        }
-
         if (!(member instanceof CompetitiveSwimmer competitiveSwimmer)) {
             throw new NotCompetitiveSwimmerException("Medlem er ikke konkurrencesvømmer.");
         }
@@ -137,19 +127,13 @@ public class ResultController {
     public ArrayList<CompetitiveSwimmer> getTop5(Discipline discipline, boolean junior) {
         ArrayList<CompetitiveSwimmer> list = new ArrayList<>();
 
-        if (junior) {
-            // 1. Find alle relevante svømmere
-            for (Member member : klubben.getAllMembers()) {
+        for (Member member : klubben.getAllMembers()) {
+            if (member instanceof CompetitiveSwimmer swimmer &&
+                    swimmer.getBestResultForDiscipline(discipline) != null) {
 
-                //2. Sikre at medlem er Konkurrence svømmer og at de har et resultat i disciplinen
-                if (member instanceof CompetitiveSwimmer swimmer &&
-                        swimmer.getBestResultForDiscipline(discipline) != null) {
+                if (junior && swimmer.getIsJunior()) {
                     list.add(swimmer);
-                }
-            }
-        } else {
-            for (Member member : klubben.getAllMembers()) {
-                if (member instanceof CompetitiveSwimmer swimmer && swimmer.getBestResultForDiscipline(discipline) != null) {
+                } else if (!junior && !swimmer.getIsJunior()) {
                     list.add(swimmer);
                 }
             }
@@ -157,12 +141,9 @@ public class ResultController {
         // 3. Sorter svømmere efter bedste tid
         list.sort(new SwimmerBestResultComparator(discipline));
 
-        // 4. Returner top 5
-        if (list.size() > 5) {
-            return new ArrayList<>(list.subList(0, 5));
-        } else {
-            return list;
-        }
+        // 4. Returner en midlertidig liste med top 5
+        int limit = Math.min(5, list.size());
+        return new ArrayList<>(list.subList(0, limit));
     }
 }
 

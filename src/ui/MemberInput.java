@@ -12,10 +12,12 @@ import java.util.Scanner;
 public class MemberInput {
 
     private final Scanner input;
+    private final InputHelper inputHelper;
     private final MemberController memberController;
 
-    public MemberInput(Scanner input, MemberController memberController) {
+    public MemberInput(Scanner input, InputHelper inputHelper, MemberController memberController) {
         this.input = input;
+        this.inputHelper = inputHelper;
         this.memberController = memberController;
     }
 
@@ -51,15 +53,14 @@ public class MemberInput {
             System.out.print("Indtast telefon Nr: ");
             String phoneNr = input.nextLine().trim();
 
-            if ((phoneNr.length() != 8) && (phoneNr.length() != 11)) {
-                System.out.println("Fejl: Indtast et telefon nr på 8 cifre eller 11 cifre");
-                System.out.println(" 8 cifre: 12345678");
-                System.out.println("11 cifre: +45 12345678");
+
+            if ((phoneNr.length() != 8)) {
+                System.out.println("Fejl: Indtast et telefon nr på 8 cifre");
                 continue;
             }
             // "Regular expressions"
-            if (!phoneNr.matches("\\+?\\d+")) {
-                System.out.println("Fejl Telefon nr. må kun indeholde tal og evt. + foran");
+            if (!phoneNr.matches("\\+?\\d")) {
+                System.out.println("Fejl Telefon nr. må kun indeholde tal");
                 continue;
             }
 
