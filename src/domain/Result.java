@@ -3,14 +3,14 @@ package domain;
 import java.time.LocalDate;
 
 /**
- * Result repræsenterer et simpelt svømmeresultat for en konkurrencesvømmer.
+ * Result repræsenterer et simpelt resultat for en konkurrencesvømmer.
  * <p>
  * Klassen indeholder:
  * - disciplin
  * - tid i millisekunder
  * - dato for resultatet
  * <p>
- * Klassen er en "databeholder", som CompetitionResult arver fra.
+ * Klassen er en "databeholder", som CompetitionResult og TrainingResult arver fra.
  */
 public abstract class Result {
     /** Svømmedisciplin: butterfly, craw, bryst, osv. */
@@ -21,7 +21,8 @@ public abstract class Result {
     private final LocalDate date;
 
     /**
-     * Constructor der opretter et almindeligt træningsresultat.
+     * Opretter et nyt træningsresultat med disciplin, tid og dato.
+     * Klassen er abstrakt så kun de klasser som arver (TrainingResult, CompetitionResult) kan oprette Result-objekter.
      */
     public Result(Discipline discipline, int timeMilliSeconds, LocalDate date){
         this.discipline = discipline;

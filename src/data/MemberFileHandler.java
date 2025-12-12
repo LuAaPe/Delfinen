@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * MemberFileHandler har ansvaret for at:
- * - indlæse alle medlemmer fra tekstfilen "Memberlist.txt"
- * - gemme alle medlemmer tilbage i filen
+ * MemberFileHandler har ansvaret for at indlæse og gemme alle medlemmer
+ * i tekstfilen (Members.txt).
+ * Klassen fungerer som programmets "fil-database" for medlemmer.
+ * Den læser rå tekstlinjer fra filen og oversætter dem til Member-objekter.
  * <p>
  * Klassen implementerer TextFileHandler-interfacet,
  * hvilket betyder, at den automatisk arver fælles metoder til:
@@ -28,8 +29,7 @@ public class MemberFileHandler implements TextFileHandler {
     private final String fileName;
 
     /**
-     * Konstruktør, som modtager navnet på den fil
-     * der skal læses/skrive medlemmer til.
+     * Opretter en ny MemberFileHandler.
      *
      * @param fileName navnet på filen hvor medlemmer gemmes
      */
@@ -97,11 +97,15 @@ public class MemberFileHandler implements TextFileHandler {
     }
 
     /**
-     * Gemmer alle medlemmer i tekstfilen.
+     * Gemmer alle medlemmer i tekstfilen i det samme format som ved indlæsning.
      * Benytter openWriter() fra TextFileHandler-interfacet.
      * <p>
      * Hver linje skrives i samme format som ved indlæsning:
      * firstName, surName, phoneNr, birthDate, isCompetitive, isActive, isPaid
+     * Arbejdsgang:
+     * 1. Åbn filen med openWriter() (arvet fra TextFileHandler)
+     * 2. Skriv ét medlem pr. linje
+     * 3. Overskriv HELE filen
      */
     public void saveListOfMembersToFile(ArrayList<Member> members) {
 

@@ -4,16 +4,17 @@ import java.time.LocalDate;
 import java.time.Period;
 /**
  * Klassen repræsenterer et almindeligt medlem i svømmeklubben.
- * Medlemmet indeholder:
- * - Personlige oplysninger (navn, tlf.nr., fødselsdato)
- * - Medlemsstatus (aktiv/passiv, betalt/ikke betalt)
+ * Medlemmet indeholder basale oplysninger om et medlem:
+ * - Navn og telefonnummer (telefonnummer bruges som unik ID)
+ * - Fødselsdato og beregnet alder
  * - Aldersgruppe (junior/senior) beregnet ud fra fødselsdato
  * - Om medlemmet er konkurrencesvømmer eller ej
- * - Den årlige kontingentpris, som beregnes automatisk
+ * - Om medlemmet er akrivt eller passivt
+ * - Om medlemmet har betalt kontingent
+ * - Den årlige kontingentpris, som beregnes automatisk med setYearlyFee()
 
- * Bemærk:
- * isCompetitive bruges af fil-indlæsningen for at afgøre,
- * om medlemmer fra filen skal oprettes som CompetitiveSwimmer objekter.
+ * Konkurrencesvømmere er en særlig type medlem.
+ * De representeres af en separat klasse: CompetitiveSwimmer, som arver fra Member.
  */
 public class Member {
     /** Medlemmets telefonnummer. Bruges som unikt ID i systemet. */
@@ -33,7 +34,7 @@ public class Member {
     /** Om medlemmet hat betalt kontingent for året.*/
     private boolean isPaid;
     /** Om medlemmet er konkurrencesvømmer.
-     * Dette er især vigtigt ved indlæsning fra fil.
+     * Bruges af filindlæsning og når medlemmet forfremmes til CompetitiveSwimmer.
      */
     private boolean isCompetitive;
     /** Medlemmets årlige kontingent. Beregnes automatisk ud fra regler.*/
@@ -42,18 +43,11 @@ public class Member {
 
     /**
      * Konstruktør til at oprette et nyt medlem.
-     *
-     * @param firstName     Fornavn
-     * @param surName       Efternavn
-     * @param phoneNr       Telefonnummer (unik)
-     * @param birthDate     Fødselsdato
-     * @param isActive      Om medlemmet er aktivt/passivt medlem
-     * @param isPaid        Om medlemmet hat betalt kontingent
      */
     public Member(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isActive, boolean isPaid){
         this.firstName = firstName;
         this.surName = surName;
-        this.fullName = firstName + " " + surName; // TODO metode, noget :))
+        this.fullName = firstName + " " + surName;
         this.phoneNr = phoneNr;
         this.birthDate = birthDate;
         this.isActive = isActive;
@@ -66,7 +60,6 @@ public class Member {
 
     }
 
-    // - - - GETTERS - - - //
     public String getFirstName(){
         return this.firstName;
     }
@@ -83,7 +76,9 @@ public class Member {
         return this.birthDate;
     }
 
-    /** Returnerer alder som helt tal.*/
+    /** Returnerer alder som helt tal.
+     * Alderen beregnes hver gange med calculateAge() for at være opdateret
+     **/
     public int getAge(){
         return calculateAge();
     }
@@ -113,18 +108,20 @@ public class Member {
         return this.phoneNr;
     }
 
-    // - - - SETTERS - - - //
 
     /**
      * Ændrer aktiv/passiv status.
-     * Når status ændres, skal kontingentprisen opdateres.
-     * @param isActive      true/false om medlemmen skal være aktiv eller ej
+     * Når status ændres, opdateres kontingent automatisk.
      */
     public void setIsActive(boolean isActive){
         this.isActive = isActive;
-        setYearlyFee(); // TODO KAN DENNE FJERNES ????
+        setYearlyFee();
     }
 
+    /**
+     * Markerer et medlem som konkurrencesvømmer
+     * Bruges når et medlem bliver forfremmet til CompetitiveSwimmer
+     */
     public void setIsCompetitive(boolean isCompetitive){
         this.isCompetitive = isCompetitive;
     }
@@ -132,13 +129,13 @@ public class Member {
     public void setIsPaid(boolean isPaid){
         this.isPaid = isPaid;
     }
-    // - - - BEREGNINGER OG LOGIK - - - //
 
     /**
      * Beregner alder baseret på fødselsdato.
      */
     public int calculateAge(){
         LocalDate currentDate = LocalDate.now();
+        // java.time.Period bruges til at finde forskellen mellem nuværende dato og fødselsdato.
         Period period = Period.between(getBirthDate(), currentDate);
         return period.getYears();
     }

@@ -3,14 +3,16 @@ package domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 /**
- * Klassen repræsenterer en konkurrencesvømmer.
+ * Klassen repræsenterer et medlem, der er konkurrencesvømmer.
 
- * Denne klasse udvider member og tilføjer:
+ * Denne klasse udvider member-klassen og tilføjer:
  * - en liste med træningsresultater
  * - en liste med stævneresultater
 
  * CompetitiveSwimmer bruges af træneren i systemet
  * til at administrere resultater og sortering.
+ * En konkurrencesvømmer er stadig et almindeligt medlem,
+ * men har ekstra data knyttet til resultater.
  */
 public class CompetitiveSwimmer extends Member{
     /** Liste over alle træningsresultater for svømmeren.*/
@@ -18,23 +20,16 @@ public class CompetitiveSwimmer extends Member{
     /** Liste over alle stævneresultater for svømmeren.*/
     private final ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
     /**
-     * Konstruktør for en konkurrencesvømmer.
+     * Opretter en konkurrencesvømmer.
      * Alle basis-informationer håndteres af superklassen Member.
-     *
-     * @param firstName     Fornavn
-     * @param surName       Efternavn
-     * @param phoneNumber   Telefonnummer
-     * @param birthDate     Fødselsdato
-     * @param isActive      Aktiv/passiv medlem
-     * @param isPaid        Betalt/ikke betalt
+     * Når en konkurrencesvømmer oprettes, markeres medlemmet automatisk
+     * som konkurrencedeltager via setIsCompetitive(true).
      */
     public CompetitiveSwimmer(String firstName, String surName, String phoneNumber, LocalDate birthDate, boolean isActive, boolean isPaid) {
         // Kalder Members konstruktør (super)
         super(firstName, surName, phoneNumber, birthDate, isActive, isPaid);
         setIsCompetitive(true);
     }
-
-    // - - - RESULTAT METODER - - - //
 
     /**
      * Tilføjer et træningsresultat til svømmeren.
@@ -52,7 +47,7 @@ public class CompetitiveSwimmer extends Member{
 
     /**
      * Returnerer listen med træningsresultater.
-     * Bruges bl.a. til sortering i Menu.
+     * Bruges bl.a. til sortering i TrainerMenu.
      */
     public ArrayList<TrainingResult> getTrainingResults() {
         return trainingResults;
@@ -74,6 +69,7 @@ public class CompetitiveSwimmer extends Member{
 
      * Den gennemgår ALLE resultater i den givne disciplin og returnerer det
      * resultat som har den laveste tid (hurtigst).
+     * Bruges i top-5 funktionen til at se de bedste svømmere.
      *
      */
     public Result getBestResultForDiscipline(Discipline discipline) {

@@ -13,7 +13,7 @@ import java.util.Scanner;
  * <p>
  * Default-metoder:
  * et interface indeholder "default"-metoder, som har en færdig implementering.
- * Klasser som implenterer interfacet kan bruge metoderne uden selv at skulle skrive dem.
+ * Klasser som implementer interfacet kan bruge metoderne uden selv at skulle skrive dem.
  */
 public interface TextFileHandler {
 
