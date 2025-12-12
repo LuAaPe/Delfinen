@@ -2,7 +2,6 @@ package controller;
 
 import data.ResultFileHandler;
 import domain.*;
-import util.MemberNotFoundException;
 import util.NotCompetitiveSwimmerException;
 import util.SwimmerBestResultComparator;
 
@@ -11,13 +10,15 @@ import java.util.ArrayList;
 
 /**
  * ResultController håndterer al logik relateret til svømmeresultater.
- * <p>
+ * Controllern fungerer som et mellemled mellem UI (trænermenuen),
+ * Klubben(medlemsdata), og ResultFilehandler(fil-håndtering).
  * Controllerns ansvar:
- * - at tilføje træningsresultater
- * - at tilføje stævneresultater
- * - at indlæse alle resultater fra fil ved programstart
- * - at gemme alle resultater i fil når noget ændres
- * - at finde en konkurrencesvømmer ud fra telefonnummer
+ * - Tilføje træningsresultater
+ * - Tilføje stævneresultater
+ * - Indlæse resultater fra fil ved programstart
+ * - Gemme resultater når noget ændres
+ * - Kontrollere om et telefonnummer tilhører en konkurrencesvømmer
+ * - Udvælge top-5 svømmere i en disciplin (junior/senior)
  */
 public class ResultController {
     /**
@@ -25,12 +26,13 @@ public class ResultController {
      */
     private final ResultFileHandler fileHandler = new ResultFileHandler("Results.txt");
     /**
-     * Reference til Database så controllern kan finde medlemmer.
+     * Reference til Klubben, så controllern kan finde medlemmer
+     * og tilgå deres resultater.
      */
     private final Klubben klubben;
 
     /**
-     * Konstruktør der modtager en database, så vi kan søge efter medlemmer.
+     * Opretter en ResultController.
      */
     public ResultController(Klubben klubben) {
         this.klubben = klubben;
@@ -40,9 +42,9 @@ public class ResultController {
      * Tilføjer et træningsresultat til en konkurrencesvømmer.
      * <p>
      * 1. Find medlem via telefonnummer
-     * 2. Tjek at medlem findes
-     * 3. Tjek at medlem er konkurrencesvømmer (instanceof)
-     * 4. Tilføj resultat
+     * 2. Tjek at medlem er konkurrencesvømmer (instanceof)
+     * 3. Opret et TrainingResult-objekt
+     * 4. Tilføj det til svømmerens liste
      * 5. Gem resultater i filen
      */
     public void addTrainingResult(String phone, Discipline discipline,
@@ -57,6 +59,8 @@ public class ResultController {
 
     /**
      * Tilføjer et stævneresultat til en konkurrencesvømmer.
+     * Minder om addTrainingResult, men her:
+     * - Bruges CompetitionResult (med stævnenavn og placering)
      */
     public void addCompetitionResult(String phone, Discipline discipline, int timeMilliSeconds, LocalDate date, String eventName, int placement) {
 
@@ -77,17 +81,16 @@ public class ResultController {
 
     /**
      * Indlæser ALLE resultater og tilføjer dem til de rigtige
-     * CompetitiveSwimmer objekter ved programstart.
+     * ResultFileHandler søger selv frem til de rigtige medlemmer,
+     * så deres resultater bliver knyttet til de eksisterende objekter.
      */
     public void loadResults() {
         fileHandler.loadAllResults(klubben.getAllMembers());
     }
 
     /**
-     * Finder og returnerer en konkurrencesvømmer ud fra telefonnummer.
-     * Smider fejl hvis:
-     * - medlem ikke findes
-     * - medlem findes, men ikke er konkurrencesvømmer
+     * Finder et medlem ud fra telefonnummer og sikrer,
+     * at det er en konkurrencesvømmer.
      */
     public CompetitiveSwimmer getCompetitiveSwimmer(String phone) {
         Member member = klubben.findByPhoneNr(phone);
@@ -104,15 +107,14 @@ public class ResultController {
      * opdelt efter aldersgruppe (junior/senior).
      * <p>
      * Processen er:
-     * 1. Gennemgå alle medlemmer i databasen
-     * 2. Vælg kun konkurrencesvømmere
-     * 3. Sorter dem efter bedste resultat i den valgte disciplin
-     * 4. Returner de første fem svømmere (eller færre, hvis der ikke
-     * findes fem med tider)
-     *
-     * @param discipline Disciplinen den sorteres efter
-     * @param junior     true = junior, false = senior
-     * @return enArrayList med top 5 svømmere
+     * 1. Gennemgå alle medlemmer
+     * 2. Filtrér dem der:
+     *      - er konkurrencesvømmere
+     *      - har et resultat i den ønskede disciplin
+     *      - tilhører den rigtige aldersgruppe (junior/senior)
+     * 3. Sortér ved hjælp af SwimmerBestResultComparator
+     * 4. Returnér de første 5 (eller færre, hvis der ikke er 5)
+     * Bruges i træner-menuen.
      */
     public ArrayList<CompetitiveSwimmer> getTop5(Discipline discipline, boolean junior) {
         ArrayList<CompetitiveSwimmer> list = new ArrayList<>();

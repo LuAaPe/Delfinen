@@ -13,10 +13,7 @@ public class InputHelper {
     private final Scanner input;
 
     /**
-     * Indlæser en integer fra konsollen.
-     * Hvis brugeren taster noget forkert ind, bliver en fejlbesked printet
-     * og brugeren bliver bet om at prøve igen indtil et korrekt nummer er indtastet.
-     * @param input Scanneren som er oprettet i Menu
+     * Opretter et InputHelper-objekt.
      */
     public InputHelper(Scanner input){
         // Vi får en Scanner fra Menu ind i InputHelper
@@ -26,9 +23,13 @@ public class InputHelper {
     }
 
     /**
-     * Forsøger at læse et heltal fra brugeren.
-     * Hvis brugeren skriver noget der ikke kan omdannes til et tal,
-     * bliver der vist en fejlbesked og brugeren bliver bedt om at prøve igen.
+     * Læser et heltal (int) fra brugeren.
+     * Metoden sikrer:
+     * - at brugeren ikke kan indtaste bogstaver eller ugyldigt input
+     * - at programmet ikke crasher ved forkert input
+     * Hvis brugeren skriver noget forkert, vises en fejlbesked,
+     * og metoden spørger igen indtil den får et gyldigt tal.
+     * Returnerer et valideret heltal indtastet af brugeren
      */
     public int readInt(){
         while (true){
@@ -44,6 +45,16 @@ public class InputHelper {
         }
     }
 
+    /**
+     * Læser et ja/nej-svar fra brugeren.
+     * Acceptable svar:
+     *   - "j" = ja
+     *   - "n" = nej
+     * Alle andre inputs giver en fejlbesked, og metoden spørger igen.
+     *
+     * @param output Den tekst som brugeren skal se før input (fx "Aktiv? j/n:")
+     * @return true hvis brugeren svarer 'j', false hvis 'n'
+     */
     public boolean readYesOrNo(String output){
         while (true){
             System.out.println(output);

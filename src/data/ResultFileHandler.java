@@ -10,11 +10,12 @@ import java.util.Scanner;
 
 
 /**
- * ResultFileHandler er ansvarlig al filhåndtering relateret til resultater.
+ * ResultFileHandler har ansvaret for al filhåndtering af svømmeresultater.
  * <p>
- * Den:
- * - indlæser alle resultater fra "Results.txt"
- * - gemmer alle resultater tilbage i filen.
+ * Den fungerer som programmets “database” for resultater, og den:
+ * - indlæser alle resultater fra "Results.txt" ved programstart
+ * - oversætter tekstlinjer til TrainingResult- eller CompetitionResult-objekter
+ * - gemmer alle resultater tilbage i filen når noget ændres.
  * <p>
  * Klassen implementerer TextFileHandler-interfacet, så den kan bruge:
  * - openScanner() til at åbne .txt-filen for læsning
@@ -35,7 +36,7 @@ public class ResultFileHandler implements TextFileHandler {
     private final String fileName;
 
     /**
-     * Konstruktør der modtager navnet på resultatfilen.
+     * Opretter en ResultFileHandler med navnet på den fil der skal bruges.
      */
     public ResultFileHandler(String fileName) {
         this.fileName = fileName;
@@ -47,11 +48,16 @@ public class ResultFileHandler implements TextFileHandler {
      * <p>
      * openScanner() fra TextFileHandler-interfacet bruges til at åbne filen.
      * <p>
-     * 1. Læs hver linje
-     * 2. Split den ved komma
-     * 3. Find rigtigt medlem via telefonnummer
-     * 4. Tjek om medlem er konkurrencesvømmer
-     * 5. Opret resultat og tilføj til medlem
+     * Arbejdsgang:
+     * 1. Åbn resultatfilen med openScanner()
+     * 2. Læs linje for linje
+     * 3. Split linjen ved komma
+     * 4. Find medlem ud fra telefonnummer
+     * 5. Tjek om medlemmet er en konkurrencesvømmer
+     * 6. Afgør om linjen beskriver TRÆNING eller STÆVNE
+     * 7. Opret det korrekte resultatobjekt og tilføj det til svømmeren
+     * Der bruges fejl-håndtering pr. linje, så en forkert linje
+     * ikke ødelægger hele indlæsningen (robusthed).
      */
     public void loadAllResults(ArrayList<Member> members) {
 

@@ -10,15 +10,35 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
-
+/**
+ * TrainerMenu styrer alle funktioner, som klubbens træner skal bruge.
+ * Menuen giver mulighed for:
+ *   - at tilføje træningsresultater
+ *   - at tilføje stævneresultater
+ *   - at se Top 5 lister for en disciplin/aldersgruppe
+ *   - at se alle konkurrencesvømmere (opdelt i junior/senior)
+ *   - at se alle resultater for én bestemt konkurrencesvømmer
+ * Klassen er en del af UI-laget og håndterer udelukkende dialog med brugeren.
+ * Den udfører ingen logik selv, men kalder metoder i ResultController og
+ * MemberController for at hente og gemme data.
+ */
 public class TrainerMenu {
-
+    /** Scanner til brugerinput fra konsollen */
     private final Scanner input;
+    /** Hjælpeklasse med valideret input (fx tal, ja/nej) */
     private final InputHelper inputHelper;
+    /** Hjælpeklasse der håndterer input for resultater (disciplin, tid, dato) */
     private final ResultInput resultInput;
+    /** Controller som håndterer alle resultater (træning + stævner) */
     private final ResultController resultController;
+    /** Controller for medlemsdata til opslag af konkurrencesvømmere */
     private final MemberController memberController;
 
+    /**
+     * Opretter en instans af trænerens menu.
+     * Alle nødvendige controller- og input-objekter modtages udefra,
+     * så UI ikke selv skal oprette eller styre data.
+     */
     public TrainerMenu(Scanner input, InputHelper inputHelper, ResultInput resultInput, ResultController resultController, MemberController memberController) {
         this.input = input;
         this.inputHelper = inputHelper;
@@ -28,13 +48,9 @@ public class TrainerMenu {
     }
 
     /**
-     * Menu for træner
-     * - tilføj træningsresultat
-     * - tilføj stævneresultat
-     * - top 5 (senere)
-     * - se alle konkurrencesvømmere
-     * - se en svømmers resultater
-     * flyttet til trinaer menu
+     * Viser trænerens hovedmenu og håndterer brugerens valg.
+     * Menuen kører i en løkke indtil brugeren vælger "0".
+     * Hvert menupunkt kalder en separat metode med en klar funktion.
      */
     public void show() {
         while (true) {
@@ -99,6 +115,15 @@ public class TrainerMenu {
 
     /**
      * Tilføjer et træningsresultat til en konkurrencesvømmer
+     * Arbejdsgang:
+     * 1. Brugeren indtaster telefonnummer
+     * 2. Systemet finder svømmeren (eller fejlvisning)
+     * 3. Træneren vælger disciplin, tid og dato
+     * 4. Resultatet gemmes via ResultController
+     * 5. Resultatet udskrives i ensartet, pænt format
+     * Fejl der håndteres:
+     * - medlem findes ikke
+     * - medlem er ikke konkurrencesvømmer
      */
     private void addTrainingResult() {
 
@@ -148,7 +173,12 @@ public class TrainerMenu {
     }
 
     /**
-     * Tilføjer et stævneresultat
+     * Tilføjer et stævneresultat for en konkurrencesvømmer.
+     * Ligner addTrainingResult(), men indeholder også:
+     *   - stævnenavn
+     *   - placering
+     * Alle felter valideres via inputHelper og resultInput.
+     * Resultatet gemmes via ResultController.
      */
     private void addCompetitionResult() {
         System.out.println("\n----------------------------------------");
@@ -206,7 +236,10 @@ public class TrainerMenu {
 
 
     /**
-     * Viser alle konkurrencesvømmere
+     * Viser alle konkurrencesvømmere opdelt i:
+     *   - junior (< 18 år)
+     *   - senior (18+ år)
+     * Dette giver træneren et hurtigt overblik.
      */
     private void viewAllCompetitiveMembers() {
         System.out.println("\n----------------------------------------");
@@ -263,8 +296,14 @@ public class TrainerMenu {
 
 
     /**
-     * Viser alle resultater for en konkurrencesvømmer,
-     * sorteret efter brugerens valg
+     * Viser alle resultater for én konkurrencesvømmer.
+     * Funktionalitet:
+     * - træneren indtaster telefonnummer
+     * - systemet finder konkurrencesvømmeren
+     * - træneren vælger sorteringsmetode
+     * - både trænings- og stævneresultater udskrives
+     * Sorteringsmetoden vælges i preferredSortingPrompt()
+     * og påvirker kun den aktuelle udskrivning.
      */
     private void viewMemberResuls() {
         try {
@@ -330,7 +369,12 @@ public class TrainerMenu {
     }
 
     /**
-     * Spørger brugeren hvordan resultaterne skal sorteres
+     * Spørger træneren hvordan resultaterne skal sorteres.
+     * Valgmuligheder:
+     * 1. Hurtigste tid
+     * 2. Dato (nyeste først)
+     * 3. Disciplin alfabetisk
+     * Metoden ændrer rækkefølgen direkte i svømmerens lister.
      */
     private void preferredSortingPrompt(CompetitiveSwimmer competitiveSwimmer) {
         System.out.println("Hvordan vil du sortere resultater?");
@@ -360,6 +404,15 @@ public class TrainerMenu {
         }
     }
 
+    /**
+     * Udskriver en Top 5-liste for en valgt disciplin og aldersgruppe.
+     * Arbejdsgang:
+     * 1. Træneren vælger disciplin
+     * 2. Træneren vælger junior/senior
+     * 3. ResultController finder de bedste resultater
+     * 4. Top 5 udskrives i prioriteret rækkefølge
+     * Kun konkurrencesvømmere indgår i Top 5.
+     */
     private void viewTop5() {
         System.out.println("\n----------------------------------------");
         System.out.println("              TOP 5 MENU");
@@ -435,7 +488,9 @@ public class TrainerMenu {
 
 
     /**
-     * Sorterer resultater efter hurtigste tid først
+     * Sorterer både trænings- og stævneresultater for en svømmer.
+     * Sorteringen påvirker kun visningen — ikke den fysiske lagring.
+     * Bruges i viewMemberResults() efter trænerens valg.
      */
     private void sortByTime(CompetitiveSwimmer competitiveSwimmer) {
         // sorter efter tid (hurtigst først)
@@ -462,8 +517,10 @@ public class TrainerMenu {
     }
 
     /**
-     * Udskriver ét medlem i et ensartet format.
-     * Samme format som i ChairmanMenu og TreasurerMenu.
+     * Udskriver et medlem i et ensartet og letlæseligt format.
+     * Format:
+     *   Navn | Telefon | Alder | Aktiv/Passiv | Motionist/Konkurrence
+     * Bruges for at sikre samme visuelle stil på tværs af hele UI.
      */
     private void printMemberLine(Member member) {
         if (member == null) {

@@ -3,7 +3,6 @@ package controller;
 import data.MemberFileHandler;
 import domain.CompetitiveSwimmer;
 import domain.Member;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy;
 import util.AlreadyCompetitiveSwimmerException;
 import util.MemberNotFoundException;
 
@@ -12,36 +11,36 @@ import java.util.ArrayList;
 
 
 /**
- * Database-klassen fungerer som programmets "hukommelse"/"datalager".
- * <p>
+ * Klassen Klubben fungerer som programmets "hukommelse"/"datalager".
  * Den indeholder:
- * - En liste over alle medlemmer
- * - Metoder til at oprette, ændre og hente medlemmer
+ * - En liste over alle medlemmer, som programmet arbejder med i hukommelsen
+ * - Metoder til at oprette, ændre og fjerne medlemmer
  * - Forbindelse til filsystemet via MemberFileHandler
- * <p>
- * Database læser medlemmer fra Memberlist.txt når programmet starter,
- * og gemmer dem tilbage i filen når det sker ændringer
- * <p>
- * Den her klasse interagerer IKKE med brugeren.
+ * Den her klasse interagerer aldrig direkte med brugeren.
  * Den bruges alene af controllers.
+ * Når Klubben oprettes:
+ * 1. Indlæses alle eksisterende medlemmer fra filen
+ * 2. Kontingent-priser genberegnes (i tilfælde af prisændringer)
+ * 3. Data gemmes igen så filen altid er opdateret
  */
 public class Klubben {
 
     /**
-     * Bruges til at læse og gemme members i tekstfilen.
+     * Filhåndterings-klassen der står for at læse og gemme medlemmer i tekstfilen.
      */
     private final MemberFileHandler fileHandler;
+
     /**
-     * Listen med alle Member-objekter som programmet bruger mens det kører.
+     * Listen med alle medlemmer, som programmet arbejder med mens programmet kører.
+     * Dette er programmets "levende" medlemsregister.
      */
     private final ArrayList<Member> members;
 
     /**
-     * Konstruktør til Database.
-     * Når Database oprettes:
-     * 1. Indlæs alle medlemmer fra tekstfilen
-     * 2. Kontingenter opdateres (i tilfælde af ændrede priser)
-     * 3. Alt gemmes igen så filen er opdateret
+     * Opretter et nyt Klubben-objekt
+     * - Henter alle medlemmer fra tekstfilen via fileHandler
+     * - Beregner og opdaterer deres kontingent
+     * Klubben fungerer herefter som en samlet kilde til alle medlemsdata
      */
     public Klubben(MemberFileHandler fileHandler) {
         this.fileHandler = fileHandler;
@@ -54,10 +53,11 @@ public class Klubben {
     }
 
     /**
-     * Opretter et nyt Member-objekt og tilføjer det til listen,
-     * samt gemmer hele listen i tekstfilen.
-     * <p>
-     * Member(. . .) konstruktøren tager alle de nødvendige parametre.
+     * Opretter og gemmer et nyt medlem.
+     * Hvis isCompetitive = true --> oprettes som CompetitiveSwimmer,
+     * ellers som almindeligt Member-objekt.
+     * Medlemmet tilføjes i listen og hele medlemslisten gemmes i filen.
+     * Denne metode bruges af ChairmanMenu gennem MemberController.
      */
     public void addNewMember(String firstName, String surName, String phoneNr, LocalDate birthDate, boolean isCompetitive, boolean isActive, boolean isPaid) {
 
@@ -76,29 +76,31 @@ public class Klubben {
 
 
     /**
-     * Returnerer en kopi listen over alle medlemmer.
-     * Der returneres en kopi for ikke at bryde encapsulation
-     * Vi vil ikke give adgang til ændring via getAllMembers
-     * Bruges bl.a. af Formand- og Kasserer-menuerne.
+     * Returnerer en KOPI ad medlemslisten.
+     * Vi returnerer ikke den originale liste, da det bryder encapsulation,
+     * og giver andre klasser mulighed for at ændre data direkte.
+     * Bruges af menu-klasser til at vise alle medlemmer.
      */
     public ArrayList<Member> getAllMembers() {
         return new ArrayList<>(members);
     }
 
     /**
-     * Gemmer hele listen af medlemmer i tekstfilen.
-     * Bruges når:
-     * - medlem oprettes
-     * - medlem ændres
-     * - medlem betaler
+     * Gemmer hele medlemslisten i tekstfilen
+     * Kaldes hver gang det sker en ændring:
+     * - Nyt medlem
+     * - Fjernet medlem
+     * - Betaling registeret
+     * - Ændring ad kontingent
      */
     public void saveMembers() {
         fileHandler.saveListOfMembersToFile(members);
     }
 
     /**
-     * Går igennem alle medlemmer og beregner korrekt kontingent.
-     * Dette sikrer at priser altid er opdateret ved programstart.
+     * Opdaterer kontingent for ALLE medlemmer.
+     * Dette sikrer at kontingent-priserne altid er korrekte når programmet startes.
+     * Resultatet gemmes i filen.
      */
     public void updateYearlyFee() {
         for (Member member : members) {
@@ -108,8 +110,8 @@ public class Klubben {
     }
 
     /**
-     * Beregner samlet forventet kontingent fra alle medlemmer.
-     * Bruges af Kasserer-menuen.
+     * Beregner den samlede kontingentindtægt ud fra alle medlemmers yearlyFee
+     * Bruges af kasserer-menuen.
      */
     public double getTotalExpectedFees() {
         double sum = 0;
@@ -121,6 +123,7 @@ public class Klubben {
 
     /**
      * Returnerer en liste med alle medlemmer, som IKKE har betalt.
+     * Bruges i kasserer-menuen til at vise medlemmer i restance.
      */
     public ArrayList<Member> getMembersInDebt() {
         ArrayList<Member> inDebt = new ArrayList<>();
@@ -146,10 +149,10 @@ public class Klubben {
     }
 
     /**
-     * Markerer et medlem som betalr, gemmer ændringen i filen,
+     * Markerer et medlem som betalt, gemmer ændringen i filen,
      * og returnerer true hvis det lykkes.
      * <p>
-     * Bruges i Kasserer-menuen.
+     * Bruges i kasserer-menuen.
      */
     public void setMemberPaid(String phoneNr) {
         Member m = findByPhoneNr(phoneNr);
@@ -157,6 +160,11 @@ public class Klubben {
         saveMembers(); // Gem ændringen
     }
 
+    /**
+     * Fjerner et medlem fra systemet og gemmer ændringen,
+     * Returnerer det fjernede medlem, så UI kan vise information om det.
+     * Bruges af formand-menuen
+     */
     public Member removeMember(String phoneNr) {
         Member m = findByPhoneNr(phoneNr);
         members.remove(m);
@@ -164,6 +172,16 @@ public class Klubben {
         return m;
     }
 
+    /**
+     * Opgraderer et almindeligt medlem til en konkurrencesvømmer.
+     * Hvis medlemmet allerede er konkurrencesvømmer kastes en fejl.
+     * Implementationen:
+     * 1. Find det eksisterende medlem
+     * 2. Opret et ny CompetitiveSwimmer-objekt med samme data
+     * 3. Fjern det gamle medlem og tilføj det nye.
+     * 4. Gem listen.
+     * Bruges af formand-menuen når et medlem skal opgraderes.
+     */
     public CompetitiveSwimmer promoteToCompetitive(String phoneNr){
 
         Member member = findByPhoneNr(phoneNr);

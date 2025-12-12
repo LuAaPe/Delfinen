@@ -8,12 +8,26 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Scanner;
 
-
+/**
+ * MemberInput er en hjælpeklasse i UI, der håndterer input
+ * specifikt til oprettelse og validering af medlemsdata.
+ * Formålet er at:
+ * - samle al validering ét sted
+ * - gøre ChairmanMenu mere overskuelig
+ * - sikre ensartet input-format for telefonnumre og fødselsdatoer
+ *
+ */
 public class MemberInput {
-
+    /** Scanner til at læse tekst fra brugeren */
     private final Scanner input;
+    /** Controller med adgang til eksisterende medlemmer (bruges til dubbeltjek af telefonnummer) */
     private final MemberController memberController;
 
+    /**
+     * Opretter et MemberInput-objekt.
+     * @param input Scanner der læser brugerens input
+     * @param memberController bruges til at tjekke om et telefonnummer allerede findes
+     */
     public MemberInput(Scanner input, MemberController memberController) {
         this.input = input;
         this.memberController = memberController;
@@ -21,7 +35,12 @@ public class MemberInput {
 
 
     /**
-     * Indlæs og valider fødselsdato
+     * Beder brugeren indtaste en fødselsdato og validerer input.
+     * Validering består af:
+     * 1. Korrekt datoformat (ÅÅÅÅ-MM-DD)
+     * 2. Gyldig alder: minimum 6 og maksimum 100 år
+     * Metoden bliver ved med at spørge, indtil brugeren indtaster en gyldig dato.
+     * Returnerer en LocalDate med brugerens fødselsdato
      */
     public LocalDate enterBirthDate() {
         System.out.print("TAST FØDSELSDATO (ÅÅÅÅ-MM-DD)\n: ");
@@ -43,8 +62,14 @@ public class MemberInput {
     }
 
     /**
-     * Indlæs telefonnummer, valider format og tjek om det allerede findes
-     * flyttet til memberInput
+     * Indlæser og validerer et telefonnummer.
+     * Validering består af:
+     *  1. Nummeret skal være præcis 8 cifre
+     *  2. Det må kun indeholde tal
+     *  3. Nummeret må ikke være i brug allerede
+     * Metoden tjekker alle eksisterende medlemmer gennem MemberController.
+     * Den bliver ved indtil et gyldigt og unikt nummer er indtastet.
+     * Returnerer et valideret telefonnummer som streng
      */
     public String enterPhoneNr() {
         while (true) {
@@ -79,7 +104,7 @@ public class MemberInput {
     }
 
     /**
-     * Konverterer en dato String til LocalDate
+     * Konverterer en tekststreng i formatet ÅÅÅÅ-MM-DD til et LocalDate-objekt.
      */
     public LocalDate convertStringDateToLocalDate(String date) {
         int birthYear = Integer.parseInt(date.split("-")[0]);
@@ -88,7 +113,8 @@ public class MemberInput {
         return LocalDate.of(birthYear, birthMonth, birthDay);
     }
     /**
-     * Beregn alder ud fra fødselsdato
+     * Beregner alder ud fra en given fødselsdato.
+     * Bruges til at sikre, at nye medlemmer er mellem 6 og 100 år.
      */
     public int calculateAge(LocalDate date) {
         LocalDate currentDate = LocalDate.now();

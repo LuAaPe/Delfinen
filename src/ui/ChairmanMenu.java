@@ -10,6 +10,17 @@ import util.MemberNotFoundException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * ChairmanMenu repræsenterer menuen for klubbens formand.
+ * Formanden har ansvar for medlemsadministration:
+ * - Se lister over medlemmer (junior/senior)
+ * - Oprette nye medlemmer
+ * - Redigere eksisterende medlemmer (fx gøre til konkurrencesvømmer)
+ * - Fjerne medlemmer
+ * - Søge efter medlemmer via telefonnummer
+ * Klassen håndterer kun brugerinteraktion og input. Selve logikken
+ * håndteres i MemberController og ResultController.
+ */
 public class ChairmanMenu {
 
     private final Scanner input;
@@ -18,6 +29,9 @@ public class ChairmanMenu {
     private final ResultController resultController;
     private final MemberInput memberInput;
 
+    /**
+     * Opretter en ChairmanMenu med de nødvendige afhængigheder.
+     */
     public ChairmanMenu(Scanner input, InputHelper inputHelper, MemberController memberController, MemberInput memberInput, ResultController resultController) {
         this.input = input;
         this.inputHelper = inputHelper;
@@ -28,8 +42,8 @@ public class ChairmanMenu {
 
 
     /**
-     * Menu for Formand
-     * Indeholder medlemsadministration
+     * Viser formandens hovedmenu og håndterer brugerens valg.
+     * Metoden bliver i loop indtil brugeren vælger '0' (tilbage).
      */
     public void show() {
         while (true) {
@@ -96,6 +110,10 @@ public class ChairmanMenu {
         }
     }
 
+    /**
+     * Viser en oversigt over alle medlemmer opdelt i juniorer (<18)
+     * og seniorer (18+). Udskriver hver medlem via printMemberLine().
+     */
     private void showAllMembers() {
         System.out.println("\n----------------------------------------");
         System.out.println("           JUNIOR MEDLEMMER");
@@ -130,6 +148,16 @@ public class ChairmanMenu {
         System.out.println("----------------------------------------\n");
     }
 
+    /**
+     * Udskriver én linje med et medlems centrale oplysninger i et
+     * fast og ensartet format:
+     * - Fulde navn
+     * - Telefonnummer
+     * - Alder
+     * - Aktiv/passiv status
+     * - Motionist / konkurrencesvømmer
+     * Bruges af flere menuvalg for at sikre konsistent output.
+     */
     private void printMemberLine(Member member) {
         if (member == null) {
             System.out.println("Ingen medlemsdata at vise.");
@@ -151,7 +179,11 @@ public class ChairmanMenu {
     }
 
     /**
-     * Opretter et nyt medlem baseret på brugerinput
+     * Opretter et nyt medlem ud fra brugerens input.
+     * Indsamler fornavn, efternavn, telefonnummer, fødselsdato
+     * samt statusfelter som aktiv/passiv og betalingsstatus.
+     * Efter oprettelse hentes medlemmet igen og vises for at bekræfte,
+     * at det er korrekt oprettet.
      */
     private void createMember() {
         System.out.println("\n----------------------------------------");
@@ -180,6 +212,12 @@ public class ChairmanMenu {
         System.out.println("----------------------------------------\n");
     }
 
+    /**
+     * Fjerner et medlem baseret på telefonnummer.
+     * Udskriver medlemmet der blev fjernet, hvis det findes.
+     * Alle resultater knyttet til medlemmet slettes også via ResultController.
+     * Kaster MemberNotFoundException hvis nummeret ikke findes.
+     */
     private void removeMember() {
         System.out.println("\n----------------------------------------");
         System.out.println("      FJERN MEDLEM FRA KLUBBEN");
@@ -206,6 +244,13 @@ public class ChairmanMenu {
         }
     }
 
+    /**
+     * Opgraderer et medlem til konkurrencesvømmer.
+     * Hvis medlemmet allerede er konkurrencesvømmer, kastes
+     * AlreadyCompetitiveSwimmerException.
+     * Hvis medlemmet ikke findes, kastes MemberNotFoundException.
+     * Ved succes vises det opgraderede medlem.
+     */
     private void promoteMemberToCompetitive() {
         System.out.println("\n----------------------------------------");
         System.out.println("   GØR MEDLEM TIL KONKURRENCESVØMMER");
@@ -237,7 +282,10 @@ public class ChairmanMenu {
         }
     }
 
-
+    /**
+     * Finder og viser et medlem baseret på telefonnummer.
+     * Udskriver tydelig fejlmeddelelse hvis medlemmet ikke findes.
+     */
     private void findMember() {
         System.out.println("\n----------------------------------------");
         System.out.println("    FIND MEDLEM VIA TELEFONNUMMER");

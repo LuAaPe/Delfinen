@@ -8,13 +8,26 @@ import util.MemberNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * TreasurerMenu er den menu som kassereren bruger.
+ * Menuen giver mulighed for at:
+ * 1. Se det samlede forventede kontingent for alle medlemmer
+ * 2. Se alle medlemmer der er i restance (ikke betalt)
+ * 3. Registrere betaling for et medlem
+ * 4. Se det årlige kontingent for et enkelt medlem
+ */
 public class TreasurerMenu {
-
+    /** Scanner til brugerinput fra konsollen */
     private final Scanner input;
+    /** Hjælpeklasse til valideret input (fx tal, ja/nej) */
     private final InputHelper inputHelper;
+    /** Controllerns adgang til alle medlemsfunktioner */
     private final MemberController memberController;
 
-
+    /**
+     * Opretter kasserer-menuen.
+     * UI får alle sine "værktøjer" gennem konstruktøren.
+     */
     public TreasurerMenu(Scanner input, InputHelper inputHelper, MemberController memberController) {
         this.input = input;
         this.inputHelper = inputHelper;
@@ -26,6 +39,8 @@ public class TreasurerMenu {
      * - kontingent
      * - restance
      * - registrer betaling
+     * Menuen kører i en løkke indtil brugeren vælger 0 (tilbage).
+     * Hver mulighed sender brugeren videre til en separat metode.
      */
     public void show() {
         boolean run = true;
@@ -71,7 +86,9 @@ public class TreasurerMenu {
     }
 
     /**
-     * Beregner det samlede kontingent for alle medlemmer
+     * Udregner og viser det samlede forventede kontingent for hele klubben.
+     * Først opdateres kontingentet for ALLE medlemmer (skulle priser ændre sig),
+     * og derefter hentes summen fra MemberController.
      */
     private void showTotalFees() {
         memberController.updateYearlyFee();
@@ -87,7 +104,9 @@ public class TreasurerMenu {
     }
 
     /**
-     * Viser alle medlemmer som ikke har betalt kontingent
+     * Viser alle medlemmer som ikke har betalt kontingent.
+     * Listen hentes fra MemberController,
+     * som selv udvælger de medlemmer hvor isPaid = false.
      */
     private void showMembersInDebt() {
         ArrayList<Member> inDebt = memberController.getMembersInDebt();
@@ -119,7 +138,13 @@ public class TreasurerMenu {
     }
 
     /**
-     * Registerer betaling for et medlem baseret på telefonnummer
+     * Registerer betaling for et medlem baseret på telefonnummer.
+     * Arbejdsgang:
+     * 1. Brugeren indtaster telefonnummer
+     * 2. Controlleren forsøger at finde medlemmet
+     * 3. Hvis medlemmet findes → isPaid sættes til true
+     * 4. Resultatet udskrives i et pænt format
+     * Hvis medlemmet ikke findes, bliver brugeren informeret.
      */
     private void registerPayment() {
         System.out.println("\n----------------------------------------");
@@ -149,6 +174,11 @@ public class TreasurerMenu {
         }
     }
 
+    /**
+     * Viser det årlige kontingent for ét bestemt medlem.
+     * Brugeren indtaster telefonnummer, og controlleren slår medlemmet op.
+     * Hvis medlemmet findes, vises det aktuelle kontingent (yearlyFee).
+     */
     private void checkYearlyFee() {
         System.out.println("\n----------------------------------------");
         System.out.println("        TJEK ÅRLIGT KONTINGENT");
